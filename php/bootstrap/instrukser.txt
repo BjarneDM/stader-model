@@ -1,0 +1,21 @@
+At nulstille databasen består af 2 ting :
+
+1)  rydde de 2 databaser
+    Der er 2 scripts til at gøre dette :
+    a)  stader
+       /sql/setupstader.mysql.sql
+    b)  logs
+       /sql/setuplogs.mysql.sql
+    Disse loades inde i WorkBench & køres.
+    De er uafhængige af hinanden så de kan afvikles i vilkårlig rækkefølge
+
+    Hvis man undervejs gerne vil af med tmp_* tabellerne,
+    så ligger der et php script til dette :
+    /php/cron/removetmptables.php
+
+
+2)  køre bootstrap
+    runall.classloader.php i denne mappe tager sig af dette
+    brug : php runall.classloader.php
+
+Scriptet /bin/initAll viser hvordan man kan gøre det m/ bash

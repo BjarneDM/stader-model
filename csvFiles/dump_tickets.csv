@@ -1,0 +1,9 @@
+ticket_id,header,description,assigned_place_id,ticket_status_id,assigned_user_id,creationtime,lastupdatetime,active
+1,"mangler batteri.","Excepteur sint occaecat cupidatat non proident",13,1,0,"2020-10-20 13:44:22","2020-10-20 13:44:22",1
+2,"Hund skidt på teltet ved lars løkke.","Excepteur sint occaecat cupidatat non proident",28,6,2,"2020-10-20 13:44:22","2020-10-20 13:44:22",1
+3,"Barn hoppet i vandet, og svanerne har spist ungen.","Excepteur sint occaecat cupidatat non proident",1,10,3,"2020-10-20 13:44:22","2020-10-20 13:44:22",1
+4,"Er der nogen der har set min sko?.","Excepteur sint occaecat cupidatat non proident",11,15,4,"2020-10-20 13:44:22","2020-10-20 17:44:37",0
+5,"Brand i transformer","Excepteur sint occaecat cupidatat non proident",41,10,5,"2020-10-20 13:44:22","2020-10-20 13:44:22",1
+6,"Telt mangler pløgger","Excepteur sint occaecat cupidatat non proident",13,3,0,"2020-10-20 13:44:22","2020-10-20 13:44:22",1
+7,"Køkken hos spejderne mangler olie","Excepteur sint occaecat cupidatat non proident",28,9,2,"2020-10-20 13:44:22","2020-10-20 13:44:22",1
+8,"Alle telefonmaster mangler elekticitet","Excepteur sint occaecat cupidatat non proident",1,8,3,"2020-10-20 13:44:22","2020-10-20 13:44:22",0

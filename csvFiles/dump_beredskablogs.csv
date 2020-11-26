@@ -1,0 +1,5 @@
+beredskab_log_id,beredskab_id,header,log_timestamp,old_value,new_value
+1,1,oprettet,"2020-10-20 13:44:22",,"{""beredskab_id"":""1"",""message"":"""",""header"":""LynNedslag i hovedtransformer"",""created_by_id"":""4"",""active"":""1"",""creationtime"":""2020-10-20 13:44:22"",""colour"":""red"",""flag"":null}"
+2,2,oprettet,"2020-10-20 13:44:22",,"{""beredskab_id"":""2"",""message"":"""",""header"":""Pizza til alle kl 18:00"",""created_by_id"":""2"",""active"":""1"",""creationtime"":""2020-10-20 13:44:22"",""colour"":""red"",""flag"":null}"
+3,3,oprettet,"2020-10-20 13:44:22",,"{""beredskab_id"":""3"",""message"":"""",""header"":""Brand hos EnhedsListen"",""created_by_id"":""4"",""active"":""1"",""creationtime"":""2020-10-20 13:44:22"",""colour"":""red"",""flag"":null}"
+4,4,oprettet,"2020-10-20 13:44:22",,"{""beredskab_id"":""4"",""message"":"""",""header"":""!!! StormVarsel : vindstyrke 10 fra 20:00 !!!"",""created_by_id"":""2"",""active"":""1"",""creationtime"":""2020-10-20 13:44:22"",""colour"":""red"",""flag"":null}"

@@ -1,0 +1,26 @@
+#!/opt/local/bin/bash
+printf '=%.0s' {1..100}
+echo -e "\ngit_prepare\n" 
+
+dirBase='/Volumes/Bjarne/ZBC/Projekter/Stader/SRO-Website'
+relBase='Bjarne/bin'
+
+PATH=${dirBase}/${relBase}:${PATH}
+
+cd "${dirBase}"
+
+git pull
+rsync \
+    -a --delete \
+    --exclude={'*.ibd','*.sdi'} \
+    ~bjarne/Sites/info/mathiesen/zbc/stader/ \
+    Bjarne
+
+for folder in 'bootstrap' 'control'
+do
+    cd "Bjarne/php/${folder}"
+    fix_include
+    cd "${dirBase}"
+done
+
+git status

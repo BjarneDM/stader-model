@@ -1,0 +1,11 @@
+#!/opt/local/bin/bash
+
+while read -u 9 fileName
+do 
+    diff -u \
+		"${fileName/Bjarne\/php/source}" \
+		"${fileName}"
+done 9< \
+    <( find 'Bjarne/php/model' -type f -name '*.php' \
+        | grep -v 'test' \
+     )

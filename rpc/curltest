@@ -1,0 +1,22 @@
+curl \
+    -d '{"jsonrpc":"2.0","id":1,"method":"test","params":{"username":"mich","passwd":"baqXw32u"}}' \
+    -d '{"jsonrpc":"2.0","id":1,"method":"login","params":{"username":"last","passwd":"ayuTZlQc"}}' \
+    -d '{"jsonrpc":"2.0","id":1,"method":"tickets","params":{"authstring":"321d550c193ccddb9a5a0e9666a2f2dd"}}' \
+    http://stader.zbc.mathiesen.test
+
+exit
+
+{"jsonrpc":"2.0","id":1,"result":{"authstring":"89b3a38dcd67d5f1d1e12139eea9a8e5","user":{"user_id":1,"name":"Michael","surname":"","phone":"D","username":"mich","passwd":"$2y$04$fPajDVseQvv8NRFqHJT0JOgUrVKeLgHLlrlfSGrM6gIUkNviildtG","email":"mich@zbc.dk"}}}bjarne@Pro15 11:09:24 ~/Sites/info/mathiesen/zbc/stader/rpc
+
+
+    -d '{"jsonrpc":"2.0","id":1,"method":"login","params":{"username":"mich","passwd":"baqXw32u"}}' \
+    -d '{"jsonrpc":"2.0","id":1,"method":"tickets","params":{"authstring":"321d550c193ccddb9a5a0e9666a2f2dd"}}' \
+
+    -d '{"jsonrpc":"2.0","id":1,"method":"login","params":{"username":"last","passwd":"ayuTZlQc"}}' \
+    -d '{"jsonrpc":"2.0","id":1,"method":"tickets","params":{"authstring":"89b3a38dcd67d5f1d1e12139eea9a8e5"}}' \
+
+    -d '{"jsonrpc":"2.0","id":1,"method":"devices/add","params":{"name":"Philipp PC","type":"pc","id":1}}' \
+    -d '[{"jsonrpc":"2.0", "id":1, "method":"test", "params":{"p1": "one", "p2": "two"}},{"jsonrpc":"2.0", "id":2, "method":"test", "params":{"p3": "three", "p4": "four"}}]' \
+
+https://www.phpclasses.org/package/10687-PHP-Handle-to-HTTP-requests-in-JSON-RPC-v2-0-format.html
+https://blog.heckel.io/2016/01/05/php-json-rpc-api-with-auth-validation-logging/

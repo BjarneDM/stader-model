@@ -1,0 +1,4 @@
+ticket_log_id ; header ; ticket_id ; log_timestamp ; description ; assigned_place_id ; ticket_status_id ; assigned_user_id ; creationtime ; lastupdatetime ; active ; group_id;
+2 ; Hund skidt på teltet ved lars løkke. ; 2 ; 2020-09-25 10:10:25 ; Excepteur sint occaecat cupidatat non proident ; 28 ; 5 ; 2 ; 2020-09-25 10:10:25 ; 2020-09-25 10:10:25 ; 1 ; 2;
+10 ; Hund skidt på teltet ved lars løkke. ; 2 ; 2020-09-25 10:17:45 ; Excepteur sint occaecat cupidatat non proident ; 28 ; 5 ; 2 ; 2020-09-25 10:17:45 ; 2020-09-25 10:17:45 ; 1 ; 2;
+18 ; Hund skidt på teltet ved lars løkke. ; 2 ; 2020-09-25 12:12:01 ; Excepteur sint occaecat cupidatat non proident ; 28 ; 5 ; 2 ; 2020-09-25 12:12:01 ; 2020-09-25 12:12:01 ; 1 ; 2;

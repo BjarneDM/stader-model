@@ -1,0 +1,12 @@
+#!/opt/local/bin/bash
+printf '=%.0s' {1..100}
+echo -e "\nfix_include\n" 
+
+while read -u 9 fileName
+do
+    echo "${fileName}"
+    sed -i '' -E \
+        -e '/set_include_path/d' \
+        -e '/phpValues/d' \
+        "${fileName}"
+done 9< <( find . -name '*.php' )

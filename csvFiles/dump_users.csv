@@ -1,0 +1,6 @@
+user_id,name,surname,phone,username,passwd,email
+1,Michael,,"1483 7493",mich,$2y$04$G1xE2qvYml1cYIAYdDaH/Ouy3zC.cOdzEtmaZiNm21aHvdqMX7DG6,mich@zbc.dk
+2,Lars,Starbech,"2719 0521",last,$2y$04$d8B8t9oo7Z6zmEkAwXq6yuS9S4BCQcnFbiQRbhwvC315FggFCaWhW,last@zbc.dk
+3,SKP-IT,Slagelse,"8640 6340",skp,$2y$04$KbrvjbDOTQxvvPPEVEgP.OXXKSHuWbdf0nGDtBSU6g4weBTRJq7hC,skp@zbc.dk
+4,Lars,Nielsen,"0860 4382",lani,$2y$04$TMI0IBvwOeITk9NcRy8EtOJgl6s1Mku5857xd5Q.Q9BXEP3AhMpD.,lani@zbc.dk
+5,Kris,Kristensen,"4453 3844",krkr,$2y$04$OWuo.tgpQT6FRH/naV.PK.ojptqFXKi4CAQ9rJSZejHUGr1.Qvale,krkr@zbc.dk

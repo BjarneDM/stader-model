@@ -1,0 +1,21 @@
+ticket_status_id,name,default_colour,description,type_byte_id
+1,Pakning,black,"Klargør Ordren",2
+2,Transport,grey,,2
+3,Opsætning,lightblue,,2
+4,"Kunde Godkendelse",darkblue,,2
+5,Godkendt,white,,2
+6,"Opstart Morgen",green,"Klar til brug",3
+7,"Runderings Kontrol",yellow,"(mere end 120 minutter siden sidste opgave opdatering)",3
+8,"Tekniker Tilkald",yellow,,3
+9,"Mangler Udstyr",orange,"Husk at skrive med note om behov",3
+10,"AKUT fejlmelding",red,"LØB - DET HASTER",3
+11,"Klar til transport - fra Base",grey,,3
+12,"Mangler opsætning",orange,"Klar til tekniker",3
+13,"Tekniker på vej",lightgreen,"Til kunden",3
+14,Afvikles,darkgreen,,3
+15,OK,green,,3
+16,"Sidste event",purple,"(IOndtast tidspunkt og evt. dato) med Note",3
+17,"Klar til nedtagning",purple,Slut,4
+18,"Transport - til Base",lightgrey,,4
+19,"Afleveret i Base",grey,,4
+20,Afsluttet,black,Inaktiv,4
