@@ -16,8 +16,8 @@ use staderlogs ;
 set foreign_key_checks = 0 ;
 
 
-drop table if exists ticket_log ;
-create table if not exists ticket_log
+drop table if exists ticketlog ;
+create table if not exists ticketlog
 (
     id              int auto_increment primary key ,
     ticket_id       int not null ,
@@ -31,8 +31,8 @@ create table if not exists ticket_log
     new_value       text default null
 ) ;
 
-drop table if exists place_log ;
-create table if not exists place_log
+drop table if exists placelog ;
+create table if not exists placelog
 (
     id              int auto_increment primary key ,
     place_id        int ,
@@ -46,8 +46,8 @@ create table if not exists place_log
     new_value       text default null
 ) ;
 
-drop table if exists beredskab_log ;
-create table if not exists beredskab_log
+drop table if exists beredskablog ;
+create table if not exists beredskablog
 (
     id                  int auto_increment primary key ,
     beredskab_id        int ,

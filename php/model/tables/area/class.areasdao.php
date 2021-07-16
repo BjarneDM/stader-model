@@ -1,32 +1,33 @@
 <?php namespace stader\model ;
 
-class AreasDao extends Setup
+abstract class AreasDao extends Setup
 {
     private   $functions = null ;
     protected $objectIDs = [] ;
+    protected $values    = [] ;
     
-    function __construct ()
+    public function __construct ( $dbType )
     {   // echo 'class AreasDao extends Setup __construct' . \PHP_EOL ;
 
-        parent::__construct( 'data' ) ;
+        parent::__construct( $dbType ) ;
 
         switch ( self::$connect->getType() )
         {
-            case "mysql"    : $this->functions = new AreaDaoPdo( self::$connect ) ; break ;
-            case "pgsql"    : $this->functions = new AreaDaoPdo( self::$connect ) ; break ;
-            case "sqlite"   : $this->functions = new AreaDaoPdo( self::$connect ) ; break ;
-            case "xml"      : $this->functions = new AreaDaoXml( self::$connect ) ; break ;
+            case "mysql"    : $this->functions = new TableDaoPdo( self::$connect , Areas::$class ) ; break ;
+            case "pgsql"    : $this->functions = new TableDaoPdo( self::$connect , Areas::$class ) ; break ;
+            case "sqlite"   : $this->functions = new TableDaoPdo( self::$connect , Areas::$class ) ; break ;
+            case "xml"      : $this->functions = new TableDaoXml( self::$connect , Areas::$class ) ; break ;
             default: throw new \Exception() ;
             // var_dump( $this->functions ) ;
         } 
 
     }
 
-    protected function readAll( ...$args ) : void
+    protected function readAll( Areas $object ) : void
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        // print_r( $args ) ;
+        // print_r( $object ) ;
 
-        $this->objectIDs = $this->functions->readAll( ...$args ) ;
+        $this->objectIDs = $this->functions->readAll( $object ) ;
         reset( $this->objectIDs ) ;
     }
 
@@ -40,7 +41,8 @@ class AreasDao extends Setup
     public function getOne( int $index ) : Area { return new Area( $index ) ; }
 
     public function getAll() : array 
-    {
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+
         $allObjects = [] ;
         foreach ( $this->objectIDs as $oneID )
         {
@@ -55,6 +57,10 @@ class AreasDao extends Setup
         } catch ( \Exception ) { return false ; }
     }
     
+    public function getData()   { return $this->values ; }
+    public function getValues() { return array_values( $this->values ) ; }
+    public function getKeys()   { return array_keys( $this->values ) ; }
+
 }
 
 ?>

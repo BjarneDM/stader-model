@@ -5,10 +5,10 @@ echo \PHP_EOL . str_repeat( '-' , 50 ) . \PHP_EOL . '-> entering : ' . basename(
 
 /*
 
-create table if not exists areas
+create table if not exists area
 (
-    id      int auto_increment primary key ,
-    name    varchar(255) not null ,
+    id      int auto_increment ,
+    name    varchar(255) not null primary key ,
         constraint unique (name) ,
     description text
 ) ;
@@ -46,19 +46,28 @@ $areas =
 /*
  *  main
  */
+// exit( 'tidlig exit under test' . \PHP_EOL ) ;
 
 foreach ( $areas as $area )
 {
     $thisArea = new Area( $area ) ;
 } unset( $area) ;
 
-/* 
+/*
 $allAreas = new Areas() ;
-foreach ( $allAreas->getAll() as $area ) 
+foreach ( ( $areasAll = $allAreas->getAll() ) as $area ) 
     echo json_encode( $area->getData() , JSON_UNESCAPED_UNICODE ) . \PHP_EOL ;
     unset( $area ) ;
+
+$areasAll[0]->setValues(['name'=>'T']) ;
+$areasAll[1]->setValues(['description'=>'SydLandet']) ;
+$areasAll[2]->setValues(['description'=>'TestVærdi','name'=>'Q']) ;
+( end( $areasAll ) )->delete() ;
+
+echo \PHP_EOL . str_repeat( '-' , 50 ) . \PHP_EOL  . \PHP_EOL ;
  */
 
+$allAreas = new Areas() ;
 if ( $allAreas->count() > 0 )
 {
     $allAreas->reset() ;

@@ -5,27 +5,27 @@ interface ICrudDao
     /**
      * Store the new object and assign a unique auto-generated ID.
      */
-    function create( Array $array ) ;
+    function create( $object ) ;
 
     /**
      * Return one object based upon select
      */
-    function readOne( ...$args ) ;
+    function readOne( $object ) ;
 
     /**
      * Return all objects based upon select
      */
-    function readAll( ...$args ) ;
+    function readAll( $object ) ;
 
     /**
      * Update the object's fields.
      */
-    function update( int $id, string $key, $value ) ;
+    function update( $object , Array $diffValues ) ;
 
     /**
      * Delete the object from the database.
      */
-    function delete( int $id ) ;
+    function delete( $object ) ;
 }
 
 ?>

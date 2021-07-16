@@ -2,13 +2,15 @@
 
 class Areas extends AreasDao
 {
-    private $allowedKeys = [ 'name' , 'description' ] ;
+    public static $allowedKeys = [ 'name' => 'varchar' , 'description' => 'text' ] ;
+    public static $class       = '\\stader\\model\\Area' ;
+    protected     $values      = [] ;
 
-    function __construct ( ...$args )
+    public function __construct ( ...$args )
     {   // echo 'class Area extends AreaDao __construct' . \PHP_EOL ;
         // print_r( $args ) ;
 
-        parent::__construct() ;
+        parent::__construct( 'data' ) ;
 
         /*
          *  gettype( $args[0] ) === 'null' 
@@ -19,27 +21,30 @@ class Areas extends AreasDao
          *      $testArea = new Area( $args[0] , $args[1] )
          */
         if ( ! isset( $args[0] ) ) { $args = [] ; $args[0] = null ; }
+        $this->callArgs = $args ;
         switch ( strtolower( gettype( $args[0] ) ) )
         {
             case 'null' :
-                $this->readAll() ;
+                $this->readAll( $this ) ;
                 break ;
             case 'string' :
                 if ( strtolower( gettype( $args[1] ) ) !== 'string' )
                     throw new \Exception( gettype( $args[0] ) . ' & ' . gettype( $args[1] ) . ' er ikke begge "string"' ) ;
-                 if ( ! in_array( $args[0] , $this->allowedKeys ) )
-                    throw new \Exception( "'{$key}' doesn't exist in [ " . implode( ' , ' , $this->allowedKeys ) . " ]" ) ;
-                $this->readAll( $args[0] , $args[1] ) ;
+                 if ( ! array_key_exists( $args[0] , self::$allowedKeys ) )
+                    throw new \Exception( "'{$key}' doesn't exist in [ " . implode( ' , ' , array_keys( self::$allowedKeys ) ) . " ]" ) ;
+                $this->$values[$args[0]] = $args[1] ;
+                $this->readAll( $this ) ;
                 break ;
             case 'array' :
                 if ( count( $args[0] ) !== count( $args[1] ) )
                     throw new \Exception( 'count() for $args[0] & $args[1] er forskellige' ) ;
                 foreach ( $args[0] as $key )
                 {
-                    if ( ! in_array( $key , $this->allowedKeys ) )
-                        throw new \Exception( "'{$key}' doesn't exist in [ " . implode( ' , ' , $this->allowedKeys ) . " ]" ) ;
+                    if ( ! array_key_exists( $key , self::$allowedKeys ) )
+                        throw new \Exception( "'{$key}' doesn't exist in [ " . implode( ' , ' , array_keys( self::$allowedKeys ) ) . " ]" ) ;
                 }
-                $this->readAll( $args[0] , $args[1] ) ;
+                $this->values = $args[0] ;
+                $this->readAll( $this ) ;
                 break ;
             default :
                 throw new \Exception( gettype( $args[0] ) . " : forkert input type [null,string,array]" ) ;

@@ -13,8 +13,8 @@ use staderdata ;
 # create tables
 #
 
-# drop table if exists users ;
-# create table if not exists users
+# drop table if exists user ;
+# create table if not exists user
 # (
 #     id          int auto_increment primary key ,
 #     name        varchar(255) not null ,
@@ -31,25 +31,25 @@ use staderdata ;
 # set foreign_key_checks = 0 ;
 
 # drop tabellermne i den rigtige reækkefølge
-drop table if exists ticket_group ;
-drop table if exists users_groups ;
-drop table if exists user_groups ;
-drop table if exists user_beredskab ;
-drop table if exists users_roles ;
-drop table if exists roles ;
+drop table if exists ticketgroup ;
+drop table if exists usergroup ;
+drop table if exists ugroup ;
+drop table if exists userberedskab ;
+drop table if exists userrole ;
+drop table if exists role ;
 drop table if exists beredskab ;
-drop table if exists tickets ;
-drop table if exists places ;
-drop table if exists areas ;
-drop table if exists place_owner ;
-drop table if exists ticket_status ;
-drop table if exists type_byte ;
+drop table if exists ticket ;
+drop table if exists place ;
+drop table if exists area ;
+drop table if exists placeowner ;
+drop table if exists ticketstatus ;
+drop table if exists typebyte ;
 drop table if exists userscrypt ;
-drop table if exists flags ;
+drop table if exists flag ;
 
 
 # create tabellermne i den rigtige reækkefølge
-create table if not exists userscrypt
+create table if not exists usercrypt
 (
     id      int primary key ,
     salt    varchar(255) ,
@@ -58,14 +58,14 @@ create table if not exists userscrypt
     data    text
 ) ;
 
-create table if not exists type_byte
+create table if not exists typebyte
 (
     id      int auto_increment primary key ,
     name    varchar(255) ,
         constraint unique (name)
 ) ;
 
-create table if not exists ticket_status
+create table if not exists ticketstatus
 (
     id                  int auto_increment primary key,
     name                varchar(255) ,
@@ -73,12 +73,12 @@ create table if not exists ticket_status
     default_colour      varchar(255) ,
     description         text ,
     type_byte_id        int ,
-        foreign key (type_byte_id) references type_byte(id)
+        foreign key (type_byte_id) references typebyte(id)
         on update cascade
         on delete restrict
 ) ;
 
-create table if not exists place_owner
+create table if not exists placeowner
 (
     id              int auto_increment primary key ,
     name            varchar(255) not null ,
@@ -94,25 +94,26 @@ create table if not exists place_owner
 #         ( 'dummy' , '' , '' , '' , 'dummy' )
 # ;
 
-create table if not exists areas
+create table if not exists area
 (
-    id          int auto_increment primary key ,
-    name        varchar(255) not null ,
+    id          int auto_increment ,
+        index(id) ,
+    name        varchar(255) not null primary key ,
         constraint unique (name) ,
     description text
 ) ;
 
-create table if not exists places
+create table if not exists place
 (
     id              int auto_increment primary key ,
     place_nr        varchar(8) not null ,
     description     text ,
     place_owner_id  int default null ,
-        foreign key (place_owner_id) references place_owner(id)
+        foreign key (place_owner_id) references placeowner(id)
         on update cascade 
         on delete restrict ,
     area_id         int ,
-        foreign key (area_id) references areas(id)
+        foreign key (area_id) references area(id)
         on update cascade 
         on delete cascade ,
     lastchecked     datetime
@@ -122,21 +123,21 @@ create table if not exists places
     unique key (place_nr,area_id)
 ) ;
 
-create table if not exists tickets
+create table if not exists ticket
 (
     id                  int auto_increment primary key ,
     header              varchar(255) not null ,
     description         text not null ,
     assigned_place_id   int ,
-        foreign key (assigned_place_id) references places(id)
+        foreign key (assigned_place_id) references place(id)
         on update cascade 
         on delete restrict ,
     ticket_status_id    int not null ,
-        foreign key (ticket_status_id) references ticket_status(id)
+        foreign key (ticket_status_id) references ticketstatus(id)
         on update cascade 
         on delete restrict ,
     assigned_user_id    int default null ,
-        foreign key (assigned_user_id) references userscrypt(id)
+        foreign key (assigned_user_id) references usercrypt(id)
         on update cascade 
         on delete restrict ,
     creationtime        datetime
@@ -147,7 +148,7 @@ create table if not exists tickets
     active              boolean default true
 ) ;
 
-create table if not exists user_groups
+create table if not exists ugroup
 (
     id          int auto_increment primary key ,
     name        varchar(255) not null ,
@@ -155,28 +156,28 @@ create table if not exists user_groups
     description varchar(255) 
 ) ;
 
-create table if not exists users_groups
+create table if not exists usergroup
 (
     id                  int auto_increment primary key ,
     user_id             int ,
-        foreign key (user_id) references userscrypt(id)
+        foreign key (user_id) references usercrypt(id)
         on update cascade 
         on delete cascade ,
     group_id            int ,
-        foreign key (group_id) references user_groups(id)
+        foreign key (group_id) references ugroup(id)
         on update cascade 
         on delete restrict
 ) ;
 
-create table if not exists ticket_group
+create table if not exists ticketgroup
 (
     id                  int auto_increment primary key ,
     ticket_id           int ,
-        foreign key (ticket_id) references tickets(id)
+        foreign key (ticket_id) references ticket(id)
         on update cascade 
         on delete cascade ,
     group_id            int ,
-        foreign key (group_id) references user_groups(id)
+        foreign key (group_id) references usergroup(id)
         on update cascade 
         on delete restrict
 ) ;
@@ -187,7 +188,7 @@ create table if not exists beredskab
     message         text not null ,
     header          text ,
     created_by_id   int not null ,
-        foreign key (created_by_id) references userscrypt(id)
+        foreign key (created_by_id) references usercrypt(id)
         on update cascade 
         on delete restrict ,
     active          boolean default true ,
@@ -197,11 +198,11 @@ create table if not exists beredskab
     flag            varchar(255) default null
 ) ;
 
-create table if not exists user_beredskab
+create table if not exists userberedskab
 (
     id              int auto_increment primary key ,
     user_id         int ,
-        foreign key (user_id) references userscrypt(id)
+        foreign key (user_id) references usercrypt(id)
         on update cascade 
         on delete cascade ,
     beredskab_id    int ,
@@ -210,7 +211,7 @@ create table if not exists user_beredskab
         on delete cascade
 ) ;
 
-create table if not exists roles
+create table if not exists urole
 (
     id          int auto_increment primary key ,
     role        varchar(255) not null ,
@@ -220,21 +221,21 @@ create table if not exists roles
     note        text
 ) ;
 
-create table if not exists users_roles
+create table if not exists userrole
 (
     id          int auto_increment primary key ,
     user_id     int ,
-        foreign key (user_id) references userscrypt(id)
+        foreign key (user_id) references usercrypt(id)
         on update cascade 
         on delete cascade ,
     role_id     int ,
-        foreign key (role_id) references roles(id)
+        foreign key (role_id) references urole(id)
         on update cascade 
         on delete cascade
 ) ;
 
 
-create table if not exists flags
+create table if not exists flag
 (
     id          int auto_increment primary key ,
     text        varchar(255) ,

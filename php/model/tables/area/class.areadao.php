@@ -1,51 +1,51 @@
 <?php namespace stader\model ;
 
-class AreaDao extends Setup
+abstract class AreaDao extends Setup
 {
-    private $functions = null ;
-    protected $values = [] ;
+    private   $functions = null ;
+    protected $values    = [] ;
+    protected $valuesOld = [] ;
     
-    function __construct ()
+    public function __construct ( $dbType )
     {   // echo 'class AreaDao estends Setup __construct' . \PHP_EOL ;
 
-        parent::__construct( 'data' ) ;
+        parent::__construct( $dbType ) ;
 
         switch ( self::$connect->getType() )
         {
-            case "mysql"    : $this->functions = new AreaDaoPdo( self::$connect ) ; break ;
-            case "pgsql"    : $this->functions = new AreaDaoPdo( self::$connect ) ; break ;
-            case "sqlite"   : $this->functions = new AreaDaoPdo( self::$connect ) ; break ;
-            case "xml"      : $this->functions = new AreaDaoXml( self::$connect ) ; break ;
+            case "mysql"    : $this->functions = new TableDaoPdo( self::$connect , Area::$class ) ; break ;
+            case "pgsql"    : $this->functions = new TableDaoPdo( self::$connect , Area::$class ) ; break ;
+            case "sqlite"   : $this->functions = new TableDaoPdo( self::$connect , Area::$class ) ; break ;
+            case "xml"      : $this->functions = new TableDaoXml( self::$connect , Area::$class ) ; break ;
             default: throw new \Exception() ;
             // var_dump( $this->functions ) ;
         } 
 
     }
 
-    protected function create( Array $array ) 
+    protected function create( Area $object ) 
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $array ) ;
 
-            return $this->functions->create( $array ) ; }
+            return $this->functions->create( $object ) ; }
 
-    protected function read( ...$args )
+    protected function read( Area $object )
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $args ) ;
 
-            $this->values = $this->functions->readOne( ...$args ) ; }
+            $this->values = $this->functions->readOne( $object ) ; }
 
-    protected function update( string $key , $value ) 
+    protected function update( Area $object )
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        // print_r( [ $key , $value ] ) ;
+        // print_r( $object ) ;
 
-            $oldValue = $this->values[ $key ] ;
-            $rowCount = $this->functions->update( $this->values['area_id'] , $key , $value ) ;
-        return [ $rowCount , $oldValue ] ; }
+            $rowCount = $this->functions->update( $object , array_diff( $this->values , $this->valuesOld ) ) ;
+        return $rowCount ; }
 
-    public function delete()
+    protected function deleteThis( Area $object )
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
 
-            $rowCount = $this->functions->delete( $this->values['area_id'] ) ;
+            $rowCount = $this->functions->delete( $object ) ;
             $this->values = null ;
         return $rowCount ; }
 
