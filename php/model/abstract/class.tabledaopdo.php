@@ -21,7 +21,7 @@ class TableDaoPdo implements ICrudDao
     public function __construct ( $connect , $class )
     {   // echo 'class TableDaoPdo implements ICrudDao __construct' . \PHP_EOL ;
         // var_dump( $connect ) ;
-        // var_dump( $connect , $class ) ;
+        // var_dump( $class ) ;
         // echo 'connection type : ' . $connect->getType()  . \PHP_EOL ;
 
         $this->dbh = $connect->getConn() ;
@@ -166,10 +166,10 @@ class TableDaoPdo implements ICrudDao
      *  men positionelle parametre fungerer
      *  ?!?!?!?!?
      */
-    public function updateOld( $object , Array $diffValues )
+    private function updateNamed( $object , Array $diffValues )
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $object ) ;
-       //  print_r( $diffValues ) ;
+        // print_r( $diffValues ) ;
 
         if ( empty( $diffValues ) ) return 0 ;
 
@@ -188,8 +188,7 @@ class TableDaoPdo implements ICrudDao
 
         foreach ( $diffValues as $param => $value )
         {
-            print_r(['param'=>$param,'value'=>$value]) ;
-            $stmt->bindParam( ':'.$param , $value , $this->getPdoParamType( $object::$allowedKeys[$param] ) ) ;
+            $stmt->bindParam( ":{$param}" , $value , $this->getPdoParamType( $object::$allowedKeys[$param] ) ) ;
         }   unset( $param , $value ) ;
         $stmt->bindParam( ':id' , $object->getData()['id'] , \PDO::PARAM_INT ) ;
 
@@ -201,7 +200,7 @@ class TableDaoPdo implements ICrudDao
 
     return $rowCount ; }
 
-    public function update( $object , Array $diffValues )
+    private function updatePosit( $object , Array $diffValues )
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $object ) ;
 
@@ -229,6 +228,12 @@ class TableDaoPdo implements ICrudDao
         $stmt = null ;
 
     return $rowCount ; }
+
+    public function update(  $object , Array $diffValues )
+    {
+        return $this->updatePosit( $object , $diffValues ) ;
+    }
+
     public function delete( $object )
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( [ $id ] ) ;

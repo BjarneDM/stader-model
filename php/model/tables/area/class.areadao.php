@@ -6,7 +6,7 @@ abstract class AreaDao extends Setup
     protected $values    = [] ;
     protected $valuesOld = [] ;
     
-    public function __construct ( $dbType )
+    public function __construct ( string $dbType )
     {   // echo 'class AreaDao estends Setup __construct' . \PHP_EOL ;
 
         parent::__construct( $dbType ) ;

@@ -8,18 +8,18 @@ class Setup
 
     /*
      */
-    function __construct( $type )
+    function __construct( string $dbType )
     {   // echo 'class Setup __construct' . \PHP_EOL ;
 
         if ( ! self::$connect ) 
         {
             self::$iniSettings = parse_ini_file( dirname( __file__ , 3 ) . '/settings/connect.ini' , true ) ;
-            $dbMethod = self::$iniSettings[$type]['method'] ;
+            $dbMethod = self::$iniSettings[$dbType]['method'] ;
             switch ( $dbMethod )
             {
-                case "mysql"    : self::$connect = new ConnectPDO( $type ) ; break ;
-                case "pgsql"    : self::$connect = new ConnectPDO( $type ) ; break ;
-                case "sqlite"   : self::$connect = new ConnectPDO( $type ) ; break ;
+                case "mysql"    : self::$connect = new ConnectPDO( $dbType ) ; break ;
+                case "pgsql"    : self::$connect = new ConnectPDO( $dbType ) ; break ;
+                case "sqlite"   : self::$connect = new ConnectPDO( $dbType ) ; break ;
                 case "xml"      : self::$connect = new ConnectXML()         ; break ;
                 default: throw new \Exception() ;
             } // echo $this::$connect->getType() . PHP_EOL ;
