@@ -22,8 +22,22 @@ class MInstance
 //     {   // echo 'class MInstance __construct' . \PHP_EOL ;
 //         // print_r( $args ) ;
 //     }
-    
+
     public static function getObject( ...$args )
+    {
+        $className =  '\\stader\\model\\' . array_shift( $args ) ;
+        switch ( count( $args ) )
+        {
+            case 1 :
+                return new $className( $args[0] ) ;
+                break ;
+            case 2 :
+                return new $className( $args[0] , $args[1] ) ;
+                break ;
+        }
+    }
+
+    public static function getObjectOld( ...$args )
     { 
         $className = strtolower( array_shift( $args ) ) ;
         switch ( $className )

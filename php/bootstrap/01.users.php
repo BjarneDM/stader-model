@@ -8,7 +8,7 @@ echo \PHP_EOL . str_repeat( '-' , 50 ) . \PHP_EOL . '-> entering : ' . basename(
 
 create table users
 (
-    user_id     int auto_increment primary key , <- denne bliver genereret af DB
+    id          int auto_increment primary key , <- denne bliver genereret af DB
     name        varchar(255) not null ,          <- de resterende felter er krævede
     surname     varchar(255) default '' ,
     phone       varchar(255) not null ,

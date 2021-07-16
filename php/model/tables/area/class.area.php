@@ -12,8 +12,6 @@ create table if not exists areas
 
  */
 
-require_once( __dir__ . '/class.areadao.php' ) ;
-
 class Area extends AreaDao
 {
     public static $allowedKeys = [ 'name' , 'description' ] ;

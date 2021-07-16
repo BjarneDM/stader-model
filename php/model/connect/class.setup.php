@@ -1,7 +1,5 @@
 <?php namespace stader\model ;
 
-require_once( __dir__ . '/class.connectdbpdo.php' ) ;
-
 class Setup
 {
     /* private static $connect  = new IDbDriver() ; */
@@ -10,19 +8,19 @@ class Setup
 
     /*
      */
-    function __construct()
+    function __construct( $type )
     {   // echo 'class Setup __construct' . \PHP_EOL ;
 
         if ( ! self::$connect ) 
         {
             self::$iniSettings = parse_ini_file( dirname( __file__ , 3 ) . '/settings/connect.ini' , true ) ;
-            $dbMethod = self::$iniSettings['connection']['method'] ;
+            $dbMethod = self::$iniSettings[$type]['method'] ;
             switch ( $dbMethod )
             {
-                case "mysql"    : self::$connect = new ConnectDbPDO( $dbMethod ) ; break ;
-                case "pgsql"    : self::$connect = new ConnectDbPDO( $dbMethod ) ; break ;
-                case "sqlite"   : self::$connect = new ConnectDbPDO( $dbMethod ) ; break ;
-                case "xml"      : self::$connect = new ConnectDbXML()            ; break ;
+                case "mysql"    : self::$connect = new ConnectPDO( $type ) ; break ;
+                case "pgsql"    : self::$connect = new ConnectPDO( $type ) ; break ;
+                case "sqlite"   : self::$connect = new ConnectPDO( $type ) ; break ;
+                case "xml"      : self::$connect = new ConnectXML()         ; break ;
                 default: throw new \Exception() ;
             } // echo $this::$connect->getType() . PHP_EOL ;
         }   // print_r( ['after',self::$connect->getConn()] ) ;

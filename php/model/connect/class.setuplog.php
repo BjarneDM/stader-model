@@ -20,9 +20,9 @@ class SetupLog
             $dbMethod = self::$iniSettings['connection']['method'] ;
             switch ( $dbMethod )
             {
-                case "mysql"    : self::$connect = new ConnectLogPDO( $dbMethod ) ; break ;
-                case "pgsql"    : self::$connect = new ConnectLogPDO( $dbMethod ) ; break ;
-                case "sqlite"   : self::$connect = new ConnectLogPDO( $dbMethod ) ; break ;
+                case "mysql"    : self::$connect = new ConnectLogPDO( 'logs' ) ; break ;
+                case "pgsql"    : self::$connect = new ConnectLogPDO( 'logs' ) ; break ;
+                case "sqlite"   : self::$connect = new ConnectLogPDO( 'logs' ) ; break ;
                 case "xml"      : self::$connect = new ConnectLogXML()            ; break ;
                 default: throw new \Exception() ;
             } // echo $this::$connect::getType() . PHP_EOL ;

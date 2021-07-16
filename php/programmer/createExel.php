@@ -1,13 +1,13 @@
 <?php namespace stader\programmer ;
 
-   $include_paths[] =  '/Volumes/Bjarne/Sites/info/mathiesen/zbc/stader/php' ;
+   $include_paths[] =  dirname( __file__ , 3) . '/php' ;
 // $include_paths[] =  '/Volumes/Bjarne/Sites/info/mathiesen/zbc/cdn/php' ;
 // $include_paths[] =  '.' ;
 // $include_paths[] =  '/Volumes/Bjarne/Sites/info/mathiesen/cdn/_/php' ;
 set_include_path( implode( ':' , $include_paths ) ) ;
 
 // echo 'IncludePaths : ' . \PHP_EOL ;
-// print_r( explode( ':' , get_include_path() ) ) ;
+print_r( explode( ':' , get_include_path() ) ) ; exit ;
 
 $folder = 'csvFiles' ;
 if (    ( ! is_dir( $folder ) ) 

@@ -4,13 +4,13 @@
 
 create table if not exists areas
 (
-    area_id     int auto_increment primary key ,
+    id     int auto_increment primary key ,
     name        varchar(255) not null ,
     description text
 ) ;
 
  */
-require_once( dirname( __file__ , 2 ) . '/interfaces/interface.cruddao.php' ) ;
+require_once( dirname( __file__ , 3 ) . '/interfaces/interface.cruddao.php' ) ;
 
 class AreaDaoPdo implements ICrudDao
 {
@@ -49,10 +49,10 @@ class AreaDaoPdo implements ICrudDao
         if ( $stmt->rowCount() !== 1 )
             throw new \Exception('PDO : rowCount != 1') ;
 
-        $area['area_id'] = (int) $this->dbh->lastInsertId() ;
+        $area['id'] = (int) $this->dbh->lastInsertId() ;
 
         $stmt = null ;
-    return $area['area_id'] ; }
+    return $area['id'] ; }
 
     /*  læser en ny user ind baseret på en select statement
      *  brug :
@@ -82,11 +82,11 @@ class AreaDaoPdo implements ICrudDao
                 {
                     case 'integer' :
                         $sql  = 'select * from areas ' ;
-                        $sql .= 'where area_id = :area_id ' ;
+                        $sql .= 'where id = :id ' ;
 
                         $stmt = $this->dbh->prepare( $sql ) ;
 
-                        $stmt->bindParam( ':area_id' , $args[0] , \PDO::PARAM_INT ) ;
+                        $stmt->bindParam( ':id' , $args[0] , \PDO::PARAM_INT ) ;
 
                         $stmt->execute() ;
                         break ;
@@ -147,7 +147,7 @@ class AreaDaoPdo implements ICrudDao
         if ( $stmt->rowCount() === 1 )
         {
             $values = $stmt->fetch( \PDO::FETCH_ASSOC ) ;
-            $values['area_id'] = (int) $values['area_id'] ;
+            $values['id'] = (int) $values['id'] ;
             return $values ;
         } else { 
             throw new \Exception('PDO : rowCount != 1') ; }
@@ -162,28 +162,27 @@ class AreaDaoPdo implements ICrudDao
         for ( $i=0 ; $i<$stmt->rowCount() ; ++$i )
         {
             $columnMeta = $stmt->getColumnMeta( $i ) ;
-            if ( $columnMeta['name'] === 'area_id' )
+            if ( $columnMeta['name'] === 'id' )
             {
-                while ( $area_id = $stmt->fetchColumn( $i ) )
+                while ( $id = $stmt->fetchColumn( $i ) )
                 {
-                    $areaIds[] = (int) $area_id ;
+                    $areaIds[] = (int) $id ;
                 }
             break ; }
         }
     return $areaIds ; }
 
-    public function update( int $area_id , string $key , $value )
+    public function update( int $id , string $key , $value )
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        // print_r( [ $area_id , $key , $value ] ) ;
-
+        // print_r( [ $id , $key , $value ] ) ;
 
         $sql  = 'update areas ' ;
         $sql .= "set $key = :value " ;
-        $sql .= 'where area_id = :area_id ' ;
+        $sql .= 'where id = :id ' ;
 
         $stmt = $this->dbh->prepare( $sql ) ;
 
-        $stmt->bindParam( ':area_id' , $area_id , \PDO::PARAM_INT ) ;
+        $stmt->bindParam( ':id' , $id , \PDO::PARAM_INT ) ;
         $stmt->bindParam( ':value'   , $value   , \PDO::PARAM_STR ) ;
 
         $stmt->execute() ;
@@ -194,16 +193,16 @@ class AreaDaoPdo implements ICrudDao
 
     return $rowCount ; }
 
-    public function delete( int $area_id )
+    public function delete( int $id )
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( [ $id ] ) ;
 
         $sql  = 'delete from areas ' ;
-        $sql .= 'where area_id = :area_id' ;
+        $sql .= 'where id = :id' ;
 
         $stmt = $this->dbh->prepare(  $sql ) ;
 
-        $stmt->bindParam( ':area_id' , $area_id , \PDO::PARAM_INT ) ;
+        $stmt->bindParam( ':id' , $id , \PDO::PARAM_INT ) ;
         $stmt->execute() ;
         $rowCount = $stmt->rowCount();
         if ( $rowCount !== 1 )

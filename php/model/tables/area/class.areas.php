@@ -1,7 +1,5 @@
 <?php namespace stader\model ;
 
-require_once( __dir__ . '/class.areasdao.php' ) ;
-
 class Areas extends AreasDao
 {
     private $allowedKeys = [ 'name' , 'description' ] ;

@@ -1,8 +1,5 @@
 <?php namespace stader\model ;
 
-require_once( __dir__ . '/class.areadaopdo.php' ) ;
-require_once( dirname( __file__ , 2 ) . '/connect/class.setup.php' ) ;
-
 class AreaDao extends Setup
 {
     private $functions = null ;
@@ -11,7 +8,7 @@ class AreaDao extends Setup
     function __construct ()
     {   // echo 'class AreaDao estends Setup __construct' . \PHP_EOL ;
 
-        parent::__construct() ;
+        parent::__construct( 'data' ) ;
 
         switch ( self::$connect->getType() )
         {

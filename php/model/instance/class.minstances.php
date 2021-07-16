@@ -23,7 +23,21 @@ class MInstances
 //         // print_r( $args ) ;
 //     }
 
-    public static function getObjects( ...$args )
+    public static function getObject( ...$args )
+    {
+        $className =  '\\stader\\model\\' . array_shift( $args ) ;
+        switch ( count( $args ) )
+        {
+            case 0 :
+                return new $className() ;
+                break ;
+            case 2 :
+                return new $className( $args[0] , $args[1] ) ;
+                break ;
+        }
+    }
+
+    public static function getObjectsOld( ...$args )
     { 
         $className = strtolower( array_shift( $args ) ) ;
         switch ( $className )

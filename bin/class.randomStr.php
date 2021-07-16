@@ -1,5 +1,6 @@
 #!/opt/local/bin/php
 <?php namespace functions ;
+error_reporting(0) ;
 // print_r( [ $argc , $argv ] ) ;
 
 if ( in_array( $argv[1], [ '-h' , '--help' ] ) )
@@ -13,7 +14,7 @@ if ( in_array( $argv[1], [ '-h' , '--help' ] ) )
 HELP;
 exit() ; }
 
-set_include_path( '/Volumes/Bjarne/Sites/info/mathiesen/zbc/stader/php' ) ;
+set_include_path( '/Volumes/BjarneZFS/Bjarne/Sites/info/mathiesen/zbc/stader/php' ) ;
 require_once( dirname( __file__ , 2 ) . '/php/model/class.randomstr.php' ) ;
 use \stader\model\{RandomStr} ;
 
