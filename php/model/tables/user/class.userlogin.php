@@ -1,14 +1,11 @@
 <?php namespace stader\model ;
 
-/*
-
- */
-
-require_once( __dir__ . '/class.user.php' ) ;
-
 class UserLogin extends User
 {
-    private $allowedKeys = [ 'username' , 'passwd' ] ;
+    private $allowedKeys = 
+        [ 'username' => 'varchar' , 
+          'passwd'   => 'varchar' 
+        ] ;
 
     function __construct ( ...$args )
     {   // echo 'class UserLogin extends User __construct' . \PHP_EOL ;

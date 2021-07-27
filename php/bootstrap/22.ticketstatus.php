@@ -9,13 +9,13 @@ require_once( dirname( __file__ , 2 ) . '/model/class.classloader.php' ) ;
 
 create table if not exists ticket_status
 (
-    ticket_status_id    int auto_increment primary key,
-    name                varchar(255) ,
+    id              int auto_increment primary key,
+    name            varchar(255) ,
         constraint unique (name) ,
-    default_colour      varchar(255) ,
-    description         text ,
-    type_byte_id        int ,
-        foreign key (type_byte_id) references type_byte(type_byte_id)
+    default_colour  varchar(255) ,
+    description     text ,
+    type_byte_id    int ,
+        foreign key (type_byte_id) references type_byte(id)
         on update cascade
         on delete restrict
 ) ;
@@ -68,19 +68,17 @@ $ticketstatuss =
  *  main
  */
 
-// $thisTypeBytes = new TypeBytes( $setup::$connect ) ;
-// print_r( $thisTypeBytes->getTypeBytes() ) ;
-
+( new TicketStatuses() )->deleteAll() ;
 
 foreach ( $ticketstatuss as $key => $ticketstatus )
 {
     $thisTypeByte = new TypeByte( 'name' , $ticketstatus['type_byte_id']  ) ;
-    $ticketstatus['type_byte_id'] = $thisTypeByte->getData()['type_byte_id'] ;
+    $ticketstatus['type_byte_id'] = $thisTypeByte->getData()['id'] ;
     $thisTicketStatus = new TicketStatus( $ticketstatus ) ;
 }   unset( $key , $ticketstatus ) ;
 
 $allTicketStatuses = new TicketStatuses() ;
-foreach ( $allTicketStatuses->getTicketStatuses() as $ticketstatus )
+foreach ( $allTicketStatuses->getAll() as $ticketstatus )
     echo json_encode( $ticketstatus->getData() , JSON_UNESCAPED_UNICODE ) . \PHP_EOL ;
     unset( $ticketstatus , $allTicketStatuses ) ;
 

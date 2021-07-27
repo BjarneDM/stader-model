@@ -2,70 +2,42 @@
 
 /*
 
-create table if not exists user_beredskab
+create table if not exists beredskablog
 (
-    user_beredskab_id   int auto_increment primary key ,
-    user_id             int ,
-        foreign key (user_id) references userscrypt(user_id)
-        on update cascade 
-        on delete cascade ,
+    id                  int auto_increment primary key ,
     beredskab_id        int ,
-        foreign key (group_id) references beredskab(beredskab_id)
-        on update cascade 
-        on delete cascade
+        index (beredskab_id) ,
+    header              varchar(255) ,
+        index (header) ,
+    log_timestamp       datetime
+        default current_timestamp ,
+        index (log_timestamp) ,
+    old_value           text default null ,
+    new_value           text default null
 ) ;
 
  */
 
 require_once( __dir__ . '/class.beredskablogdao.php' ) ;
 
-class BeredskabLog extends BeredskabLogDao
+class BeredskabLog extends ObjectDao
 {
-    private $allowedKeys = [ 'beredskab_id' , 'header' , 'old_value' , 'new_value' ] ;
+    public static $allowedKeys = 
+        [ 'beredskab_id' => 'int'     , 
+          'header'       => 'varchar' , 
+          'old_value'    => 'text'    , 
+          'new_value'    => 'text'
+        ] ;
+    protected     $class       = '\\stader\\model\\BeredskabLog' ;
 
     function __construct ( ...$args )
     {   // echo 'class BeredskabLog extends BeredskabLogDao __construct' . \PHP_EOL ;
         // print_r( $args ) ;
 
-        parent::__construct() ;
+        parent::__construct( 'logs' , self::$allowedKeys , $args ) ;
 
-        /*
-         *  gettype( $args[0] ) === 'array'
-         *      opret en beredskab_log på basis af værdierne i $args[0]
-         *      $testBeredskabLog = new BeredskabLog( $newBeredskabLog )
-         */
-        switch ( count( $args ) )
-        {
-            case 1 :
-                switch ( strtolower( gettype( $args[0] ) ) )
-                {
-                    case 'integer' :
-                        $this->read( $args[0] ) ;
-                        break ;
-                    case 'array' :
-                        /*
-                         *  count( $args[0] ) === 4 : ny beredskab_log, der skal oprettes
-                         */
-                        switch ( count( $args[0] ) )
-                        {
-                            case 4 :
-                                $this->check( $args[0] ) ;
-                                $this->create( $args[0] ) ;
-                                break ;
-                            default :
-                                throw new \Exception( count( $args[0] ) . " : forkert antal parametre [4]" ) ;
-                                break ;
-                        }
-                        break ;
-                    default :
-                        throw new \Exception( gettype( $args[0] ) . " : forkert input type [integer,array]" ) ;
-                        break ;
-                }
-                break ;
-            default :
-                throw new \Exception( count( $args ) . " : forkert antal parametre [1]" ) ;
-                break ;
-        }
+        $this->setupLogs( $args ) ;
+
     }
 
     private function check( Array &$toCheck )
@@ -74,8 +46,8 @@ class BeredskabLog extends BeredskabLogDao
 
         foreach ( array_keys( $toCheck ) as $key )
         {
-            if ( ! in_array( $key , $this->allowedKeys ) )
-                throw new \Exception( "'{$key}' doesn't exist in [ " . implode( ' , ' , $this->allowedKeys ) . " ]" ) ;
+            if ( ! in_array( $key , self::$allowedKeys ) )
+                throw new \Exception( "'{$key}' doesn't exist in [ " . implode( ' , ' , self::$allowedKeys ) . " ]" ) ;
 
             switch ( $key )
             {

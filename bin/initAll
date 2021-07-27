@@ -3,5 +3,5 @@
 cd ~/Sites/info/mathiesen/zbc/stader
 
    mysql -u <user> -p'password' < sql/setuplogs.mysql.sql \
-&& mysql -u <user> -p'password' < sql/setupstader.mysql.sql \
+&& mysql -u <user> -p'password' < sql/setupdata.mysql.sql \
 && php php/bootstrap/runall.classloader.php 

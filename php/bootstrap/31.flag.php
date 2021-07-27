@@ -3,9 +3,28 @@
 echo '<pre>' ;
 echo \PHP_EOL . str_repeat( '-' , 50 ) . \PHP_EOL . '-> entering : ' . basename( __file__ ) . \PHP_EOL ;
 
+/*
+
+create table if not exists flag
+(
+    id          int auto_increment primary key ,
+    text        varchar(255) ,
+        constraint unique (text) ,     
+    unicode     char(6) 
+) ;
+
+ */
+
+/*
+ *  setup
+ */
 
 require_once( dirname( __file__ , 2 ) . '/model/class.classloader.php' ) ;
 use \stader\model\{Flag,Flags} ;
+
+/*
+ *  data
+ */
 
 // https://www.php.net/manual/en/migration70.new-features.php#migration70.new-features.unicode-codepoint-escape-syntax
 // https://www.utf8icons.com/
@@ -27,15 +46,31 @@ $symbols['pil'   ] =  "\u{2933}"  ; // https://www.utf8icons.com/character/10547
 $symbols['øl'    ] =  "\u{1f37a}" ; // https://www.utf8icons.com/character/127866/beer-mug
 // $symbols[] = "\u{}" ;
 
+/*
+ *  main
+ */
+
+( new Flags() )->deleteAll() ;
+
 foreach ( $symbols as $txt => $symbol )
 {
     $thisFlag = new Flag( [ 'text' => $txt , 'unicode' => $symbol ] ) ;
 }   unset( $txt , $symbol ) ;
 
 $alleFlag = new Flags() ;
-foreach ( $alleFlag->getFlags() as $flag )
+foreach ( $alleFlag->getAll() as $flag )
     echo json_encode( $flag->getData() , JSON_UNESCAPED_UNICODE ) . \PHP_EOL ;
-    unset( $flag , $alleFlag ) ;
+    unset( $flag ) ;
+
+echo \PHP_EOL . str_repeat( '-' , 50 ) . \PHP_EOL  . \PHP_EOL ;
+
+if ( $alleFlag->count() > 0 )
+{
+    $alleFlag->reset() ;
+    do {
+        echo json_encode( $alleFlag->current()->getData() , JSON_UNESCAPED_UNICODE ) . \PHP_EOL ;
+    }   while ( $alleFlag->next() ) ;
+}
 
 echo '</pre>' ;
 ?>

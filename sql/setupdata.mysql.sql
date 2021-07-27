@@ -13,20 +13,6 @@ use staderdata ;
 # create tables
 #
 
-# drop table if exists user ;
-# create table if not exists user
-# (
-#     id          int auto_increment primary key ,
-#     name        varchar(255) not null ,
-#     surname     varchar(255) not null ,
-#     phone       varchar(255) not null ,
-#     username    varchar(255) not null ,
-#         constraint unique (username) ,
-#     passwd      varchar(255) not null ,
-#     email       varchar(255) not null ,
-#         constraint unique (email)
-# ) engine = memory ;
-
 # denneher er farlig
 # set foreign_key_checks = 0 ;
 
@@ -44,9 +30,24 @@ drop table if exists area ;
 drop table if exists placeowner ;
 drop table if exists ticketstatus ;
 drop table if exists typebyte ;
+drop table if exists user ;
 drop table if exists userscrypt ;
 drop table if exists flag ;
 
+
+create table if not exists user
+(
+    id          int auto_increment primary key ,
+    name        varchar(255) not null ,
+    surname     varchar(255) not null ,
+    phone       varchar(255) not null ,
+    username    varchar(255) not null ,
+        constraint unique (username) ,
+    passwd      varchar(255) not null ,
+    email       varchar(255) not null ,
+        constraint unique (email)
+) ;
+# ) engine = memory ;
 
 # create tabellermne i den rigtige reækkefølge
 create table if not exists usercrypt
@@ -111,7 +112,7 @@ create table if not exists place
     place_owner_id  int default null ,
         foreign key (place_owner_id) references placeowner(id)
         on update cascade 
-        on delete restrict ,
+        on delete set null ,
     area_id         int ,
         foreign key (area_id) references area(id)
         on update cascade 
@@ -137,7 +138,7 @@ create table if not exists ticket
         on update cascade 
         on delete restrict ,
     assigned_user_id    int default null ,
-        foreign key (assigned_user_id) references usercrypt(id)
+        foreign key (assigned_user_id) references user(id)
         on update cascade 
         on delete restrict ,
     creationtime        datetime
@@ -160,7 +161,7 @@ create table if not exists usergroup
 (
     id                  int auto_increment primary key ,
     user_id             int ,
-        foreign key (user_id) references usercrypt(id)
+        foreign key (user_id) references user(id)
         on update cascade 
         on delete cascade ,
     group_id            int ,
@@ -188,7 +189,7 @@ create table if not exists beredskab
     message         text not null ,
     header          text ,
     created_by_id   int not null ,
-        foreign key (created_by_id) references usercrypt(id)
+        foreign key (created_by_id) references user(id)
         on update cascade 
         on delete restrict ,
     active          boolean default true ,
@@ -202,7 +203,7 @@ create table if not exists userberedskab
 (
     id              int auto_increment primary key ,
     user_id         int ,
-        foreign key (user_id) references usercrypt(id)
+        foreign key (user_id) references user(id)
         on update cascade 
         on delete cascade ,
     beredskab_id    int ,
@@ -225,7 +226,7 @@ create table if not exists userrole
 (
     id          int auto_increment primary key ,
     user_id     int ,
-        foreign key (user_id) references usercrypt(id)
+        foreign key (user_id) references user(id)
         on update cascade 
         on delete cascade ,
     role_id     int ,
@@ -233,7 +234,6 @@ create table if not exists userrole
         on update cascade 
         on delete cascade
 ) ;
-
 
 create table if not exists flag
 (

@@ -8,13 +8,18 @@ echo \PHP_EOL . str_repeat( '-' , 50 ) . \PHP_EOL . '-> entering : ' . basename(
 
 create table if not exists beredskab
 (
-    beredskab_id    int auto_increment primary key ,
+    id              int auto_increment primary key ,
     message         text not null ,
-    note            text ,
-    user_id         int not null ,
-        foreign key (user_id) references userscrypt(user_id)
+    header          text ,
+    created_by_id   int not null ,
+        foreign key (created_by_id) references user(id)
         on update cascade 
         on delete restrict ,
+    active          boolean default true ,
+    creationtime    datetime
+        default current_timestamp ,
+    colour          varchar(16) default 'red' ,
+    flag            varchar(255) default null
 ) ;
 
  */
@@ -43,15 +48,17 @@ $beredskaber =
  *   main
  */
 
+( new Beredskabs() )->deleteAll() ;
+
 foreach ( $beredskaber as $beredskab )
 {
     $user = new User( 'username' , $beredskab['created_by_id'] ) ;
-    $beredskab['created_by_id'] = $user->getData()['user_id'] ;
+    $beredskab['created_by_id'] = $user->getData()['id'] ;
     $emergency = new Beredskab( $beredskab ) ;
 } unset( $beredskab ) ;
 
 $allBeredskabs = new Beredskabs() ;
-foreach ( $allBeredskabs->getBeredskabs() as $alarm ) 
+foreach ( $allBeredskabs->getAll() as $alarm ) 
     echo json_encode( $alarm->getData() , JSON_UNESCAPED_UNICODE ) . \PHP_EOL ;
     unset( $alarm ) ;
 

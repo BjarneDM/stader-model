@@ -5,16 +5,16 @@
  */
 use PHPUnit\Framework\TestCase;
 
-set_include_path( '/Volumes/Bjarne/Sites/info/mathiesen/zbc/stader/php' ) ;
+set_include_path(  ) ;
 
 /*
 
-create table user_groups
+create table groups
 (
-    group_id    int auto_increment primary key ,
-    name        varchar(255) not null ,
+    id      int auto_increment primary key ,
+    name    varchar(255) not null ,
         constraint unique (name) ,
-    description varchar(255) 
+    description varchar(255)
 ) ;
 
  */

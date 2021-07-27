@@ -7,9 +7,9 @@ echo \PHP_EOL . str_repeat( '-' , 50 ) . \PHP_EOL . '-> entering : ' . basename(
 
 /*
 
-create table user_groups
+create table if not exists ugroup
 (
-    group_id    int auto_increment primary key ,
+    id          int auto_increment primary key ,
     name        varchar(255) not null ,
         constraint unique (name) ,
     description varchar(255) 
@@ -23,7 +23,7 @@ create table user_groups
  */
 
 require_once( dirname( __file__ , 2 ) . '/model/class.classloader.php' ) ;
-use \stader\model\{Group,Groups} ;
+use \stader\model\{UGroup,UGroups} ;
 
 /*
  *  data
@@ -49,15 +49,27 @@ $groups =
  *  main
  */
 
+( new UGroups() )->deleteAll() ;
+
 foreach ( $groups as $key => $group )
 {
-    $activeGroup = new Group( $group ) ;
+    $activeGroup = new UGroup( $group ) ;
 }   unset( $key , $group ) ;
 
-$allGroups = new Groups() ;
-foreach ( $allGroups->getGroups() as $group )
+$allGroups = new UGroups() ;
+foreach ( $allGroups->getAll() as $group )
     echo json_encode( $group->getData() , JSON_UNESCAPED_UNICODE ) . \PHP_EOL ;
-    unset( $group , $allGroups ) ;
+    unset( $group ) ;
+
+echo \PHP_EOL . str_repeat( '-' , 50 ) . \PHP_EOL  . \PHP_EOL ;
+
+if ( $allGroups->count() > 0 )
+{
+    $allGroups->reset() ;
+    do {
+        echo json_encode( $allGroups->current()->getData() , JSON_UNESCAPED_UNICODE ) . \PHP_EOL ;
+    }   while ( $allGroups->next() ) ;
+}
 
 echo '</pre>' ;
 ?>

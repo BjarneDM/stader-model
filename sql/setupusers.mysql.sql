@@ -28,7 +28,18 @@ alter  user 'staderlogs'@'localhost' identified by '[i8Z~iwGdW%Vq}p@E3m579+#' ;
 revoke all privileges, grant option
     from 'staderlogs'@'localhost'
 ;
-grant all
+grant insert
     on table staderlogs.*
     to 'staderlogs'@'localhost'
+;
+
+create user 'adminlogs'@'localhost' identified with mysql_native_password ;
+alter  user 'adminlogs'@'localhost' identified by '/{lr:I^VoTeJ[Nx/!<N&ANx+' ;
+
+revoke all privileges, grant option
+    from 'adminlogs'@'localhost'
+;
+grant all
+    on table staderlogs.*
+    to 'adminlogs'@'localhost'
 ;

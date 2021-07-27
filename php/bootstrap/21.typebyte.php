@@ -40,13 +40,15 @@ $typebytes =
  *  main
  */
 
+( new TypeBytes() )->deleteAll() ;
+
 foreach ( $typebytes as $key => $typebyte )
 {
     $thisTypeByte = new TypeByte( $typebyte ) ;
 }   unset( $key , $typebyte ) ;
 
 $allTypeBytes = new TypeBytes() ;
-foreach ( $allTypeBytes->getTypeBytes() as $typebyte )
+foreach ( $allTypeBytes->getAll() as $typebyte )
     echo json_encode( $typebyte->getData() , JSON_UNESCAPED_UNICODE ) . \PHP_EOL ;
     unset( $typebyte , $allTypeBytes ) ;
 

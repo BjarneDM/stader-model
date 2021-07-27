@@ -4,7 +4,7 @@
 
 create table users
 (
-    user_id     int auto_increment primary key , <- denne bliver genereret af DB
+    id          int auto_increment primary key , <- denne bliver genereret af DB
     name        varchar(255) not null ,          <- de resterende felter er krævede
     surname     varchar(255) default '' ,
     phone       varchar(255) not null ,
@@ -17,91 +17,26 @@ create table users
 
  */
 
-require_once( __dir__ . '/class.userdao.php' ) ;
-
-class User extends UserDao
+class User extends ObjectDao
 {
-    public static $allowedKeys = [ 'name' , 'surname' , 'phone' , 'username' , 'passwd' , 'email' ] ;
+    public static $allowedKeys = 
+        [ 'name'     => 'varchar' , 
+          'surname'  => 'varchar' , 
+          'phone'    => 'varchar' , 
+          'username' => 'varchar' , 
+          'passwd'   => 'varchar' , 
+          'email'    => 'varchar' 
+        ] ;
+    protected     $class       = '\\stader\\model\\User' ;
 
     function __construct ( ...$args )
-    {   // echo 'class User extends UserDao __construct' . \PHP_EOL ;
+    {   // echo 'class User extends ObjectDao __construct' . \PHP_EOL ;
         // print_r( $args ) ;
 
-        parent::__construct() ;
+        parent::__construct( 'data' , self::$allowedKeys , $args ) ;
 
-        /*
-         *  gettype( $args[0] ) === 'integer' 
-         *      henbt en User på basis af et user_id
-         *      $testUser = new User( user_id ) ;
-         *  gettype( $args[0] ) === 'array'
-         *      opret en user på basis af værdierne i $args[0]
-         *      $testUser = new User( $newUser )
-         *  gettype( $args[0] ) === ['string','array'] , gettype( $args[1] ) === ['string','array']
-         *      hent en user på basis af værdierne i $args[0],$args[1]
-         *      $testUser = new User( $keys , $values )
-         */
-        switch ( count( $args ) )
-        {
-            case 1 :
-                switch ( strtolower( gettype( $args[0] ) ) )
-                {
-                    case 'integer' :
-                        $this->read( $args[0] ) ;
-                        break ;
-                    case 'array' :
-                        /*
-                         *  count( $args[0] ) === 6 : ny user, der skal oprettes
-                         */
-                        switch ( count( $args[0] ) )
-                        {
-                            case 6 :
-                                $this->check( $args[0] ) ;
-                                $this->values['user_id'] = $this->create( $args[0] ) ;
-                                break ;
-                            default :
-                                throw new \Exception( count( $args[0] ) . " : forkert antal parametre [6]" ) ;
-                                break ;
-                        }
+        $this->setupData( $args ) ;
 
-                       foreach ( $args[0] as $key => $value ) 
-                        { 
-                            $this->values[$key] = $value ;
-                        }   unset( $key , $value ) ;
-
-                        break ;
-                    default :
-                        throw new \Exception( gettype( $args[0] ) . " : forkert input type [integer,array]" ) ;
-                        break ;
-                }
-                break ;
-            case 2 :
-                switch ( strtolower( gettype( $args[0] ) ) )
-                {
-                    case 'string' :
-                        if ( strtolower( gettype( $args[1] ) ) !== 'string' )
-                            throw new \Exception( gettype( $args[0] ) . ' & ' . gettype( $args[1] ) . ' er ikke begge "string"' ) ;
-                         if ( ! in_array( $args[0] , self::$allowedKeys ) )
-                            throw new \Exception( "'{$key}' doesn't exist in [ " . implode( ' , ' , self::$allowedKeys ) . " ]" ) ;
-                        break ;
-                    case 'array' :
-                        if ( count( $args[0] ) !== count( $args[1] ) )
-                            throw new \Exception( 'count() for $args[0] & $args[1] er forskellige' ) ;
-                        foreach ( $args[0] as $key )
-                        {
-                            if ( ! in_array( $key , self::$allowedKeys ) )
-                                throw new \Exception( "'{$key}' doesn't exist in [ " . implode( ' , ' , self::$allowedKeys ) . " ]" ) ;
-                        }
-                        break ;
-                    default :
-                        throw new \Exception( gettype( $args[0] ) . " : forkert input type [string,array]" ) ;
-                        break ;
-                }
-                $this->read( $args[0] , $args[1] ) ;
-                break ;
-            default :
-                throw new \Exception( count( $args ) . " : forkert antal parametre [1,2]" ) ;
-                break ;
-        }
     }
 
     private function pwdHash( string $password )
@@ -118,15 +53,14 @@ class User extends UserDao
             ) ;
     }
 
-    private function check( Array &$toCheck )
+    protected function check( Array &$toCheck )
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $toCheck ) ;
 
+        parent::check( $toCheck ) ;
+
         foreach ( array_keys( $toCheck ) as $key )
         {
-            if ( ! in_array( $key , self::$allowedKeys ) )
-                throw new \Exception( "'{$key}' doesn't exist in [ " . implode( ' , ' , self::$allowedKeys ) . " ]" ) ;
-
             switch ( $key )
             {
                 case 'passwd' :
@@ -139,26 +73,6 @@ class User extends UserDao
                     }
                     break ;
             }
-        }
-    }
-
-    public function setValues( $values )
-    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        // print_r( $values ) ;
-
-        switch ( strtolower( gettype( $values ) ) )
-        {
-            case 'array' :
-                $this->check( $values ) ;
-                foreach ( $values as $key => $value )
-                {
-                    $this->values[ $key ] = $value ;
-                    $this->update( $key , $value ) ;
-                }
-                break ;
-            default :
-                throw new \Exception( gettype( $values ) . " : forkert input type [array]" ) ;
-                break ;
         }
     }
 

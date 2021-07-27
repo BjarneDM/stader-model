@@ -6,15 +6,15 @@ echo \PHP_EOL . str_repeat( '-' , 50 ) . \PHP_EOL . '-> entering : ' . basename(
 
 /*
 
-create table if not exists user_beredskab
+create table if not exists userrole
 (
-    user_beredskab_id   int auto_increment primary key ,
-    user_id             int ,
-        foreign key (user_id) references userscrypt(user_id)
+    id          int auto_increment primary key ,
+    user_id     int ,
+        foreign key (user_id) references user(id)
         on update cascade 
         on delete cascade ,
-    beredskab_id        int ,
-        foreign key (group_id) references beredskab(beredskab_id)
+    role_id     int ,
+        foreign key (role_id) references urole(id)
         on update cascade 
         on delete cascade
 ) ;
@@ -26,7 +26,7 @@ create table if not exists user_beredskab
  */
 
 require_once( dirname( __file__ , 2 ) . '/model/class.classloader.php' ) ;
-use \stader\model\{User,Users,Role,Roles,UserRole,UsersRoles} ;
+use \stader\model\{User,Users,URole,URoles,UserRole,UsersRoles} ;
 
 /*
  *  data
@@ -36,9 +36,10 @@ use \stader\model\{User,Users,Role,Roles,UserRole,UsersRoles} ;
 /*
  *   main
  */
+( new UsersRoles() )->deleteAll() ;
 
 $brugere = new Users() ;
-$roller  = new Roles() ;
+$roller  = new URoles() ;
 
 $specUsers =
 [
@@ -46,12 +47,12 @@ $specUsers =
     'admin' => [ 'lani' , 'last' ] 
 ] ;
 
-foreach ( $brugere->getUsers() as $user )
+foreach ( $brugere->getAll() as $user )
 {
     $priv = new UserRole
     (
         [
-            'user_id'   => $user->getData()['user_id'] ,
+            'user_id'   => $user->getData()['id'] ,
             'role'      => 'user'
         ]
     ) ;
@@ -72,13 +73,13 @@ foreach ( $specUsers as $level => $users )
     }   unset( $username ) ;
 }   unset( $users , $level ) ;
 
-foreach ( $brugere->getUsers() as $user )
+foreach ( $brugere->getAll() as $user )
 {
-        $roller = new UsersRoles( 'user_id' , $user->getData()['user_id'] ) ;
+        $roller = new UsersRoles( 'user_id' , $user->getData()['id'] ) ;
         $rollerne = [] ;
-        foreach ( $roller->getUsersRoles() as $rolle ) 
+        foreach ( $roller->getAll() as $rolle ) 
         {
-            $rollerne[] = ( new Role( $rolle->getData()['role_id'] ) )->getData()['role'] ;
+            $rollerne[] = ( new URole( $rolle->getData()['role_id'] ) )->getData()['role'] ;
         }   unset( $rolle ) ;
         echo $user->getData()['username'] . ' : [ ' . implode( ' , ' ,  $rollerne )  . ' ]' . \PHP_EOL ;
 }   unset( $user ) ;

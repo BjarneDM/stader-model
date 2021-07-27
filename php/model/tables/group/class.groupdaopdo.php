@@ -13,7 +13,7 @@ create table user_groups
  */
 require_once( dirname( __file__ , 2 ) . '/interfaces/interface.cruddao.php' ) ;
 
-class GroupDaoPdo implements ICrudDao
+class UGroupDaoPdo implements ICrudDao
 {
 
     private $dbh = null ;

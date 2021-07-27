@@ -9,12 +9,12 @@ echo \PHP_EOL . str_repeat( '-' , 50 ) . \PHP_EOL . '-> entering : ' . basename(
 
 create table tickets
 (
-    ticket_id           int auto_increment primary key ,
+    id                  int auto_increment primary key ,
     header              varchar(255) not null ,
     description         text not null ,
     ticket_status_id    int not null ,
     assigned_user_id    int ,
-        foreign key (assigned_user_id) references usersCrypt(user_id)
+        foreign key (assigned_user_id) references usersCrypt(id)
         on update cascade 
         on delete restrict ,
     active              boolean
@@ -52,8 +52,7 @@ $tickets =
 // $teknikere = [ 'casp7654'  , 'LarsL' , 'kriskris' , 'MichaleM' , 'toke1254' , 'JanJ' , 'skp-IT' ] ;
 
 $teknikere = [] ;
-$users = new Users() ;
-foreach ( $users->getUsers() as $user ) 
+foreach ( ( new Users() )->getAll() as $user ) 
     $teknikere[] = $user->getData()['username'] ;
 unset( $teknikere[0] ) ;
 $teknikere[] = null ;
@@ -63,14 +62,14 @@ foreach ( $tickets as $key => $ticket )
 print_r( $ticket ) ;
     preg_match('/(.)(.*)/', $ticket['assigned_place_id'] , $where ) ;
     $area  = new Area( 'name' , $where[1] ) ;
-    $place = new Place( ['place_nr','area_id'] , [$where[2],$area->getData()['area_id']] ) ;
-    $tickets[ $key ]['assigned_place_id'] = $place->getData()['place_id'] ;
+    $place = new Place( ['place_nr','area_id'] , [$where[2],$area->getData()['id']] ) ;
+    $tickets[ $key ]['assigned_place_id'] = $place->getData()['id'] ;
     $ticketStatus = new TicketStatus( 'name' , $ticket['ticket_status_id'] ) ;
-    $tickets[ $key ]['ticket_status_id'] = $ticketStatus->getData()['ticket_status_id'] ;
+    $tickets[ $key ]['ticket_status_id'] = $ticketStatus->getData()['id'] ;
     if ( ! is_null( $teknikere[ $key % count( $teknikere ) ] ) )
     {
         $user = new User( 'username' , $teknikere[ $key % count( $teknikere ) ] ) ;
-        $tickets[ $key ]['assigned_user_id'] = $user->getData()['user_id'] ;
+        $tickets[ $key ]['assigned_user_id'] = $user->getData()['id'] ;
     }
     $tickets[ $key ]['description'] = 'Excepteur sint occaecat cupidatat non proident' ;
 }   unset ( $key , $ticket ) ;
@@ -80,6 +79,7 @@ print_r( $ticket ) ;
 /*
  *  main
  */
+( new Tickets() )->deleteAll() ;
 
 foreach ( $tickets as $key => $ticket )
 {
@@ -87,7 +87,7 @@ foreach ( $tickets as $key => $ticket )
 sleep( 2 ) ; }
 
 $allTickets = new Tickets() ;
-foreach ( $allTickets->getTickets() as $ticket )
+foreach ( $allTickets->getAll() as $ticket )
     echo json_encode( $ticket->getData() , JSON_UNESCAPED_UNICODE ) . \PHP_EOL ;
     unset( $ticket , $allTickets ) ;
 

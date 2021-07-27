@@ -1,8 +1,5 @@
 <?php namespace stader\model ;
 
-require_once( __dir__ . '/class.usercryptdaopdo.php' ) ;
-require_once( dirname( __file__ , 2 ) . '/connect/class.setup.php' ) ;
-
 class UserCryptDao extends Setup
 {
     private $functions = null ;
@@ -40,13 +37,13 @@ class UserCryptDao extends Setup
 
     public function update( string $key , $value ) 
         {
-            list ( $rowCount , $values ) = $this->functions->update( $this->values['user_id'] , $key , $value ) ;
+            list ( $rowCount , $values ) = $this->functions->update( $this->values['id'] , $key , $value ) ;
             $this->values = $values ;
         return $rowCount  ; }
 
     public function delete() 
         {
-            $rowCount = $this->functions->delete( $this->values['user_id'] ) ;
+            $rowCount = $this->functions->delete( $this->values['id'] ) ;
             $this->values = null ;
         return $rowCount ; }
 

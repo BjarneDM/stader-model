@@ -26,7 +26,7 @@ create table if not exists user_beredskab
  */
 
 require_once( dirname( __file__ , 2 ) . '/model/class.classloader.php' ) ;
-use \stader\model\{User,Users,Beredskabs,Beredskab,UserBeredskab,UsersBeredskabs} ;
+use \stader\model\{User,Users,Beredskab,Beredskabs,UserBeredskab,UsersBeredskabs} ;
 
 /*
  *  data
@@ -37,19 +37,21 @@ use \stader\model\{User,Users,Beredskabs,Beredskab,UserBeredskab,UsersBeredskabs
  *   main
  */
 
+( new UsersBeredskabs() )->deleteAll() ;
+
 $brugere = new Users() ;
 $alarmer = new Beredskabs() ;
 
-foreach ( $brugere->getUsers() as $user )
+foreach ( $brugere->getAll() as $user )
 {
-    foreach ( $alarmer->getBeredskabs() as $alarm )
+    foreach ( $alarmer->getAll() as $alarm )
     {
         $harSet = 
             new UserBeredskab
             ( 
                 [
-                    'user_id'       => $user->getData()['user_id'] ,
-                    'beredskab_id'  => $alarm->getData()['beredskab_id']
+                    'user_id'       => $user->getData()['id'] ,
+                    'beredskab_id'  => $alarm->getData()['id']
                 ]
             ) ;
 //         print_r( $harSet->getData() ) ;
@@ -57,7 +59,7 @@ foreach ( $brugere->getUsers() as $user )
 }   unset( $user ) ;
 
 $hvemHarSet = new UsersBeredskabs() ;
-foreach ( $hvemHarSet->getUsersBeredskabs() as $harSet )
+foreach ( $hvemHarSet->getAll() as $harSet )
 {
     $user  = new User( $harSet->getData()['user_id'] ) ;
     $alarm = new Beredskab( $harSet->getData()['beredskab_id'] ) ;

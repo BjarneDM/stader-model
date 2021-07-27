@@ -1,9 +1,6 @@
 <?php namespace stader\model ;
 
-require_once( __dir__ . '/class.groupdaopdo.php' ) ;
-require_once( dirname( __file__ , 2 ) . '/connect/class.setup.php' ) ;
-
-class GroupDao extends Setup
+class UGroupDao extends Setup
 {
     private $functions = null ;
     protected $values = [] ;

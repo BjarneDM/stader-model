@@ -17,7 +17,10 @@ name er primary key da getAll() ønskes sorteret efter denne
 
 class Area extends ObjectDao
 {
-    public static $allowedKeys = [ 'name' => 'varchar' , 'description' => 'text' ] ;
+    public static $allowedKeys = 
+        [ 'name'        => 'varchar' , 
+          'description' => 'text' 
+        ] ;
     protected     $class       = '\\stader\\model\\Area' ;
 
     public function __construct ( ...$args )
@@ -25,6 +28,8 @@ class Area extends ObjectDao
         // print_r( $args ) ;
 
         parent::__construct( 'data' , self::$allowedKeys , $args ) ;
+
+        $this->setupData( $args ) ;
 
     }
 

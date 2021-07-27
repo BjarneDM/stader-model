@@ -4,135 +4,82 @@
 
 create table if not exists users_roles
 (
-    users_roles_id     int auto_increment primary key ,
-    user_id             int ,
-        foreign key (user_id) references userscrypt(user_id)
+    id          int auto_increment primary key ,
+    user_id     int ,
+        foreign key (user_id) references userscrypt(id)
         on update cascade 
         on delete cascade ,
-    role_id            int ,
-        foreign key (role_id) references roles(role_id)
+    role_id     int ,
+        foreign key (role_id) references roles(id)
         on update cascade 
         on delete cascade
 ) ;
 
  */
 
-require_once( __dir__ . '/class.userroledao.php' ) ;
-
-class UserRole extends UserRoleDao
+class UserRole extends ObjectDao
 {
-    private $allowedKeys = [ 'user_id' , 'username' , 'email' , 'role_id' , 'role' ] ;
+    public static $allowedKeys = 
+        [ 'user_id' => 'int' , 
+          'role_id' => 'int' 
+        ] ;
+    protected     $class       = '\\stader\\model\\UserRole' ;
 
     function __construct ( ...$args )
-    {   // echo 'class UserRoleRole extends UserRoleRoleDao' . \PHP_EOL ;
+    {   // echo 'class UserRole extends ObjectDao __construct' . \PHP_EOL ;
         // print_r( $args ) ;
 
-        parent::__construct() ;
+        try {
+            /*  [ 'user_id'  => 'int'    , 
+                  'role_id'  => 'int'    ,
+                  'username' => 'string' ,
+                  'email'    => 'string' ,
+                  'role'     => 'string'
+                ] ; */
+            $args[0] = $this->convertKeys( $args[0] ) ;
+        } catch ( \TypeError $e ) {}
 
-        // var_dump( $args ) ;
-        /*
-         *  gettype( $args[0] ) === 'integer' 
-         *      henbt en UserRole på basis af et users_roles_id
-         *      $testUserRole = new UserRole( users_roles_id ) ;
-         *  gettype( $args[0] ) === 'array'
-         *      opret en user på basis af værdierne i $args[0]
-         *      $testUserRole = new UserRole( $newUserRole )
-         *  gettype( $args[0] ) === ['string','array'] , gettype( $args[1] ) === ['string','array']
-         *      hent en user på basis af værdierne i $args[0],$args[1]
-         *      $testUserRole = new UserRole( $keys , $values )
-         */
-        switch ( count( $args ) )
-        {
-            case 1 :
-                switch ( strtolower( gettype( $args[0] ) ) )
-                {
-                    case 'integer' :
-                        $this->read( $args[0] ) ;
-                        break ;
-                    case 'array' :
-                        /*
-                         *  count( $args[0] ) === 2 : ny user, der skal oprettes
-                         */
-                        switch ( count( $args[0] ) )
-                        {
-                            case 2 :
-                                $this->check( $args[0] ) ;
-                                $this->values['users_roles_id'] = $this->create( $args[0] ) ;
-                                break ;
-                            default :
-                                throw new \Exception( count( $args[0] ) . " : forkert antal parametre [2]" ) ;
-                                break ;
-                        }
+        parent::__construct( 'data' , self::$allowedKeys , $args ) ;
 
-                       foreach ( $args[0] as $key => $value ) 
-                        { 
-                            $this->values[$key] = $value ;
-                        }   unset( $key , $value ) ;
+        $this->setupData( $args ) ;
+        $this->values['user_id'] = (int) $this->values['user_id'] ;
+        $this->values['role_id'] = (int) $this->values['role_id'] ;
 
-                        break ;
-                    default :
-                        throw new \Exception( gettype( $args[0] ) . " : forkert input type [integer,array]" ) ;
-                        break ;
-                }
-                break ;
-            case 2 :
-                switch ( strtolower( gettype( $args[0] ) ) )
-                {
-                    case 'string' :
-                         if ( ! in_array( $args[0] , $this->allowedKeys ) )
-                            throw new \Exception( "'{$key}' doesn't exist in [ " . implode( ' , ' , $this->allowedKeys ) . " ]" ) ;
-                        break ;
-                    case 'array' :
-                        if ( count( $args[0] ) !== count( $args[1] ) )
-                            throw new \Exception( 'count() for $args[0] & $args[1] er forskellige' ) ;
-                        foreach ( $args[0] as $key )
-                        {
-                            if ( ! in_array( $key , $this->allowedKeys ) )
-                                throw new \Exception( "'{$key}' doesn't exist in [ " . implode( ' , ' , $this->allowedKeys ) . " ]" ) ;
-                        }
-                        break ;
-                    default :
-                        throw new \Exception( gettype( $args[0] ) . " : forkert input type [string,array]" ) ;
-                        break ;
-                }
-                $this->read( $args[0] , $args[1] ) ;
-                break ;
-            default :
-                throw new \Exception( count( $args ) . " : forkert antal parametre [1,2]" ) ;
-                break ;
-        }
     }
 
-    private function check( Array &$toCheck )
-    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        // print_r( $toCheck ) ;
-
-        foreach ( array_keys( $toCheck ) as $key )
+    private function convertKeys( Array $array )
+    {
+        $ids = [] ;
+        foreach ( $array as $key => $value )
         {
-            if ( ! in_array( $key , $this->allowedKeys ) )
-                throw new \Exception( "'{$key}' doesn't exist in [ " . implode( ' , ' , $this->allowedKeys ) . " ]" ) ;
-        }
-    }
+            // konverterer [ 'username' , 'email' ] -> user_id
+            if ( in_array( $key , [ 'username' , 'email' ] ) )
+            {
+                $user  = new  User( $key , $value ) ;
+                $ids['user_id'] = $user->getData()['id'] ;
+            }
+            // tjekker om der findes en user m/ [ 'user_id' ]
+            if ( in_array( $key , [ 'user_id' ] ) )
+            {
+                $user  = new  User( $value ) ;
+                $ids['user_id'] = $user->getData()['id'] ;
+            }
+            // konverterer [ 'role' ] -> role_id
+            if ( in_array( $key , [ 'role' ] ) )
+            {
+                $role = new URole( $key , $value ) ;
+                $ids['role_id'] = $role->getData()['id'] ;
+            }
+             // tjekker om der findes en role m/ [ 'role_id' ]
+           if ( in_array( $key , [ 'role_id' ] ) )
+            {
+                $role = new URole( $value ) ;
+                $ids['role_id'] = $role->getData()['id'] ;
+            }
+            unset( $user , $role) ;
+        } unset( $key , $value ) ;
 
-    public function setValues( $values )
-    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        // print_r( $values ) ;
-
-        switch ( strtolower( gettype( $values ) ) )
-        {
-            case 'array' :
-                $this->check( $values ) ;
-                foreach ( $values as $key => $value )
-                {
-                    $this->values[ $key ] = $value ;
-                    $this->update( $key , $value ) ;
-                }
-                break ;
-            default :
-                throw new \Exception( gettype( $values ) . " : forkert input type [array]" ) ;
-                break ;
-        }
-    }
+    return $ids ; }
 
 }
 

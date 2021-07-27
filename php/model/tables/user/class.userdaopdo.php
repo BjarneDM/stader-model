@@ -2,7 +2,7 @@
 
 /*
 
-create table users
+create table user
 (
     user_id     int auto_increment primary key , <- denne bliver genereret af DB
     name        varchar(255) not null ,          <- de resterende felter er krævede
@@ -17,10 +17,7 @@ create table users
 
  */
 
-require_once( dirname( __file__ , 2 ) . '/interfaces/interface.cruddao.php' ) ;
-require_once( __dir__ . '/class.usercrypt.php' ) ;
-require_once( dirname( __file__ , 2 ) . '/class.randomstr.php' ) ;
-// require_once( 'functions/randomStr.php' ) ;
+require_once( dirname( __file__ , 3 ) . '/interfaces/interface.cruddao.php' ) ;
 
 class UserDaoPdo implements ICrudDao
 {
@@ -48,12 +45,12 @@ class UserDaoPdo implements ICrudDao
 
         // https://stackoverflow.com/questions/8829102/check-if-table-exists-without-using-select-from
         /*
-         * opret en DB cache for users
-         * tjek om tabellen $userTable findes i databasen 'artikler'
+         * opret en DB cache for user
+         * tjek om tabellen $user findes i databasen 'staderdata'
          */
         $sql[0]  = 'select *  ' ;
         $sql[0] .= 'from information_schema.tables ' ;
-        $sql[0] .= 'where   table_schema = "stader"  ' ;
+        $sql[0] .= 'where   table_schema = "staderdata"  ' ;
         $sql[0] .= '    and table_name = :users ' ;
         $sql[0] .= 'limit 1  ' ;
 
@@ -85,10 +82,10 @@ class UserDaoPdo implements ICrudDao
         $sql[1] .= '( ' ;
         $sql[1] .= '    user_id     int , ' ;
         $sql[1] .= '    name        varchar(255) not null , ' ;
-        $sql[1] .= '    surname      varchar(255) default \'\' , ' ;
+        $sql[1] .= '    surname     varchar(255) default \'\' , ' ;
         $sql[1] .= '    phone       varchar(255) not null , ' ;
         $sql[1] .= '    username    varchar(255) not null , ' ;
-        $sql[1] .= '        constraint unique (username) , ' ;
+        $sql[1] .= '        constraint unique (username) , '  ;
         $sql[1] .= '    passwd      varchar(255) not null , ' ;
         $sql[1] .= '    email       varchar(255) not null , ' ;
         $sql[1] .= '        constraint unique (email) ' ;

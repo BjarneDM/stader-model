@@ -7,6 +7,7 @@ abstract class ObjectsDao extends Setup
     protected     $values      = []   ;
     protected     $valuesOld   = []   ;
     protected     $class       = ''   ;
+    protected     $objectIDs   = []   ;
     
     function __construct ( string $dbType , Array $allowedKeys , $args )
     {   // echo 'abstract class ObjectsDao extends Setup __construct' . \PHP_EOL ;
@@ -23,8 +24,6 @@ abstract class ObjectsDao extends Setup
             default: throw new \Exception() ;
             // var_dump( $this->functions ) ;
         }
-
-        $this->setupData( $args ) ;
 
     }
 
@@ -45,27 +44,36 @@ abstract class ObjectsDao extends Setup
                 $this->readAll( $this ) ;
                 break ;
             case 'string' :
-                if ( strtolower( gettype( $args[1] ) ) !== 'string' )
-                    throw new \Exception( gettype( $args[0] ) . ' & ' . gettype( $args[1] ) . ' er ikke begge "string"' ) ;
-                 if ( ! array_key_exists( $args[0] , $this->keysAllowed ) )
-                    throw new \Exception( "'{$key}' doesn't exist in [ " . implode( ' , ' , array_keys( $this->keysAllowed ) ) . " ]" ) ;
-                $this->$values[$args[0]] = $args[1] ;
+                $this->values[$args[0]] = $args[1] ;
+                $this->check( $this->values ) ;
                 $this->readAll( $this ) ;
                 break ;
             case 'array' :
                 if ( count( $args[0] ) !== count( $args[1] ) )
                     throw new \Exception( 'count() for $args[0] & $args[1] er forskellige' ) ;
-                foreach ( $args[0] as $key )
-                {
-                    if ( ! array_key_exists( $key , $this->keysAllowed ) )
-                        throw new \Exception( "'{$key}' doesn't exist in [ " . implode( ' , ' , array_keys( $this->keysAllowed ) ) . " ]" ) ;
-                }
-                $this->values = $args[0] ;
+                foreach ( $args[0] as $i => $key )
+                    $this->values[$key] = $args[$i] ;
+                    unset( $i , $key ) ;
+                $this->check( $this->values ) ;
                 $this->readAll( $this ) ;
                 break ;
             default :
                 throw new \Exception( gettype( $args[0] ) . " : forkert input type [null,string,array]" ) ;
                 break ;
+        }
+    }
+
+    /*
+     *  default minimalt integritets check
+     */
+    protected function check( Array &$toCheck )
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        // print_r( $toCheck ) ;
+
+        foreach ( array_keys( $toCheck ) as $key )
+        {
+            if ( ! array_key_exists( $key , $this->keysAllowed ) )
+                throw new \Exception( "'{$key}' doesn't exist in [" . implode( ',' , array_keys( $this->keysAllowed ) ) . "]" ) ;
         }
     }
 
@@ -106,6 +114,20 @@ abstract class ObjectsDao extends Setup
             $allObjects[] = new $this->class( (int) $oneID ) ;
         }
     return  $allObjects ; }
+
+    public function deleteOne( $objectID )
+    {
+            ( new $this->class( $objectID ) )->delete() ;
+            unset( $this->objectIDs[ array_search( $objectID , $this->objectIDs ) ] ) ;
+    }
+
+    public function deleteAll()
+    {
+        foreach ( $this->objectIDs as $key => $objectID )
+        {
+            $this->deleteOne( $objectID ) ;
+        }   unset( $key , $objectID ) ;
+    }
     
     public function getData()   { return $this->values ; }
     public function getValues() { return array_values( $this->values ) ; }

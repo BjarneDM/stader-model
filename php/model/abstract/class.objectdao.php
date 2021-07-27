@@ -24,8 +24,6 @@ abstract class ObjectDao extends Setup
             // var_dump( $this->functions ) ;
         }
 
-        $this->setupData( $args ) ;
-
     }
 
     protected function setupData ( $args )
@@ -48,12 +46,73 @@ abstract class ObjectDao extends Setup
                 {
                     case 'integer' :
                         $this->values['id'] = $args[0] ;
-                        $this->read( $this ) ;
-                        $this->valuesOld = ( new \ArrayObject( $this->values ) )->getArrayCopy() ;
+                        $this->values       = $this->read( $this ) ;
                        break ;
                     case 'array' :
                         /*
                          *  count( $args[0] ) === count( $this->allowedKeys ) : nyt Object, der skal oprettes
+                         */
+                        switch ( count( $args[0] ) )
+                        {
+                            case count( $this->keysAllowed ) :
+                                $this->check( $args[0] ) ;
+                                $this->values       = ( new \ArrayObject( $args[0] ) )->getArrayCopy() ;
+                                $this->values['id'] = $this->create( $this ) ;
+                                break ;
+                            default :
+                                throw new \Exception( count( $args[0] ) . " : forkert antal parametre [" . count( $this->keysAllowed ) . "]" ) ;
+                                break ;
+                        }
+                        break ;
+                    default :
+                        throw new \Exception( gettype( $args[0] ) . " : forkert input type [integer,array]" ) ;
+                        break ;
+                }
+                break ;
+            case 2 :
+                switch ( strtolower( gettype( $args[0] ) ) )
+                {
+                    case 'string' :
+                        $args[0] = [ $args[0] ] ;
+                        $args[1] = [ $args[1] ] ;
+                    case 'array' :
+                        if ( count( $args[0] ) !== count( $args[1] ) )
+                            throw new \Exception( 'count() for $args[0] & $args[1] er forskellige' ) ;
+                        $args[0] = array_combine( $args[0] , $args[1] ) ;
+                        $this->check( $args[0] ) ;
+                        $this->values = ( new \ArrayObject( $args[0] ) )->getArrayCopy() ;
+                        break ;
+                    default :
+                        throw new \Exception( gettype( $args[0] ) . " : forkert input type [string,array]" ) ;
+                        break ;
+                }
+                $this->values = $this->read( $this ) ;
+                break ;
+            default :
+                throw new \Exception( count( $args ) . " : forkert antal parametre [1,2]" ) ;
+                break ;
+        }
+        $this->valuesOld = ( new \ArrayObject( $this->values ) )->getArrayCopy() ;
+}
+
+    protected function setupLogs ( $args )
+    {
+        /*
+         *  gettype( $args[0] ) === 'array'
+         *      opret en Log på basis af værdierne i $args[0]
+         *      $testLog = new Log( $args[0] )
+         */
+        switch ( count( $args ) )
+        {
+            case 1 :
+                switch ( strtolower( gettype( $args[0] ) ) )
+                {
+                    case 'integer' :
+                        $this->values = $this->read( $args[0] ) ;
+                        break ;
+                    case 'array' :
+                        /*
+                         *  count( $args[0] ) === count( $this->keysAllowed ) : ny Log, der skal oprettes
                          */
                         switch ( count( $args[0] ) )
                         {
@@ -73,70 +132,48 @@ abstract class ObjectDao extends Setup
                         break ;
                 }
                 break ;
-            case 2 :
-                switch ( strtolower( gettype( $args[0] ) ) )
-                {
-                    case 'string' :
-                        if ( strtolower( gettype( $args[1] ) ) !== 'string' )
-                            throw new \Exception( gettype( $args[0] ) . ' & ' . gettype( $args[1] ) . ' er ikke begge "string"' ) ;
-                        if ( ! in_array( $args[0] , self::$allowedKeys ) )
-                            throw new \Exception( "'{$key}' doesn't exist in [ " . implode( ' , ' , self::$allowedKeys ) . " ]" ) ;
-                        break ;
-                    case 'array' :
-                        if ( count( $args[0] ) !== count( $args[1] ) )
-                            throw new \Exception( 'count() for $args[0] & $args[1] er forskellige' ) ;
-                        foreach ( $args[0] as $key )
-                        {
-                            if ( ! in_array( $key , self::$allowedKeys ) )
-                                throw new \Exception( "'{$key}' doesn't exist in [ " . implode( ' , ' , self::$allowedKeys ) . " ]" ) ;
-                        }
-                        break ;
-                    default :
-                        throw new \Exception( gettype( $args[0] ) . " : forkert input type [string,array]" ) ;
-                        break ;
-                }
-                $this->read( $this ) ;
-                break ;
             default :
-                throw new \Exception( count( $args ) . " : forkert antal parametre [1,2]" ) ;
+                throw new \Exception( count( $args ) . " : forkert antal parametre [1]" ) ;
                 break ;
         }
-}
+    }
 
-    protected function create( $object ) 
+    protected function create( $object ) : int
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $array ) ;
 
-            return $this->functions->create( $object ) ; }
+        $this->notify( 'create' ) ;
+    return $this->functions->create( $object ) ; }
 
-    protected function read( $object )
+    protected function read( $object ) : Array
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $args ) ;
 
-            $this->values = $this->functions->readOne( $object ) ; }
+        $this->notify( 'read' ) ;
+    return $this->functions->readOne( $object ) ; }
 
-    protected function update( $object ) 
+    protected function update( $object ) : int
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( [ $key , $value ] ) ;
 
-            $rowCount = $this->functions->update( $object , array_diff( $this->values , $this->valuesOld ) ) ;
-        return $rowCount ; }
+        $this->notify( 'update' ) ;
+    return $this->functions->update( $object , array_diff( $this->values , $this->valuesOld ) ) ; }
 
-    public function deleteThis( $object )
+    public function deleteThis( $object ) : int
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
 
-            $rowCount = $this->functions->delete( $object ) ;
-            $this->values = null ;
-        return $rowCount ; }
+        $rowCount = $this->functions->delete( $object ) ;
+        $this->notify( 'delete' ) ;
+        unset( $this->values , $this->valuesOld , $this->functions ) ;
+    return $rowCount ; }
 
     public function getData()   { return $this->values ; }
     public function getValues() { return array_values( $this->values ) ; }
     public function getKeys()   { return array_keys( $this->values ) ; }
 
-    public function delete()
+    public function delete() : int
     {
-        $this->deleteThis( $this ) ;
-    }
+    return $this->deleteThis( $this ) ; }
 
     public function setValues( $values )
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
@@ -159,6 +196,9 @@ abstract class ObjectDao extends Setup
         }
     }
 
+    /*
+     *  default minimalt integritets check
+     */
     protected function check( Array &$toCheck )
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $toCheck ) ;
@@ -167,9 +207,20 @@ abstract class ObjectDao extends Setup
         {
             if ( ! array_key_exists( $key , $this->keysAllowed ) )
                 throw new \Exception( "'{$key}' doesn't exist in [" . implode( ',' , array_keys( $this->keysAllowed ) ) . "]" ) ;
+
+            switch ( $this->keysAllowed[$key] )
+            {
+                case 'int' :
+                case 'integer' :
+                    break ;
+                case 'bool' :
+                    break ;
+            }
+
         }
     }
 
+    protected function notify ( $action ) {}
 
 }
 

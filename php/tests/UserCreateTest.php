@@ -5,13 +5,13 @@
  */
 use PHPUnit\Framework\TestCase;
 
-set_include_path( '/Volumes/Bjarne/Sites/info/mathiesen/zbc/stader/php' ) ;
+set_include_path( dirname( __file__ , 2 ) ) ;
 
 /*
 
 create table users
 (
-    user_id     int auto_increment primary key , <- denne bliver genereret af DB
+    id          int auto_increment primary key , <- denne bliver genereret af DB
     name        varchar(255) not null ,          <- de resterende felter er krævede
     surname     varchar(255) default '' ,
     phone       varchar(255) not null ,
@@ -49,7 +49,7 @@ class UserCreateTest extends TestCase
     public function testConstruct1()
     {   echo \PHP_EOL . '-> entering ' . __function__ . \PHP_EOL ;
         /*
-         *  helt ny gruppe oprettes
+         *  helt ny user oprettes
          */
         $testUser = new User( self::$setup::$connect , self::$newUser ) ;
         $data = $testUser->getData() ;
@@ -74,15 +74,15 @@ class UserCreateTest extends TestCase
     public function testConstruct2( int $user_id )
     {   echo \PHP_EOL . '-> entering ' . __function__ . \PHP_EOL ;
         /*
-         *  gruppe hentes fra databasen baseret på gruppe_id
+         *  user hentes fra databasen baseret på id
          */
-        $testUser = new User( self::$setup::$connect , $user_id ) ;
+        $testUser = new User( $user_id ) ;
         $data = $testUser->getData() ;
 
         $this->assertIsObject( $testUser ) ;
         $this->assertEquals( 7 , count( $testUser->getData() ) ) ;
 
-        $this->assertEquals( $user_id                       , $data['user_id'] ) ;
+        $this->assertEquals( $user_id                       , $data['id'] ) ;
         $this->assertEquals( self::$newUser['name']         , $data['name'] ) ;
         $this->assertEquals( self::$newUser['surname']      , $data['surname'] ) ;
         $this->assertEquals( self::$newUser['phone']        , $data['phone']  ) ;
@@ -99,9 +99,9 @@ class UserCreateTest extends TestCase
     public function testConstruct3( int $user_id )
     {   echo \PHP_EOL . '-> entering ' . __function__ . \PHP_EOL ;
         /*
-         *  gruppe hentes fra databasen baseret på 'username' som string
+         *  user hentes fra databasen baseret på 'username' som string
          */
-        $testUser = new User( self::$setup::$connect , 'username' , 'KrisKris' ) ;
+        $testUser = new User( 'username' , 'KrisKris' ) ;
         $data = $testUser->getData() ;
 
         $this->assertIsObject( $testUser ) ;
@@ -126,7 +126,7 @@ class UserCreateTest extends TestCase
         /*
          *  gruppe hentes fra databasen baseret på 'username' som Array
          */
-        $testUser = new User( self::$setup::$connect , ['username'] , ['KrisKris'] ) ;
+        $testUser = new User( ['username'] , ['KrisKris'] ) ;
         $data = $testUser->getData() ;
 
         $this->assertIsObject( $testUser ) ;
@@ -151,7 +151,7 @@ class UserCreateTest extends TestCase
         /*
          *  gruppe hentes fra databasen baseret på ['username','email'] som Array
          */
-        $testUser = new User( self::$setup::$connect , ['username','email'] , ['KrisKris','kkz@zbc.dk'] ) ;
+        $testUser = new User( ['username','email'] , ['KrisKris','kkz@zbc.dk'] ) ;
         $data = $testUser->getData() ;
 
         $this->assertIsObject( $testUser ) ;

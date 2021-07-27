@@ -6,11 +6,13 @@ echo \PHP_EOL . str_repeat( '-' , 50 ) . \PHP_EOL . '-> entering : ' . basename(
 
 /*
 
-create table if not exists roles
+create table if not exists urole
 (
-    role_id     int auto_increment primary key ,
+    id          int auto_increment primary key ,
     role        varchar(255) not null ,
-        constraint unique (name) ,
+        constraint unique (role) ,
+    priority    int ,
+        index (priority) ,
     note        text
 ) ;
 
@@ -21,7 +23,7 @@ create table if not exists roles
  */
 
 require_once( dirname( __file__ , 2 ) . '/model/class.classloader.php' ) ;
-use \stader\model\{Role,Roles} ;
+use \stader\model\{URole,URoles} ;
 
 /*
  *  data
@@ -38,16 +40,27 @@ $roles =
 /*
  *   main
  */
+ ( new URoles() )->deleteAll() ;
 
 foreach ( $roles as $role )
 {
-    $thisRole = new role( $role ) ;
+    $thisRole = new URole( $role ) ;
 } unset( $role ) ;
 
-$allRoles = new Roles() ;
-foreach ( $allRoles->getRoles() as $role ) 
+$allRoles = new URoles() ;
+foreach ( $allRoles->getAll() as $role ) 
     echo json_encode( $role->getData() , JSON_UNESCAPED_UNICODE ) . \PHP_EOL ;
     unset( $role ) ;
+
+echo \PHP_EOL . str_repeat( '-' , 50 ) . \PHP_EOL  . \PHP_EOL ;
+
+if ( $allRoles->count() > 0 )
+{
+    $allRoles->reset() ;
+    do {
+        echo json_encode( $allRoles->current()->getData() , JSON_UNESCAPED_UNICODE ) . \PHP_EOL ;
+    }   while ( $allRoles->next() ) ;
+}
 
 echo '</pre>' ;
 ?>

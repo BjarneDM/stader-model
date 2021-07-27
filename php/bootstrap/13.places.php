@@ -10,15 +10,15 @@ echo \PHP_EOL . str_repeat( '-' , 50 ) . \PHP_EOL . '-> entering : ' . basename(
 drop table if exists place ;
 create table if not exists place
 (
-    place_id        int auto_increment primary key ,
+    id              int auto_increment primary key ,
     place_nr        varchar(8) not null ,
     description     text ,
     place_owner_id  int ,
-        foreign key (place_owner_id) references place_owner(place_owner_id)
+        foreign key (place_owner_id) references place_owner(id)
         on update cascade 
         on delete restrict ,
     area_id         int ,
-        foreign key (area_id) references areas(area_id)
+        foreign key (area_id) references areas(id)
         on update cascade 
         on delete cascade ,
     lastchecked     datetime
@@ -90,12 +90,14 @@ $places =
 /*
  *  main
  */
- 
+
+( new Places() )->deleteAll() ;
+
 foreach ( $places as $key => $place )
 {
 //     print_r( $place ) ;
 //     $place['place_owner_id'] = (int) ( new PlaceOwner( 'name' , 'dummy' ) )->getData()['place_owner_id'] ;
-    $place['area_id']        = (int) ( new Area( 'name'  , $place['area_id'] ) )->getData()['area_id'] ;
+    $place['area_id']        = (int) ( new Area( 'name'  , $place['area_id'] ) )->getData()['id'] ;
     $thisPlace               = new Place( $place ) ;
 }   unset( $key , $place) ;
 
@@ -111,16 +113,16 @@ $placeOwners =
 foreach ( $placeOwners as $username => $area )
 {
     list( $areaName , $placeNr ) = preg_split( '//', $area , 2 , PREG_SPLIT_NO_EMPTY ) ;
-    $areaID = ( new Area( 'name' , $areaName ) )->getData()['area_id'] ;
-    $placeownerID = ( new PlaceOwner( 'surname' , $username ) )->getData()['place_owner_id'] ;
-    $place  = new Place( ['area_id','place_nr'] , [$areaID,$placeNr] ) ;
+    $areaID = ( new Area( 'name' , $areaName ) )->getData()['id'] ;
+    $placeownerID = ( new PlaceOwner( 'surname' , $username ) )->getData()['id'] ;
+    $place  = new Place( ['area_id','place_nr'] , [$areaID,(int)$placeNr] ) ;
     $place->setValues(['place_owner_id' => $placeownerID]) ;
 }
 
 
 
 $allPlaces = new Places() ;
-foreach ( $allPlaces->getPlaces() as $place ) 
+foreach ( $allPlaces->getAll() as $place ) 
     echo json_encode( $place->getData() , JSON_UNESCAPED_UNICODE ) . \PHP_EOL ;
     unset( $place ) ;
 

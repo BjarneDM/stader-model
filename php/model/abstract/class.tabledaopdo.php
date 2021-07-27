@@ -41,6 +41,7 @@ class TableDaoPdo implements ICrudDao
             case 'text' :
                 $dataType = \PDO::PARAM_STR ;
                 break ;
+            case 'int' :
             case 'integer' :
                 $dataType = \PDO::PARAM_INT ;
                 break ;
@@ -63,7 +64,7 @@ class TableDaoPdo implements ICrudDao
         // print_r( $object::$allowedKeys ) ;
 
         $sql  = 'insert into ' . $this->table ;
-        $sql .= '        ( ' .implode( ' , ' ,  array_keys( $object::$allowedKeys ) ) . ' )' ;
+        $sql .= '        ( '  . implode( ' , '  , array_keys( $object::$allowedKeys ) ) . ' )' ;
         $sql .= '    values' ;
         $sql .= '        ( :' . implode( ' , :' , array_keys( $object::$allowedKeys ) ) . ' )' ;
 
@@ -72,7 +73,7 @@ class TableDaoPdo implements ICrudDao
 
         foreach ( $object::$allowedKeys as $param => $valType )
         {
-            $stmt->bindParam( ':'.$param , $object->getData()[$param] , $this->getPdoParamType( $valType ) ) ;
+            $stmt->bindParam( ":{$param}" , $object->getData()[$param] , $this->getPdoParamType( $valType ) ) ;
         }
 
         $stmt->execute() ;
@@ -89,7 +90,7 @@ class TableDaoPdo implements ICrudDao
      *      $testArea->read( ['navn_for'] , ['Anonymous'] ) ;
      *      $testArea->read( ['navn_for','alias'] , ['Bjarne','BjarneDMat'] ) ;
      */
-    private function readData( $object )
+    private function readDataNamed( $object )
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $object ) ;
 
@@ -101,32 +102,82 @@ class TableDaoPdo implements ICrudDao
             case 0 :
                 $stmt = $this->dbh->prepare( $sql ) ;
                 break ;
-            case 1 :
+            default :
                 if ( isset( $object->getData()['id'] ) )
                 {
                     $sql .= 'where id = :id ' ;
                     $stmt = $this->dbh->prepare( $sql ) ;
                     $stmt->bindParam( ':id' , $object->getData()['id'] , \pdo::PARAM_INT ) ;
-                break ; }
-            default :
-                $where = [] ;
-                foreach ( $object->getData() as $param => $value )
-                {
-                    $where[] = "{$param} = :{$param}" ;
-                }   unset( $param , $value ) ;
-                $sql .= 'where ' . implode( ' and ' , $where ) ;
+                } else {
+                    $where = [] ;
+                    foreach ( $object->getData() as $param => $value )
+                    {
+                        $where[] = "{$param} = :{$param}" ;
+                    }   unset( $param , $value ) ;
+                    $sql .= 'where ' . implode( ' and ' , $where ) ;
                 
-                $stmt = $this->dbh->prepare( $sql ) ;
+                    $stmt = $this->dbh->prepare( $sql ) ;
 
-                foreach ( $object->getData() as $param => $value )
-                {
-                    $stmt->bindParam( ':'.$param , $value , $this->getPdoParamType( $object::$allowedKeys[$param] ) ) ;
+                    foreach ( $object->getData() as $param => $value )
+                    {
+                        $stmt->bindParam( ":{$param}" , $value , $this->getPdoParamType( $object::$allowedKeys[$param] ) ) ;
+                    }
                 }
+                break ;
         }
 
         $stmt->execute() ;
 
     return $stmt ; }
+
+    private function readDataPosit( $object )
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        // print_r( $object ) ;
+
+        $sql  = 'select * from ' . $this->table . ' ' ;
+        $stmt = null ;
+
+        switch ( count( $object->getData() ) )
+        {
+            case 0 :
+                $stmt = $this->dbh->prepare( $sql ) ;
+                break ;
+            default :
+                if ( isset( $object->getData()['id'] ) )
+                {
+                    $sql .= 'where id = ?' ;
+                    $stmt = $this->dbh->prepare( $sql ) ;
+                } else {
+                    $where = [] ;
+                    foreach ( $object->getData() as $param => $value )
+                    {
+                        $where[] = "{$param} = ?" ;
+                    }   unset( $param , $value ) ;
+                    $sql .= 'where ' . implode( ' and ' , $where ) ;
+                
+                    $stmt = $this->dbh->prepare( $sql ) ;
+
+                }
+                break ;
+        }
+
+        $stmt->execute( $object->getValues() ) ;
+
+    return $stmt ; }
+
+    private function readData( $object )
+    {
+        switch ( count( $object->getData() ) )
+        {
+            case 0  :
+            case 1  :
+                return $this->readDataNamed( $object ) ;
+                break ;
+            default :
+                return $this->readDataPosit( $object ) ;
+                break ;
+        }
+    }
 
     public function readOne( $object )
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
@@ -162,8 +213,8 @@ class TableDaoPdo implements ICrudDao
     return $ids ; }
 
     /*  Af en eller anden mærkelig grund fungere dette ikke ?!?
-     *      named        parametre fungerer ikke
-     *  men positionelle parametre fungerer
+     *      named        parametre fungerer for count( $object->getData() < 2
+     *  men positionelle parametre fungerer altid
      *  ?!?!?!?!?
      */
     private function updateNamed( $object , Array $diffValues )
@@ -231,7 +282,16 @@ class TableDaoPdo implements ICrudDao
 
     public function update(  $object , Array $diffValues )
     {
-        return $this->updatePosit( $object , $diffValues ) ;
+        switch ( count( $object->getData() ) )
+        {
+            case 0  :
+            case 1  :
+                return $this->updateNamed( $object , $diffValues ) ;
+                break ;
+            default :
+                return $this->updatePosit( $object , $diffValues ) ;
+                break ;
+        }
     }
 
     public function delete( $object )

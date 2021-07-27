@@ -61,6 +61,8 @@ $users =
  *  main
  */
 
+( new PlaceOwners() )->deleteAll() ;
+
 // foreach ( $users->getUsers() as $key => $user )
 // {
 //     $data = $user->getData() ;
@@ -78,7 +80,7 @@ foreach ( $users as $key => $user )
 }
 
 $allPlaceOwners = new PlaceOwners() ;
-foreach ( $allPlaceOwners->getPlaceOwners() as $placeowner )
+foreach ( $allPlaceOwners->getAll() as $placeowner )
     echo json_encode( $placeowner->getData() , JSON_UNESCAPED_UNICODE ) . \PHP_EOL ;
     unset( $placeowner , $allPlaceOwners ) ;
 

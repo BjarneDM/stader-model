@@ -52,7 +52,7 @@ $users =
  */
 
 require_once( dirname( __file__ , 2 ) . '/model/class.classloader.php' ) ;
-use \stader\model\{Group,Groups,User,Users,UserGroup,UsersGroups} ;
+use \stader\model\{UGroup,UGroups,User,Users,UserGroup,UsersGroups} ;
 
 /*
  *  data
@@ -72,9 +72,11 @@ $userNames['Support Tekniker']    = [] ;
  *  main
  */
 
-$allGroups = new Groups() ;
+( new UsersGroups() )->deleteAll() ;
+
+$allGroups = new UGroups() ;
 // print_r( $allGroups ) ;
-foreach ( $allGroups->getGroups() as $group )
+foreach ( $allGroups->getAll() as $group )
 {
     // print_r( $group ) ;
     /*
@@ -92,28 +94,28 @@ foreach ( $allGroups->getGroups() as $group )
             foreach ( $userNames[ $group->getData()['name'] ] as $userName )
             {
                 $thisUser = new User( 'username' , $userName ) ;
-                $thisUserGroup = new UserGroup( [ 'user_id' => $thisUser->getData()['user_id'] , 'group_id' => $group->getData()['group_id'] ] ) ;
+                $thisUserGroup = new UserGroup( [ 'user_id' => $thisUser->getData()['id'] , 'group_id' => $group->getData()['id'] ] ) ;
             } unset( $userName ) ;
             break ;
          case 'Tlf.Sup.' :
             foreach ( $userNames[ $group->getData()['name'] ] as $userName )
             {
                 $thisUser = new User( 'username' , $userName ) ;
-                $thisUserGroup = new UserGroup( [ 'username' => $thisUser->getData()['username'] , 'group_id' => $group->getData()['group_id'] ] ) ;
+                $thisUserGroup = new UserGroup( [ 'username' => $thisUser->getData()['username'] , 'group_id' => $group->getData()['id'] ] ) ;
             } unset( $userName ) ;
             break ;
          case 'Klargøring' :
             foreach ( $userNames[ $group->getData()['name'] ] as $userName )
             {
                 $thisUser = new User( 'username' , $userName ) ;
-                $thisUserGroup = new UserGroup( [ 'email' => $thisUser->getData()['email'] , 'group_id' => $group->getData()['group_id'] ] ) ;
+                $thisUserGroup = new UserGroup( [ 'email' => $thisUser->getData()['email'] , 'group_id' => $group->getData()['id'] ] ) ;
             } unset( $userName ) ;
             break ;
         case 'Transport' :
             foreach ( $userNames[ $group->getData()['name'] ] as $userName )
             {
                 $thisUser = new User( 'username' , $userName ) ;
-                $thisUserGroup = new UserGroup( [ 'user_id' => $thisUser->getData()['user_id'] , 'name' => $group->getData()['name'] ] ) ;
+                $thisUserGroup = new UserGroup( [ 'user_id' => $thisUser->getData()['id'] , 'name' => $group->getData()['name'] ] ) ;
             } unset( $userName ) ;
             break ;
          case 'Runderings Tekniker' :
@@ -134,12 +136,12 @@ foreach ( $allGroups->getGroups() as $group )
 }
 
 $user_groups = new UsersGroups() ;
-foreach( $user_groups->getUsersGroups() as $user_group )
+foreach( $user_groups->getAll() as $user_group )
 {
     $group_user = $user_group->getData() ;
-    $user = new User( $user_group->getData()['user_id'] ) ;
+    $user = new User( (int) $user_group->getData()['user_id'] ) ;
     $group_user['user_id']  = implode( ' ' , [ $user->getData()['name'] , $user->getData()['surname'] ] ) ;
-    $group_user['group_id'] = ( new Group( $user_group->getData()['group_id'] ) )->getData()['name'] ;
+    $group_user['group_id'] = ( new UGroup( (int) $user_group->getData()['group_id'] ) )->getData()['name'] ;
     echo json_encode( $group_user , JSON_UNESCAPED_UNICODE ) . \PHP_EOL ;
 }   unset( $user_group ) ;
 

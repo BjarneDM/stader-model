@@ -86,11 +86,21 @@ $users =
 
 foreach ( $users as $key => $user )
 {
-    $users[ $key ]['email'] = $user['username'] . '@zbc.dk' ;
+    $users[ $key ]['email'] = $user['username'] . '@example.com' ;
 }   unset( $key , $user ) ; 
 
 /*
  *  main
+ */
+
+( new Users() )->deleteAll() ;
+
+/*
+$testUser = new User( $users[0] ) ;
+print_r( $testUser->getData() ) ;
+$testUser->delete() ;
+print_r( $testUser->getData() ) ;
+exit ;
  */
 
 foreach ( $users as $key => $user )
@@ -101,10 +111,19 @@ foreach ( $users as $key => $user )
 }   unset( $key , $user ) ;
 
 $allUsers = new Users() ;
-foreach ( $allUsers->getUsers() as $user )
+foreach ( $allUsers->getAll() as $user )
     echo json_encode( $user->getData() , JSON_UNESCAPED_UNICODE ) . \PHP_EOL ;
-    unset( $user , $allUsers ) ;
+    unset( $user ) ;
 
+echo \PHP_EOL . str_repeat( '-' , 50 ) . \PHP_EOL  . \PHP_EOL ;
+
+if ( $allUsers->count() > 0 )
+{
+    $allUsers->reset() ;
+    do {
+        echo json_encode( $allUsers->current()->getData() , JSON_UNESCAPED_UNICODE ) . \PHP_EOL ;
+    }   while ( $allUsers->next() ) ;
+}
 echo '</pre>' ;
 ?>
 
