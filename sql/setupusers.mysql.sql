@@ -4,13 +4,13 @@
 # drop database if exists staderdata ;
 create database if not exists `staderdata` default character set utf8mb4 collate utf8mb4_unicode_ci ;
 
-create user 'staderdata'@'localhost' identified WITH mysql_native_password ;
+create user 'staderdata'@'localhost' identified with mysql_native_password ;
 alter  user 'staderdata'@'localhost' identified by '9E%<,4W(]jeQXn[O%TUZOKm$' ;
 
 revoke all privileges, grant option
     from 'staderdata'@'localhost'
 ;
-grant all
+grant select, insert, update, delete
     on table staderdata.*
     to 'staderdata'@'localhost'
 ;
