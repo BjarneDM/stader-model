@@ -2,11 +2,11 @@
 
 abstract class ObjectDao extends Setup
 {
-    private       $keysAllowed = []   ;
-    private       $functions   = null ;
-    protected     $values      = []   ;
-    protected     $valuesOld   = []   ;
-    protected     $class       = ''   ;
+    private           $keysAllowed = []   ;
+    private   static  $functions   = null ;
+    protected         $values      = []   ;
+    protected         $valuesOld   = []   ;
+    protected         $class       = ''   ;
     
     function __construct ( string $dbType , Array $allowedKeys , $args )
     {   // echo 'abstract class ObjectDao extends Setup __construct' . \PHP_EOL ;
@@ -16,12 +16,12 @@ abstract class ObjectDao extends Setup
 
         switch ( self::$connect->getType() )
         {
-            case "mysql"    : $this->functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
-            case "pgsql"    : $this->functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
-            case "sqlite"   : $this->functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
-            case "xml"      : $this->functions = new TableDaoXml( self::$connect , $this->class ) ; break ;
+            case "mysql"    : self::$functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
+            case "pgsql"    : self::$functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
+            case "sqlite"   : self::$functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
+            case "xml"      : self::$functions = new TableDaoXml( self::$connect , $this->class ) ; break ;
             default: throw new \Exception() ;
-            // var_dump( $this->functions ) ;
+            // var_dump( self::$functions ) ;
         }
 
     }
@@ -143,28 +143,28 @@ abstract class ObjectDao extends Setup
         // print_r( $array ) ;
 
         $this->notify( 'create' ) ;
-    return $this->functions->create( $object ) ; }
+    return self::$functions->create( $object ) ; }
 
     protected function read( $object ) : Array
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $args ) ;
 
         $this->notify( 'read' ) ;
-    return $this->functions->readOne( $object ) ; }
+    return self::$functions->readOne( $object ) ; }
 
     protected function update( $object ) : int
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( [ $key , $value ] ) ;
 
         $this->notify( 'update' ) ;
-    return $this->functions->update( $object , array_diff( $this->values , $this->valuesOld ) ) ; }
+    return self::$functions->update( $object , array_diff( $this->values , $this->valuesOld ) ) ; }
 
     public function deleteThis( $object ) : int
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
 
-        $rowCount = $this->functions->delete( $object ) ;
+        $rowCount = self::$functions->delete( $object ) ;
         $this->notify( 'delete' ) ;
-        unset( $this->values , $this->valuesOld , $this->functions ) ;
+        unset( $this->values , $this->valuesOld , self::$functions ) ;
     return $rowCount ; }
 
     public function getData()   { return $this->values ; }

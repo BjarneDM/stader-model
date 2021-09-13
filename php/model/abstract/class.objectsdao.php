@@ -2,12 +2,12 @@
 
 abstract class ObjectsDao extends Setup
 {
-    private       $keysAllowed = []   ;
-    private       $functions   = null ;
-    protected     $values      = []   ;
-    protected     $valuesOld   = []   ;
-    protected     $class       = ''   ;
-    protected     $objectIDs   = []   ;
+    private           $keysAllowed = []   ;
+    private   static  $functions   = null ;
+    protected         $values      = []   ;
+    protected         $valuesOld   = []   ;
+    protected         $class       = ''   ;
+    protected         $objectIDs   = []   ;
     
     function __construct ( string $dbType , Array $allowedKeys , $args )
     {   // echo 'abstract class ObjectsDao extends Setup __construct' . \PHP_EOL ;
@@ -17,12 +17,12 @@ abstract class ObjectsDao extends Setup
 
         switch ( self::$connect->getType() )
         {
-            case "mysql"    : $this->functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
-            case "pgsql"    : $this->functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
-            case "sqlite"   : $this->functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
-            case "xml"      : $this->functions = new TableDaoXml( self::$connect , $this->class ) ; break ;
+            case "mysql"    : self::$functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
+            case "pgsql"    : self::$functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
+            case "sqlite"   : self::$functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
+            case "xml"      : self::$functions = new TableDaoXml( self::$connect , $this->class ) ; break ;
             default: throw new \Exception() ;
-            // var_dump( $this->functions ) ;
+            // var_dump( self::functions ) ;
         }
 
     }
@@ -81,7 +81,7 @@ abstract class ObjectsDao extends Setup
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $object ) ;
 
-        $this->objectIDs = $this->functions->readAll( $object ) ;
+        $this->objectIDs = self::$functions->readAll( $object ) ;
         reset( $this->objectIDs ) ;
     }
 
