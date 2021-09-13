@@ -15,7 +15,6 @@ require_once( dirname( __file__ , 2 ) . '/interfaces/interface.cruddao.php' ) ;
 class TableDaoPdo implements ICrudDao
 {
     private        $dbh     = null ;
-    private static $connect = null ;
     private        $table   = null ;
 
     public function __construct ( $connect , $class )
@@ -25,7 +24,6 @@ class TableDaoPdo implements ICrudDao
         // echo 'connection type : ' . $connect->getType()  . \PHP_EOL ;
 
         $this->dbh = $connect->getConn() ;
-        $this::$connect = $connect ;
         $this->table = explode( '\\' , $class ) ;
         $this->table = strtolower( end( $this->table ) ) ;
 
