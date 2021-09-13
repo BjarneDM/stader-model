@@ -87,7 +87,7 @@ foreach ( $tickets as $key => $ticket )
 sleep( 2 ) ; }
 
 $allTickets = new Tickets() ;
-foreach ( $allTickets->getAll() as $ticket )
+foreach ( $allTickets as $ticket )
     echo json_encode( $ticket->getData() , JSON_UNESCAPED_UNICODE ) . \PHP_EOL ;
     unset( $ticket , $allTickets ) ;
 

@@ -200,6 +200,13 @@ class TableDaoPdo implements ICrudDao
         }
     return $ids ; }
 
+    public function readAllIterator( $object )
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        // print_r( $object ) ;
+
+        $stmt = $this->readData( $object ) ;
+    return $stmt ; }
+
     /*  Af en eller anden mærkelig grund fungere dette ikke ?!?
      *      named        parametre fungerer for count( $object->getData() < 2
      *  men positionelle parametre fungerer altid

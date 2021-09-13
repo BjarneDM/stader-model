@@ -164,7 +164,7 @@ abstract class ObjectDao extends Setup
 
         $rowCount = self::$functions->delete( $object ) ;
         $this->notify( 'delete' ) ;
-        unset( $this->values , $this->valuesOld , self::$functions ) ;
+        unset( $this->values , $this->valuesOld ) ;
     return $rowCount ; }
 
     public function getData()   { return $this->values ; }
