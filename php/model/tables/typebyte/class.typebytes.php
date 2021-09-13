@@ -9,7 +9,7 @@ class TypeBytes extends ObjectsDao
     {   // echo 'class TypeBytes extends ObjectsDao __construct' . \PHP_EOL ;
         // print_r( $args ) ;
 
-        parent::__construct( 'data' , self::$allowedKeys , $args ) ;
+        parent::__construct( 'data' , self::$allowedKeys ) ;
 
         $this->setupData( $args ) ;
 

@@ -8,7 +8,7 @@ abstract class ObjectDao extends Setup
     protected         $valuesOld   = []   ;
     protected         $class       = ''   ;
     
-    function __construct ( string $dbType , Array $allowedKeys , $args )
+    function __construct ( string $dbType , Array $allowedKeys )
     {   // echo 'abstract class ObjectDao extends Setup __construct' . \PHP_EOL ;
 
         parent::__construct( $dbType ) ;

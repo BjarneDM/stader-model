@@ -15,7 +15,7 @@ class PlaceOwners extends ObjectsDao
     {   // echo 'class PlaceOwners extends ObjectsDao __construct' . \PHP_EOL ;
         // print_r( $args ) ;
 
-        parent::__construct( 'data' , self::$allowedKeys , $args ) ;
+        parent::__construct( 'data' , self::$allowedKeys ) ;
 
         $this->setupData( $args ) ;
 

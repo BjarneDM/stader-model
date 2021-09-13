@@ -39,7 +39,7 @@ class UserGroup extends ObjectDao
             $args[0] = $this->convertKeys( $args[0] ) ;
         } catch ( \TypeError $e ) {}
 
-        parent::__construct( 'data' , self::$allowedKeys , $args ) ;
+        parent::__construct( 'data' , self::$allowedKeys ) ;
 
         $this->setupData( $args ) ;
         $this->values['user_id']  = (int) $this->values['user_id']  ;

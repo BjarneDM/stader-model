@@ -27,7 +27,7 @@ class URole extends ObjectDao
     {   // echo 'class URole extends ObjectDao __construct' . \PHP_EOL ;
         // print_r( $args ) ;
 
-        parent::__construct( 'data' , self::$allowedKeys , $args ) ;
+        parent::__construct( 'data' , self::$allowedKeys ) ;
 
         $this->setupData( $args ) ;
         $this->values['priority'] = (int) $this->values['priority'] ;

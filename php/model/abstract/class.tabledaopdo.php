@@ -1,15 +1,5 @@
 <?php namespace stader\model ;
 
-/*
-
-create table if not exists areas
-(
-    area_id     int auto_increment primary key ,
-    name        varchar(255) not null ,
-    description text
-) ;
-
- */
 require_once( dirname( __file__ , 2 ) . '/interfaces/interface.cruddao.php' ) ;
 
 class TableDaoPdo implements ICrudDao

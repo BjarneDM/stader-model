@@ -16,7 +16,7 @@ class Beredskabs extends ObjectsDao
     {   // echo 'class Beredskabs extends ObjectsDao __construct' . \PHP_EOL ;
         // print_r( $args ) ;
 
-        parent::__construct( 'data' , self::$allowedKeys , $args ) ;
+        parent::__construct( 'data' , self::$allowedKeys ) ;
 
         $this->setupData( $args ) ;
 
