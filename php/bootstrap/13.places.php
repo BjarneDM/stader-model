@@ -119,10 +119,7 @@ foreach ( $placeOwners as $username => $area )
     $place->setValues(['place_owner_id' => $placeownerID]) ;
 }
 
-
-
-$allPlaces = new Places() ;
-foreach ( $allPlaces->getAll() as $place ) 
+foreach ( ( new Places() ) as $place ) 
     echo json_encode( $place->getData() , JSON_UNESCAPED_UNICODE ) . \PHP_EOL ;
     unset( $place ) ;
 

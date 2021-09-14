@@ -57,20 +57,9 @@ foreach ( $symbols as $txt => $symbol )
     $thisFlag = new Flag( [ 'text' => $txt , 'unicode' => $symbol ] ) ;
 }   unset( $txt , $symbol ) ;
 
-$alleFlag = new Flags() ;
-foreach ( $alleFlag->getAll() as $flag )
+foreach ( ( new Flags() ) as $flag )
     echo json_encode( $flag->getData() , JSON_UNESCAPED_UNICODE ) . \PHP_EOL ;
     unset( $flag ) ;
-
-echo \PHP_EOL . str_repeat( '-' , 50 ) . \PHP_EOL  . \PHP_EOL ;
-
-if ( $alleFlag->count() > 0 )
-{
-    $alleFlag->reset() ;
-    do {
-        echo json_encode( $alleFlag->current()->getData() , JSON_UNESCAPED_UNICODE ) . \PHP_EOL ;
-    }   while ( $alleFlag->next() ) ;
-}
 
 echo '</pre>' ;
 ?>

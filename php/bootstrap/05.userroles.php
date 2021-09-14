@@ -39,7 +39,6 @@ use \stader\model\{User,Users,URole,URoles,UserRole,UsersRoles} ;
 ( new UsersRoles() )->deleteAll() ;
 
 $brugere = new Users() ;
-$roller  = new URoles() ;
 
 $specUsers =
 [
@@ -47,7 +46,7 @@ $specUsers =
     'admin' => [ 'lani' , 'last' ] 
 ] ;
 
-foreach ( $brugere->getAll() as $user )
+foreach ( $brugere as $user )
 {
     $priv = new UserRole
     (
@@ -73,11 +72,11 @@ foreach ( $specUsers as $level => $users )
     }   unset( $username ) ;
 }   unset( $users , $level ) ;
 
-foreach ( $brugere->getAll() as $user )
+foreach ( $brugere as $user )
 {
         $roller = new UsersRoles( 'user_id' , $user->getData()['id'] ) ;
         $rollerne = [] ;
-        foreach ( $roller->getAll() as $rolle ) 
+        foreach ( $roller as $rolle )
         {
             $rollerne[] = ( new URole( $rolle->getData()['role_id'] ) )->getData()['role'] ;
         }   unset( $rolle ) ;

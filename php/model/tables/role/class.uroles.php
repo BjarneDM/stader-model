@@ -1,6 +1,6 @@
 <?php namespace stader\model ;
 
-class URoles extends ObjectsDao
+class URoles extends ObjectsDaoTest
 {
     public static $allowedKeys = 
         [ 'role'     => 'varchar' , 

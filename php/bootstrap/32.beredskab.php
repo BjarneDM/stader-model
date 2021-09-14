@@ -57,8 +57,7 @@ foreach ( $beredskaber as $beredskab )
     $emergency = new Beredskab( $beredskab ) ;
 } unset( $beredskab ) ;
 
-$allBeredskabs = new Beredskabs() ;
-foreach ( $allBeredskabs->getAll() as $alarm ) 
+foreach ( ( new Beredskabs() ) as $alarm ) 
     echo json_encode( $alarm->getData() , JSON_UNESCAPED_UNICODE ) . \PHP_EOL ;
     unset( $alarm ) ;
 

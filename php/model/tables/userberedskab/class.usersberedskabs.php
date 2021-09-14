@@ -1,6 +1,6 @@
 <?php namespace stader\model ;
 
-class UsersBeredskabs extends ObjectsDao
+class UsersBeredskabs extends ObjectsDaoTest
 {
     public static $allowedKeys = 
         [ 'user_id'      => 'int' ,

@@ -39,12 +39,9 @@ use \stader\model\{User,Users,Beredskab,Beredskabs,UserBeredskab,UsersBeredskabs
 
 ( new UsersBeredskabs() )->deleteAll() ;
 
-$brugere = new Users() ;
-$alarmer = new Beredskabs() ;
-
-foreach ( $brugere->getAll() as $user )
+foreach ( ( new Users() ) as $user )
 {
-    foreach ( $alarmer->getAll() as $alarm )
+    foreach ( ( new Beredskabs() ) as $alarm )
     {
         $harSet = 
             new UserBeredskab
@@ -58,8 +55,7 @@ foreach ( $brugere->getAll() as $user )
     }   unset( $alarm ) ;
 }   unset( $user ) ;
 
-$hvemHarSet = new UsersBeredskabs() ;
-foreach ( $hvemHarSet->getAll() as $harSet )
+foreach ( ( new UsersBeredskabs() ) as $harSet )
 {
     $user  = new User( $harSet->getData()['user_id'] ) ;
     $alarm = new Beredskab( $harSet->getData()['beredskab_id'] ) ;

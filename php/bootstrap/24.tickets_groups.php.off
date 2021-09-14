@@ -63,8 +63,8 @@ foreach ( ( new UGroups() )->getAll() as $group )
     }   unset( $ticketNbr ) ;
 }
 
-$allTicketsGroups = new TicketsGroups() ;
-foreach ( $allTicketsGroups->getAll() as $ticketgroup )
+$allTicketsGroups =  ;
+foreach ( ( new TicketsGroups() ) as $ticketgroup )
 {
     $groupticket = $ticketgroup->getData() ;
     $groupticket['group_id'] = ( new Group( $ticketgroup->getData()['group_id'] ) )->getData()['name'] ;

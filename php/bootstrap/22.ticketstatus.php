@@ -77,8 +77,7 @@ foreach ( $ticketstatuss as $key => $ticketstatus )
     $thisTicketStatus = new TicketStatus( $ticketstatus ) ;
 }   unset( $key , $ticketstatus ) ;
 
-$allTicketStatuses = new TicketStatuses() ;
-foreach ( $allTicketStatuses->getAll() as $ticketstatus )
+foreach ( ( new TicketStatuses() ) as $ticketstatus )
     echo json_encode( $ticketstatus->getData() , JSON_UNESCAPED_UNICODE ) . \PHP_EOL ;
     unset( $ticketstatus , $allTicketStatuses ) ;
 

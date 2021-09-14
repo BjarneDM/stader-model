@@ -74,9 +74,8 @@ $userNames['Support Tekniker']    = [] ;
 
 ( new UsersGroups() )->deleteAll() ;
 
-$allGroups = new UGroups() ;
 // print_r( $allGroups ) ;
-foreach ( $allGroups->getAll() as $group )
+foreach ( ( new UGroups() ) as $group )
 {
     // print_r( $group ) ;
     /*
@@ -135,8 +134,7 @@ foreach ( $allGroups->getAll() as $group )
     }
 }
 
-$user_groups = new UsersGroups() ;
-foreach( $user_groups->getAll() as $user_group )
+foreach( ( new UsersGroups() ) as $user_group )
 {
     $group_user = $user_group->getData() ;
     $user = new User( (int) $user_group->getData()['user_id'] ) ;

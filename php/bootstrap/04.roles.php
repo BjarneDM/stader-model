@@ -47,20 +47,9 @@ foreach ( $roles as $role )
     $thisRole = new URole( $role ) ;
 } unset( $role ) ;
 
-$allRoles = new URoles() ;
-foreach ( $allRoles->getAll() as $role ) 
+foreach ( ( new URoles() ) as $role ) 
     echo json_encode( $role->getData() , JSON_UNESCAPED_UNICODE ) . \PHP_EOL ;
     unset( $role ) ;
-
-echo \PHP_EOL . str_repeat( '-' , 50 ) . \PHP_EOL  . \PHP_EOL ;
-
-if ( $allRoles->count() > 0 )
-{
-    $allRoles->reset() ;
-    do {
-        echo json_encode( $allRoles->current()->getData() , JSON_UNESCAPED_UNICODE ) . \PHP_EOL ;
-    }   while ( $allRoles->next() ) ;
-}
 
 echo '</pre>' ;
 ?>

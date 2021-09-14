@@ -1,6 +1,6 @@
 <?php namespace stader\model ;
 
-class TypeBytes extends ObjectsDao
+class TypeBytes extends ObjectsDaoTest
 {
     public static $allowedKeys = [ 'name' => 'varchar' ] ;
     protected     $class       = '\\stader\\model\\TypeByte' ;

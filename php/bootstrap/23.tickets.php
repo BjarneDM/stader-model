@@ -52,7 +52,7 @@ $tickets =
 // $teknikere = [ 'casp7654'  , 'LarsL' , 'kriskris' , 'MichaleM' , 'toke1254' , 'JanJ' , 'skp-IT' ] ;
 
 $teknikere = [] ;
-foreach ( ( new Users() )->getAll() as $user ) 
+foreach ( ( new Users() ) as $user ) 
     $teknikere[] = $user->getData()['username'] ;
 unset( $teknikere[0] ) ;
 $teknikere[] = null ;

@@ -8,9 +8,7 @@ abstract class ObjectsDaoTest
     private    $functions   = null ;
     protected  $values      = []   ;
     protected  $class       = ''   ;
-    private    $stmt        = null ;
     private    $position    = 0    ;
-    private    $row         = null ;
     
     function __construct ( string $dbType , Array $allowedKeys )
     {   // echo 'abstract class ObjectsDao extends Setup __construct' . \PHP_EOL ;
@@ -104,7 +102,7 @@ abstract class ObjectsDaoTest
     }
 
     public function current() : object
-    { 
+    {
         return $this->getOne( $this->functions->current() ) ;
     }
 

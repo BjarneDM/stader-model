@@ -1,6 +1,6 @@
 <?php namespace stader\model ;
 
-class UGroups extends ObjectsDao
+class UGroups extends ObjectsDaoTest
 {
     public static $allowedKeys = 
         [ 'name'        => 'varchar' , 

@@ -7,10 +7,6 @@ class TableDaoPdo implements ICrudDao
     private $dbh    = null ;
     private $table  = null ;
 
-/* for iterator */
-    private $stmt   = null ;
-    private $row    = null ;
-
     public function __construct ( $connect , $class )
     {   // echo 'class TableDaoPdo implements ICrudDao __construct' . \PHP_EOL ;
         // var_dump( $connect ) ;
@@ -305,10 +301,19 @@ class TableDaoPdo implements ICrudDao
 
     return $rowCount ; }
 
-
 /*
  *  functions for \Iterator
+
+            OK - det viser sig, at for MySQL bliver $cursorOrientation & $cursorOffset i
+                    https://www.php.net/manual/en/pdostatement.fetch.php
+            !totalt! ignoreret [thumbs-down]
+            Endvidere bliver array(PDO::ATTR_CURSOR => PDO::CURSOR_SCROLL) i $dbh->prepare($sql , ... )
+            !også! ignoreret. Der er mao ingen som helt support for cursor.
+            Den oprindelige logik var sund nok - bare en skam at MySQL overhovedet ikke understøtter den
+
  */
+    private $stmt   = null ;
+    private $row    = null ;
 
     public function rewind( $object ) : void
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;

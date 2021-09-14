@@ -56,20 +56,9 @@ foreach ( $groups as $key => $group )
     $activeGroup = new UGroup( $group ) ;
 }   unset( $key , $group ) ;
 
-$allGroups = new UGroups() ;
-foreach ( $allGroups->getAll() as $group )
+foreach ( ( new UGroups() ) as $group )
     echo json_encode( $group->getData() , JSON_UNESCAPED_UNICODE ) . \PHP_EOL ;
     unset( $group ) ;
-
-echo \PHP_EOL . str_repeat( '-' , 50 ) . \PHP_EOL  . \PHP_EOL ;
-
-if ( $allGroups->count() > 0 )
-{
-    $allGroups->reset() ;
-    do {
-        echo json_encode( $allGroups->current()->getData() , JSON_UNESCAPED_UNICODE ) . \PHP_EOL ;
-    }   while ( $allGroups->next() ) ;
-}
 
 echo '</pre>' ;
 ?>

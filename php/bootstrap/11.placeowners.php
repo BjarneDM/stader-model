@@ -79,8 +79,7 @@ foreach ( $users as $key => $user )
     $placeowner = new PlaceOwner( $user ) ;
 }
 
-$allPlaceOwners = new PlaceOwners() ;
-foreach ( $allPlaceOwners->getAll() as $placeowner )
+foreach ( ( new PlaceOwners() ) as $placeowner )
     echo json_encode( $placeowner->getData() , JSON_UNESCAPED_UNICODE ) . \PHP_EOL ;
     unset( $placeowner , $allPlaceOwners ) ;
 

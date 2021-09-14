@@ -55,8 +55,7 @@ foreach ( $areas as $area )
     $thisArea = new Area( $area ) ;
 } unset( $area) ;
 
-$allAreas = new Areas() ;
-foreach ( ( $areasAll = $allAreas->getAll() ) as $area ) 
+foreach ( ( new Areas() ) as $area ) 
     echo json_encode( $area->getData() , JSON_UNESCAPED_UNICODE ) . \PHP_EOL ;
     unset( $area ) ;
 
@@ -66,17 +65,6 @@ $areasAll[1]->setValues(['description'=>'SydLandet']) ;
 $areasAll[2]->setValues(['description'=>'TestVærdi','name'=>'Q']) ;
 ( end( $areasAll ) )->delete() ;
 */
-
-echo \PHP_EOL . str_repeat( '-' , 50 ) . \PHP_EOL  . \PHP_EOL ;
-
-$allAreas = new Areas() ;
-if ( $allAreas->count() > 0 )
-{
-    $allAreas->reset() ;
-    do {
-        echo json_encode( $allAreas->current()->getData() , JSON_UNESCAPED_UNICODE ) . \PHP_EOL ;
-    }   while ( $allAreas->next() ) ;
-}
 
 echo '</pre>' ;
 ?>

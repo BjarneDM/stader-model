@@ -1,13 +1,14 @@
 <?php namespace stader\model ;
 
-abstract class ObjectsDao extends Setup
+abstract class ObjectsDaoTest
+         extends Setup
+         implements \Iterator
 {
-    private           $keysAllowed = []   ;
-    private   static  $functions   = null ;
-    protected         $values      = []   ;
-    protected         $valuesOld   = []   ;
-    protected         $class       = ''   ;
-    protected         $objectIDs   = []   ;
+    private    $keysAllowed = []   ;
+    private    $functions   = null ;
+    protected  $values      = []   ;
+    protected  $class       = ''   ;
+    private    $position    = 0    ;
     
     function __construct ( string $dbType , Array $allowedKeys )
     {   // echo 'abstract class ObjectsDao extends Setup __construct' . \PHP_EOL ;
@@ -17,10 +18,10 @@ abstract class ObjectsDao extends Setup
 
         switch ( self::$connect->getType() )
         {
-            case "mysql"    : self::$functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
-            case "pgsql"    : self::$functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
-            case "sqlite"   : self::$functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
-            case "xml"      : self::$functions = new TableDaoXml( self::$connect , $this->class ) ; break ;
+            case "mysql"    : $this->functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
+            case "pgsql"    : $this->functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
+            case "sqlite"   : $this->functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
+            case "xml"      : $this->functions = new TableDaoXml( self::$connect , $this->class ) ; break ;
             default: throw new \Exception() ;
             // var_dump( self::functions ) ;
         }
@@ -41,12 +42,10 @@ abstract class ObjectsDao extends Setup
         switch ( strtolower( gettype( $args[0] ) ) )
         {
             case 'null' :
-                $this->readAll( $this ) ;
                 break ;
             case 'string' :
                 $this->values[$args[0]] = $args[1] ;
                 $this->check( $this->values ) ;
-                $this->readAll( $this ) ;
                 break ;
             case 'array' :
                 if ( count( $args[0] ) !== count( $args[1] ) )
@@ -55,7 +54,6 @@ abstract class ObjectsDao extends Setup
                     $this->values[$key] = $args[$i] ;
                     unset( $i , $key ) ;
                 $this->check( $this->values ) ;
-                $this->readAll( $this ) ;
                 break ;
             default :
                 throw new \Exception( gettype( $args[0] ) . " : forkert input type [null,string,array]" ) ;
@@ -77,35 +75,48 @@ abstract class ObjectsDao extends Setup
         }
     }
 
-    protected function readAll( $object ) : void
-    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        // print_r( $object ) ;
+// https://www.php.net/manual/en/class.iterator.php
 
-        $this->objectIDs = self::$functions->readAll( $object ) ;
-        reset( $this->objectIDs ) ;
-    }
+    private function getOne( int $index ) { return new $this->class( $index ) ; }
 
-    public function count()   : int { return count( $this->objectIDs ) ; }
-    /*
-     *  dette her virker ikke
-     *  det er selvfølgelig lettere irriterende, at type hinting må slås fra
-    public function reset()   : $this->class | false { return $this->testOne( (int)   reset( $this->objectIDs ) ) ; }
-     */
-    public function reset()   { return $this->testOne( (int)   reset( $this->objectIDs ) ) ; }
-    public function prev()    { return $this->testOne( (int)    prev( $this->objectIDs ) ) ; }
-    public function current() { return $this->testOne( (int) current( $this->objectIDs ) ) ; }
-    public function next()    { return $this->testOne( (int)    next( $this->objectIDs ) ) ; }
-    public function end()     { return $this->testOne( (int)     end( $this->objectIDs ) ) ; }
-
-    private function testOne( int $index )
+    public function rewind() : void 
     {
-        try {
-            return $this->getOne( $index ) ;
-        } catch ( \Exception ) { return false ; }
+        $this->functions->rewind( $this ) ;
+        $this->position = 0 ;
     }
 
-    public function getOne( int $index ) { return new $this->class( $index ) ; }
+    public function count() : int
+    {
+        return $this->functions->count() ;
+    }
 
+    public function next() : void 
+    {
+        $this->row = $this->functions->next() ;
+        ++$this->position ; 
+    }
+
+    public function valid() : bool
+    {
+        return $this->functions->valid() ;
+    }
+
+    public function current() : object
+    {
+        return $this->getOne( $this->functions->current() ) ;
+    }
+
+    public function key() : int | false
+    {
+        return $this->functions->key() ;
+    }
+
+    public function deleteAll() : void
+    {
+        $this->functions->deleteAll( $this ) ;
+    }
+    
+/*
     public function getAll() : array 
     {
         $allObjects = [] ;
@@ -114,25 +125,11 @@ abstract class ObjectsDao extends Setup
             $allObjects[] = new $this->class( (int) $oneID ) ;
         }
     return  $allObjects ; }
+ */
 
-    public function deleteOne( $objectID )
-    {
-            ( new $this->class( $objectID ) )->delete() ;
-            unset( $this->objectIDs[ array_search( $objectID , $this->objectIDs ) ] ) ;
-    }
-
-    public function deleteAll()
-    {
-        foreach ( $this->objectIDs as $key => $objectID )
-        {
-            $this->deleteOne( $objectID ) ;
-        }   unset( $key , $objectID ) ;
-    }
-    
     public function getData()   { return $this->values ; }
     public function getValues() { return array_values( $this->values ) ; }
     public function getKeys()   { return array_keys( $this->values ) ; }
-
 }
 
 ?>

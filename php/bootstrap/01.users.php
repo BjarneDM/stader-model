@@ -110,8 +110,7 @@ foreach ( $users as $key => $user )
     print_r( $thisUser->getData() ) ;
 }   unset( $key , $user ) ;
 
-$allUsers = new Users() ;
-foreach ( $allUsers as $user )
+foreach ( ( new Users() ) as $user )
     echo json_encode( $user->getData() , JSON_UNESCAPED_UNICODE ) . \PHP_EOL ;
     unset( $user ) ;
 
