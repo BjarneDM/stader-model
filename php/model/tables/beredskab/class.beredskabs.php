@@ -1,6 +1,6 @@
 <?php namespace stader\model ;
 
-class Beredskabs extends ObjectsDaoTest
+class Beredskabs extends ObjectsDao
 {
     public static $allowedKeys = 
         [ 'message'       => 'text'    , 

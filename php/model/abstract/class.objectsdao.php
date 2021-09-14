@@ -1,6 +1,6 @@
 <?php namespace stader\model ;
 
-abstract class ObjectsDaoTest
+abstract class ObjectsDao
          extends Setup
          implements \Iterator
 {

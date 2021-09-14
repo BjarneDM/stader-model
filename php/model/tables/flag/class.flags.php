@@ -1,6 +1,6 @@
 <?php namespace stader\model ;
 
-class Flags extends ObjectsDaoTest
+class Flags extends ObjectsDao
 {
     public static $allowedKeys = 
         [ 'text'    => 'varchar' , 
