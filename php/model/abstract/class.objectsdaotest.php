@@ -4,13 +4,13 @@ abstract class ObjectsDaoTest
          extends Setup
          implements \Iterator
 {
-    private           $keysAllowed = []   ;
-    private   static  $functions   = null ;
-    protected         $values      = []   ;
-    protected         $class       = ''   ;
-    private           $stmt        = null ;
-    private           $position    = 0    ;
-    private           $row         = null ;
+    private    $keysAllowed = []   ;
+    private    $functions   = null ;
+    protected  $values      = []   ;
+    protected  $class       = ''   ;
+    private    $stmt        = null ;
+    private    $position    = 0    ;
+    private    $row         = null ;
     
     function __construct ( string $dbType , Array $allowedKeys )
     {   // echo 'abstract class ObjectsDao extends Setup __construct' . \PHP_EOL ;
@@ -20,10 +20,10 @@ abstract class ObjectsDaoTest
 
         switch ( self::$connect->getType() )
         {
-            case "mysql"    : self::$functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
-            case "pgsql"    : self::$functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
-            case "sqlite"   : self::$functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
-            case "xml"      : self::$functions = new TableDaoXml( self::$connect , $this->class ) ; break ;
+            case "mysql"    : $this->functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
+            case "pgsql"    : $this->functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
+            case "sqlite"   : $this->functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
+            case "xml"      : $this->functions = new TableDaoXml( self::$connect , $this->class ) ; break ;
             default: throw new \Exception() ;
             // var_dump( self::functions ) ;
         }
@@ -83,56 +83,42 @@ abstract class ObjectsDaoTest
 
     public function rewind() : void 
     {
-        $this->stmt = self::$functions->readAllIterator( $this ) ;
-        $this->row = $this->stmt->fetch( \PDO::FETCH_ASSOC ) ;
+        $this->functions->rewind( $this ) ;
         $this->position = 0 ;
     }
 
-    public function count() { $this->stmt->rowCount() ; }
-
-    public function next()   : void 
+    public function count() : int
     {
-        $this->row = $this->stmt->fetch( \PDO::FETCH_ASSOC ) ;
+        return $this->functions->count() ;
+    }
+
+    public function next() : void 
+    {
+        $this->row = $this->functions->next() ;
         ++$this->position ; 
     }
 
-    public function valid()  : bool
+    public function valid() : bool
     {
-        if ( $this->row === false )
-             { return false ; } 
-        else { return true ; }
+        return $this->functions->valid() ;
     }
 
-    public function current()
+    public function current() : object
     { 
-        return( $this->getOne( (int) $this->row['id'] ) ) ;
+        return $this->getOne( $this->functions->current() ) ;
     }
 
     public function key() : int | false
     {
-        if ( $this->row === false )
-             { return false ; } 
-        else { return $this->getOne( (int) $this->row['id'] ) ; }
+        return $this->functions->key() ;
     }
 
-    public function deleteOne( $objectID )
+    public function deleteAll() : void
     {
-            ( new $this->class( $objectID ) )->delete() ;
-    }
-
-    public function deleteAll()
-    {
-        $this->position = 0 ;
-        $this->stmt = self::$functions->readAllIterator( $this ) ;
-        while ( $row = $this->stmt->fetch( \PDO::FETCH_ASSOC ) )
-        {
-            $this->deleteOne( (int) $row['id'] ) ;
-        }   unset( $row ) ;
+        $this->functions->deleteAll( $this ) ;
     }
     
 /*
-    public function count()  : int {}
-
     public function getAll() : array 
     {
         $allObjects = [] ;
@@ -141,8 +127,6 @@ abstract class ObjectsDaoTest
             $allObjects[] = new $this->class( (int) $oneID ) ;
         }
     return  $allObjects ; }
-
-
  */
 
     public function getData()   { return $this->values ; }

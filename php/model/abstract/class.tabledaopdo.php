@@ -4,8 +4,12 @@ require_once( dirname( __file__ , 2 ) . '/interfaces/interface.cruddao.php' ) ;
 
 class TableDaoPdo implements ICrudDao
 {
-    private        $dbh     = null ;
-    private        $table   = null ;
+    private $dbh    = null ;
+    private $table  = null ;
+
+/* for iterator */
+    private $stmt   = null ;
+    private $row    = null ;
 
     public function __construct ( $connect , $class )
     {   // echo 'class TableDaoPdo implements ICrudDao __construct' . \PHP_EOL ;
@@ -13,7 +17,7 @@ class TableDaoPdo implements ICrudDao
         // var_dump( $class ) ;
         // echo 'connection type : ' . $connect->getType()  . \PHP_EOL ;
 
-        $this->dbh = $connect->getConn() ;
+        $this->dbh   = $connect->getConn() ;
         $this->table = explode( '\\' , $class ) ;
         $this->table = strtolower( end( $this->table ) ) ;
 
@@ -40,7 +44,7 @@ class TableDaoPdo implements ICrudDao
                 $dataType = \PDO::PARAM_NULL ;
                 break ;
             default :
-                throw new \Exception( $dataType . ' : unknow PDO dataType') ;
+                throw new \Exception( $valType . ' : unknow PDO dataType') ;
         } 
     return $dataType ; }
 
@@ -200,13 +204,6 @@ class TableDaoPdo implements ICrudDao
         }
     return $ids ; }
 
-    public function readAllIterator( $object )
-    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        // print_r( $object ) ;
-
-        $stmt = $this->readData( $object ) ;
-    return $stmt ; }
-
     /*  Af en eller anden mærkelig grund fungere dette ikke ?!?
      *      named        parametre fungerer for count( $object->getData() < 2
      *  men positionelle parametre fungerer altid
@@ -307,6 +304,63 @@ class TableDaoPdo implements ICrudDao
         $stmt = null ;
 
     return $rowCount ; }
+
+
+/*
+ *  functions for \Iterator
+ */
+
+    public function rewind( $object ) : void
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        // print_r( $object ) ;
+
+        $this->stmt = $this->readData( $object ) ;
+        $this->row  = $this->stmt->fetch( \PDO::FETCH_ASSOC ) ;
+    }
+
+    public function count() : int
+    {
+        return $this->stmt->rowCount() ;
+    }
+
+    public function next() : void
+    {
+        $this->row = $this->stmt->fetch( \PDO::FETCH_ASSOC ) ;
+    }
+
+    public function valid()  : bool
+    {
+        if ( $this->row === false )
+             { return false ; } 
+        else { return true ; }
+    }
+
+    public function current() : int
+    { 
+        return (int) $this->row['id'] ;
+    }
+
+    public function key() : int | false
+    {
+        if ( $this->row === false )
+             { return false ; } 
+        else { return (int) $this->row['id'] ; }
+    }
+
+    public function deleteAll( $object ) : void
+    {
+        $sql  = 'delete from ' . $this->table . ' ' ;
+        $sql .= 'where id = :id' ;
+        $stmtHere = $this->dbh->prepare( $sql ) ;
+
+        $this->stmt = $this->readData( $object ) ;
+        while ( $rowHere = $this->stmt->fetch( \PDO::FETCH_ASSOC ) )
+        {
+            $stmtHere->bindParam( ':id' , $rowHere['id'] , \PDO::PARAM_INT ) ;
+            $stmtHere->execute() ;
+        }   unset( $rowHere ) ;
+    }
+
 
     public function __destruct() 
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
