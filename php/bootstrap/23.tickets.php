@@ -1,4 +1,4 @@
-<?php   namespace stader\bootstrap ;
+<?php   namespace Stader\Bootstrap ;
 
 echo '<pre>' ;
 echo \PHP_EOL . str_repeat( '-' , 50 ) . \PHP_EOL . '-> entering : ' . basename( __file__ ) . \PHP_EOL ;
@@ -27,8 +27,12 @@ create table tickets
  *  setup
  */
 
-require_once( dirname( __file__ , 2 ) . '/model/class.classloader.php' ) ;
-use \stader\model\{User,Users,Ticket,Tickets,Area,Place,TicketStatus} ;
+require_once( dirname( __dir__ ) . '/classloader.php' ) ;
+use \Stader\Model\Tables\User\{User,Users} ;
+use \Stader\Model\Tables\Ticket\{Ticket,Tickets} ;
+use \Stader\Model\Tables\Area\{Area} ;
+use \Stader\Model\Tables\Place\{Place} ;
+use \Stader\Model\Tables\TicketStatus\{TicketStatus} ;
 
 /*
  *  data

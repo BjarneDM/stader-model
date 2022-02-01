@@ -1,9 +1,9 @@
-<?php  namespace stader\control ;
+<?php  namespace Stader\Control ;
 header( 'Content-Type: application/json' ) ;
 
-set_include_path( '/Volumes/Bjarne/Sites/info/mathiesen/zbc/stader/php' ) ;
-require_once( dirname( __file__ , 2 ) . '/rpc/class.jsonrpc.php' ) ;
-use \stader\rpc\{JsonRPC} ;
+set_include_path( dirname( __DIR__ ) . '/php' ) ;
+require_once( 'classloader.php' ) ;
+use \Stader\Rpc\{JsonRPC} ;
 
 $input = [] ;
 

@@ -1,7 +1,9 @@
-#!/opt/local/bin/php
-<?php namespace stader\sql ;
+#!/usr/bin/env php
+<?php namespace Stader\SQL ;
 
-if ( in_array( $argv[1], [ '-h' , '--help' ] ) )
+if (    in_array( $argv[1] , [ '-h' , '--help' ] ) 
+     || $argc != 2
+   )
 {   echo <<<'HELP'
 /*
  *  $argv[1] : output type
@@ -20,14 +22,13 @@ set_include_path( implode( ':' , $include_paths ) ) ;
 // echo 'IncludePaths : ' . \PHP_EOL ;
 // print_r( explode( ':' , get_include_path() ) ) ;
 
-require_once(  dirname( __file__ , 2 ) . '/php/model/class.classloader.php' ) ;
-
+require_once(  dirname( __dir__ ) . '/php/classloader.php' ) ;
+use \Stader\Model\Connect\Setup ;
 
 $format = ( in_array( $argv[1] , [ 'json' , 'csv' ] ) ) ?: 'json' ;
 
-use \stader\model\{Setup} ;
 
-$dbh = ( new Setup() )->getDBH() ;
+$dbh = ( new Setup('data') )->getDBH() ;
 
 $sql  = "select * from {$argv[2]} " ;
 $stmt = $dbh->prepare( $sql ) ;

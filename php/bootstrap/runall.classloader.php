@@ -1,6 +1,4 @@
-<?php   namespace stader\bootstrap ;
-
-require_once( dirname( __file__ , 2 ) . '/model/class.classloader.php' ) ;
+<?php   namespace Stader\Bootstrap ;
 
 chdir( __dir__ ) ;
 $phpFiles = glob( '[0-9][0-9].*.php' ) ;

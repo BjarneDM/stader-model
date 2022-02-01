@@ -1,9 +1,8 @@
-<?php   namespace stader\bootstrap ;
+<?php   namespace Stader\Bootstrap ;
 
 echo \PHP_EOL . str_repeat( '-' , 50 ) . \PHP_EOL . '-> entering : ' . basename( __file__ ) . \PHP_EOL ;
 
-
-require_once( dirname( __file__ , 2 ) . '/model/class.classloader.php' ) ;
+require_once( dirname( __dir__ ) . '/classloader.php' ) ;
 
 /*
 
@@ -27,7 +26,8 @@ create table if not exists ticket_status
  *  setup
  */
 
-use \stader\model\{TicketStatuses,TicketStatus,TypeBytes,TypeByte} ;
+use \Stader\Model\Tables\TicketStatus\{TicketStatuses,TicketStatus} ;
+use \Stader\Model\Tables\TypeByte\{TypeByte} ;
 
 /*
  *  data

@@ -3,8 +3,6 @@
 echo '<pre>' ;
 echo \PHP_EOL . str_repeat( '-' , 50 ) . \PHP_EOL . '-> entering : ' . basename( __file__ ) . \PHP_EOL ;
 
-
-
 /*
 
 create table tickets_groups
@@ -27,8 +25,10 @@ create table tickets_groups
  *  setup
  */
 
-require_once( dirname( __file__ , 2 ) . '/model/class.classloader.php' ) ;
-use \stader\model\{UGroup,UGroups,Ticket,Tickets,TicketGroup,TicketsGroups} ;
+require_once( dirname( __dir__ ) . '/classloader.php' ) ;
+use \Stader\Model\Tables\Group\{UGroup,UGroups} ;
+use \Stader\Model\Tables\Ticket\{Ticket,Tickets} ;
+use \Stader\Model\Tables\TicketGroup\{TicketGroup,TicketsGroups} ;
 
 /*
  *  data

@@ -1,13 +1,13 @@
-<?php namespace stader\programmer ;
+<?php namespace Stader\programmer ;
 
-   $include_paths[] =  dirname( __file__ , 3) . '/php' ;
+   $include_paths[] =  dirname( __dir__ ) ;
 // $include_paths[] =  '/Volumes/Bjarne/Sites/info/mathiesen/zbc/cdn/php' ;
 // $include_paths[] =  '.' ;
 // $include_paths[] =  '/Volumes/Bjarne/Sites/info/mathiesen/cdn/_/php' ;
 set_include_path( implode( ':' , $include_paths ) ) ;
 
 // echo 'IncludePaths : ' . \PHP_EOL ;
-print_r( explode( ':' , get_include_path() ) ) ; exit ;
+// print_r( explode( ':' , get_include_path() ) ) ; exit ;
 
 $folder = 'csvFiles' ;
 if (    ( ! is_dir( $folder ) ) 
@@ -23,14 +23,13 @@ $xlsx =
 $type = ( in_array( $argv[1] , array_keys( $xlsx ) ) ) ? $argv[1] : 'logs' ;
 $classType = $xlsx[ $type ] ;
 
-require_once( dirname( __file__ , 2 ) . '/control/class.classloader.php' ) ;
-require_once( dirname( __file__ , 2 ) . '/model/class.classloader.php' ) ;
+require_once( dirname( __DIR__ ) . '/classloader.php' ) ;
 
-use \stader\model\{MInstances} ;
+use \Stader\Model\Instance\{MInstances} ;
+
+require_once( dirname( __DIR__ ) . '/vendor/autoload.php' ) ;
 
 // https://github.com/PHPOffice/PhpSpreadsheet
-require_once( dirname( __file__ , 2 ) . '/model/phpspreadsheet/autoload.php' ) ;
-
 use PhpOffice\PhpSpreadsheet\Spreadsheet ;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx ;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet ;
@@ -42,7 +41,7 @@ $classes = MInstances::${$classType} ;
 foreach ( $classes as $thisClass )
 {
 
-    $instances = MInstances::getObjects( $thisClass ) ;
+    $instances = MInstances::getObject( $thisClass ) ;
 
     $fileName = "{$folder}/dump_{$thisClass}.csv" ;
     if ( ! $fileHandle = fopen( $fileName , "w" )  ) 
@@ -52,7 +51,7 @@ foreach ( $classes as $thisClass )
     $spreadsheet->addSheet( $myWorkSheet , 0 ) ;
 
     $headers = [] ;
-    foreach ( $instances->getAll() as $classInstance )
+    foreach ( $instances as $classInstance )
     {
         if ( empty( $headers ) ) 
         {

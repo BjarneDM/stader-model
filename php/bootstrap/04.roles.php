@@ -1,4 +1,4 @@
-<?php   namespace stader\bootstrap ;
+<?php   namespace Stader\Bootstrap ;
 
 echo '<pre>' ;
 echo \PHP_EOL . str_repeat( '-' , 50 ) . \PHP_EOL . '-> entering : ' . basename( __file__ ) . \PHP_EOL ;
@@ -22,8 +22,8 @@ create table if not exists urole
  *  setup
  */
 
-require_once( dirname( __file__ , 2 ) . '/model/class.classloader.php' ) ;
-use \stader\model\{URole,URoles} ;
+require_once( dirname( __dir__ ) . '/classloader.php' ) ;
+use \Stader\Model\Tables\Role\{URole,URoles} ;
 
 /*
  *  data

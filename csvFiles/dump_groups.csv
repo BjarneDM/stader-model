@@ -1,7 +1,0 @@
-group_id,name,description
-1,BackOffice,Admin
-2,Tlf.Sup,"Fjernsupport (modtager af Fejlmeldinger)"
-3,Klargøring,"Pakke udstyr i basen"
-4,Transport,"Sørger for at udstyr køres fra base til stadeplads"
-5,"Runderings Tekniker",
-6,"Support Tekniker","Løser fejl/opgaver (assistent til Rundereings Tekniker)"
