@@ -164,7 +164,7 @@ abstract class ObjectDao extends Setup
         $this->notify( 'update' ) ;
     return self::$functions->update( $object , array_diff( $this->values , $this->valuesOld ) ) ; }
 
-    public function deleteThis( $object ) : int
+    protected function deleteThis( $object ) : int
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
 
         $rowCount = self::$functions->delete( $object ) ;
@@ -225,6 +225,10 @@ abstract class ObjectDao extends Setup
         }
     }
 
+    /*
+     *  denne skal udfyldes i de aktuelle class
+     *  der har brug for dette
+     */
     protected function notify ( $action ) {}
 
 }

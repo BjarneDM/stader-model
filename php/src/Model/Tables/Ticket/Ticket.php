@@ -42,7 +42,7 @@ class Ticket extends ObjectDao
           'assigned_user_id'  => 'int'     , 
           'active'            => 'bool'
         ] ;
-    protected   $class  = '\\stader\\model\\Tables\\Ticket\\Ticket' ;
+    protected   $class  = '\\Stader\\Model\\Tables\\Ticket\\Ticket' ;
 
     function __construct ( ...$args )
     {   // echo 'class Ticket extends ObjectDao __construct' . \PHP_EOL ;

@@ -8,7 +8,7 @@
  */
 
 require_once( dirname( __DIR__ , 2 ) . '/classloader.php' ) ;
-use \Stader\Model\Tables\Ticket\{Tickets} ;
+use \Stader\Model\Tables\Ticket\{Ticket,Tickets} ;
 use \Stader\Model\Tables\User\{UserLogin,User} ;
 use \Stader\Model\RandomStr ;
 
@@ -119,6 +119,10 @@ class JsonRPC
 
             case 'tickets' :
                 $this->methodTickets( $action ) ;
+                break ;
+
+            case 'ticket' :
+                $this->methodTicket( $action ) ;
                 break ;
 
             default :
@@ -286,5 +290,70 @@ class JsonRPC
  *  end :
  *  $method case tickets
  */
+
+
+/*
+ *  start :
+ *  $method case ticket
+ */
+    private function methodTicket( string $action = null )
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+
+        /*
+         *  de basale CRUD funktioner på en ticket
+         */
+
+        if ( ! $this->checkAuth() ) return ;
+
+        $this->jsonData['result']['authstring'] = session_id() ;
+        $this->user = new User( 'username' , $_SESSION['username'] ) ;
+        $this->jsonData['result']['user'] =
+        [
+            'username' => $this->user->getData()['username'] ,
+            'id'  => $this->user->getData()['id']
+        ] ;
+
+        switch ( $action )
+        {
+            case 'create' :
+                $ticket = new Ticket( $this->jsonData['params']['values'] ) ;
+                $this->jsonData['result']['action'] = $action ;
+                $this->jsonData['result']['ticket'] = $ticket->getData() ;            
+                break ;
+            case 'read' :
+                $ticket = new Ticket( $this->jsonData['params']['id'] ) ;
+                $this->jsonData['result']['action'] = $action ;
+                $this->jsonData['result']['ticket'] = $ticket->getData() ;            
+                break ;
+            case 'update' :
+                $ticket = new Ticket( $this->jsonData['params']['id'] ) ;
+                $ticket->setValues( $this->jsonData['params']['values'] ) ;
+                $this->jsonData['result']['action'] = $action ;
+                $this->jsonData['result']['ticket'] = $ticket->getData() ;            
+                break ;
+            case 'delete' :
+                $ticket = new Ticket( $this->jsonData['params']['id'] ) ;
+                $this->jsonData['result']['ticket'] = $ticket->getData() ;            
+                $ticket->delete() ;
+                $this->jsonData['result']['action'] = $action ;
+                break ;
+            default :
+                $this->setError(  
+                    $this->jsonData['id'] ,
+                    [
+                        'code'   => -2000 ,
+                        'message' => "jsonrpc ticket/{$action} not supported" ,
+                        'data'    => ''
+                    ] 
+                ) ;
+                break ;
+        }
+
+    }
+/*
+ *  end :
+ *  $method case ticket
+ */
+
 }
 ?>

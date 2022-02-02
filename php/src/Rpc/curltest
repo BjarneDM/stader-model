@@ -25,14 +25,10 @@ php index.html '<jsonrpc-values>'
     }
 }
 
+    -d '{"jsonrpc":"2.0","id":1,"method":"ticket/read","params":{"authstring":"9eed59a2d68f5b31befe48f9080c39ec","id":7}}'
 
-    -d '{"jsonrpc":"2.0","id":1,"method":"login","params":{"username":"mich","passwd":"baqXw32u"}}' \
-    -d '{"jsonrpc":"2.0","id":1,"method":"tickets","params":{"authstring":"321d550c193ccddb9a5a0e9666a2f2dd"}}' \
 
-    -d '{"jsonrpc":"2.0","id":1,"method":"login","params":{"username":"last","passwd":"ayuTZlQc"}}' \
-    -d '{"jsonrpc":"2.0","id":1,"method":"tickets","params":{"authstring":"89b3a38dcd67d5f1d1e12139eea9a8e5"}}' \
-
-    -d '{"jsonrpc":"2.0","id":1,"method":"devices/add","params":{"name":"Philipp PC","type":"pc","id":1}}' \
+    -d '{"jsonrpc":"2.0","id":1,"method":"devices/add","params":{"name":"Philipp PC","type":"pc","id":1}}'
     -d '[{"jsonrpc":"2.0", "id":1, "method":"test", "params":{"p1": "one", "p2": "two"}},{"jsonrpc":"2.0", "id":2, "method":"test", "params":{"p3": "three", "p4": "four"}}]' \
 
 https://www.phpclasses.org/package/10687-PHP-Handle-to-HTTP-requests-in-JSON-RPC-v2-0-format.html
