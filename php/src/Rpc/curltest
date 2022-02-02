@@ -26,6 +26,8 @@ php index.html '<jsonrpc-values>'
 }
 
     -d '{"jsonrpc":"2.0","id":1,"method":"ticket/read","params":{"authstring":"9eed59a2d68f5b31befe48f9080c39ec","id":7}}'
+    -d '{"jsonrpc":"2.0","id":1,"method":"ticket/update","params":{"authstring":"9eed59a2d68f5b31befe48f9080c39ec","id":7,"values":{"description":"test af opdatering"}}}'
+    -d '{"jsonrpc":"2.0","id":1,"method":"ticket/delete","params":{"authstring":"9eed59a2d68f5b31befe48f9080c39ec","id":7}}'
 
 
     -d '{"jsonrpc":"2.0","id":1,"method":"devices/add","params":{"name":"Philipp PC","type":"pc","id":1}}'
