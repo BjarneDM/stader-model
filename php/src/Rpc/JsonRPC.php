@@ -274,7 +274,7 @@ class JsonRPC
             {
                 $aUserID = $a['assigned_user_id'] ;
                 $bUserID = $b['assigned_user_id'] ;
-                if ( $aUserID == $this->user->getData()['user_id'] ) return -1 ;
+                if ( $aUserID == $this->user->getData()['id'] ) return -1 ;
                 if ( $aUserID == $bUserID ) return  0 ;
                 return 1 ;
             }
