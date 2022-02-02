@@ -1,4 +1,6 @@
 <?php  namespace Stader\Control ;
+ob_start() ;
+error_reporting( E_ERROR ) ;
 header( 'Content-Type: application/json' ) ;
 
 set_include_path( dirname( __DIR__ ) . '/php' ) ;
@@ -20,4 +22,4 @@ foreach ( $input as $jsonData )
 
 echo implode( \PHP_EOL .  ',' . \PHP_EOL , $response ) ;
 
-?>
+ob_end_flush() ; ?>

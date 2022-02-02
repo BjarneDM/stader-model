@@ -1,7 +1,14 @@
 <?php   namespace Stader\Rpc ;
 
+/*
+ *  referencer :
+ *  ----------
+ *  https://www.phpclasses.org/package/10687-PHP-Handle-to-HTTP-requests-in-JSON-RPC-v2-0-format.html
+ *  https://blog.heckel.io/2016/01/05/php-json-rpc-api-with-auth-validation-logging/
+ */
+
 require_once( dirname( __DIR__ , 2 ) . '/classloader.php' ) ;
-use \Stader\Model\Tables\Ticket\{Ticket,Tickets} ;
+use \Stader\Model\Tables\Ticket\{Tickets} ;
 use \Stader\Model\Tables\User\{UserLogin,User} ;
 use \Stader\Model\RandomStr ;
 
@@ -111,7 +118,7 @@ class JsonRPC
                 break ;
 
             case 'tickets' :
-                $this->methodTickets() ;
+                $this->methodTickets( $action ) ;
                 break ;
 
             default :
@@ -126,53 +133,6 @@ class JsonRPC
                 break ;
         }
         unset( $this->jsonData['params'] , $this->jsonData['method'] ) ;
-    }
-
-    private function methodLogin()
-    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-
-        $user = $this->login( $this->jsonData['params']['username'] , $this->jsonData['params']['passwd'] ) ;
-        if ( is_null( $user ) )
-        {
-            $this->setError(  
-                $this->jsonData['id'] ,
-                [
-                    'code'   => -2800 ,
-                    'message' => "login fejlede" ,
-                    'data'    => ''
-                ] 
-            ) ;
-        return ; }
-
-        /*
-         *  Dette her
-         *  1)  giver altid en ny session_id v/ login
-         *  2)  muliggør at man kan logge flere brugere ind i samme session 
-         *      & de får forskellige session_id
-         *
-         *  Problem :
-         *      hvis man logger den samme bruger ind flere gange
-         *      vil denne have flere aktive session_id
-         *      indtil php selv rydder op i gamle sessions
-         */
-        session_write_close() ;
-        session_id( ( new RandomStr( [ 'length' => 32 , 'ks' => 5 ] ) )->current() ) ;
-        session_start() ;
-        $_SESSION['username'] = $user->getData()['username'] ;
-        $this->jsonData['result']['authstring'] = session_id() ;
-        $this->jsonData['result']['user']       = $user->getData() ;
-
-    }
-
-    private function login( $login , $password )
-    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        // print_r( [ $login , $password ] ) ;
-
-        $user = new UserLogin( [ 'username' => $login , 'passwd' => $password ] ) ;
-        if ( is_null( $user->getData() ) ) 
-            { return null  ; }
-        else
-            { return $user ; }
     }
 
     private function checkAuth()
@@ -209,5 +169,122 @@ class JsonRPC
     
     return $checkAuth ; }
 
+/*
+ *  start :
+ *  $method case login
+ */
+    private function methodLogin()
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+
+        function login( $login , $password )
+        {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+            // print_r( [ $login , $password ] ) ;
+
+            $user = new UserLogin( [ 'username' => $login , 'passwd' => $password ] ) ;
+            if ( is_null( $user->getData() ) ) 
+                { return null  ; }
+            else
+                { return $user ; }
+        }
+
+        $user = login( $this->jsonData['params']['username'] , $this->jsonData['params']['passwd'] ) ;
+        if ( is_null( $user ) )
+        {
+            $this->setError(  
+                $this->jsonData['id'] ,
+                [
+                    'code'   => -2800 ,
+                    'message' => "login fejlede" ,
+                    'data'    => ''
+                ] 
+            ) ;
+        return ; }
+
+        /*
+         *  Dette her
+         *  1)  giver altid en ny session_id v/ login
+         *  2)  muliggør at man kan logge flere brugere ind i samme session 
+         *      & de får forskellige session_id
+         *
+         *  Problem :
+         *      hvis man logger den samme bruger ind flere gange
+         *      vil denne have flere aktive session_id
+         *      indtil php selv rydder op i gamle sessions
+         */
+        session_write_close() ;
+        session_id( ( new RandomStr( [ 'length' => 32 , 'ks' => 5 ] ) )->current() ) ;
+        session_start() ;
+        $_SESSION['username'] = $user->getData()['username'] ;
+        $this->jsonData['result']['authstring'] = session_id() ;
+        $this->jsonData['result']['user']       = $user->getData() ;
+
+    }
+/*
+ *  end :
+ *  $method case login
+ */
+
+/*
+ *  start :
+ *  $method case tickets
+ */
+    private function methodTickets( string $action = null )
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+
+        /*
+         *  Returnerer alle tickets
+         *  m/ auth user's tickets listet 1st
+         *  Unassigned tickets står pt sidst i listen
+         */
+
+        if ( ! $this->checkAuth() ) return ;
+
+        $this->jsonData['result']['authstring'] = session_id() ;
+        $this->user = new User( 'username' , $_SESSION['username'] ) ;
+        $this->jsonData['result']['user'] =
+        [
+            'username' => $this->user->getData()['username'] ,
+            'id'  => $this->user->getData()['id']
+        ] ;
+
+        $tickets = new Tickets() ;
+        $jsonTickets = [] ;
+
+        switch ( $action )
+        {
+            case 'mine' :
+                foreach ( $tickets as $ticket )
+                {
+                    if ( $ticket->getData()['assigned_user_id'] === $this->user->getData()['id'] )
+                        $jsonTickets[] = $ticket->getData() ;
+                }
+                break ;
+            default :
+                foreach ( $tickets as $ticket )
+                {
+                    $jsonTickets[] = $ticket->getData() ;
+                }
+                break ;
+        }
+
+        usort
+        ( 
+            $jsonTickets ,
+            function ( $a , $b )
+            {
+                $aUserID = $a['assigned_user_id'] ;
+                $bUserID = $b['assigned_user_id'] ;
+                if ( $aUserID == $this->user->getData()['user_id'] ) return -1 ;
+                if ( $aUserID == $bUserID ) return  0 ;
+                return 1 ;
+            }
+        ) ;
+        $this->jsonData['result']['tickets'] = $jsonTickets ;                
+
+    }
+/*
+ *  end :
+ *  $method case tickets
+ */
 }
 ?>

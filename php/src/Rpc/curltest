@@ -6,7 +6,24 @@ curl \
 
 exit
 
-{"jsonrpc":"2.0","id":1,"result":{"authstring":"89b3a38dcd67d5f1d1e12139eea9a8e5","user":{"user_id":1,"name":"Michael","surname":"","phone":"D","username":"mich","passwd":"$2y$04$fPajDVseQvv8NRFqHJT0JOgUrVKeLgHLlrlfSGrM6gIUkNviildtG","email":"mich@zbc.dk"}}}bjarne@Pro15 11:09:24 ~/Sites/info/mathiesen/zbc/stader/rpc
+php index.html '<jsonrpc-values>'
+
+{
+    "jsonrpc": "2.0",
+    "id": 1,
+    "result": {
+        "authstring": "81390b628681724d4b3dd965b88a9798",
+        "user": {
+            "id": 2,
+            "name": "Lars",
+            "surname": "Starbech",
+            "phone": "1334 8864",
+            "username": "last",
+            "passwd": "$2y$04$JACSB26cKh3wflvFgRr.MerGclIEMSkoUlZkfZhpZxm4v87x.oLme",
+            "email": "last@example.com"
+        }
+    }
+}
 
 
     -d '{"jsonrpc":"2.0","id":1,"method":"login","params":{"username":"mich","passwd":"baqXw32u"}}' \

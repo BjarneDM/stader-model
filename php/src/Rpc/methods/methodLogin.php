@@ -1,7 +1,18 @@
     private function methodLogin()
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
 
-        $user = $this->login( $this->jsonData['params']['username'] , $this->jsonData['params']['passwd'] ) ;
+        function login( $login , $password )
+        {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+            // print_r( [ $login , $password ] ) ;
+
+            $user = new UserLogin( [ 'username' => $login , 'passwd' => $password ] ) ;
+            if ( is_null( $user->getData() ) ) 
+                { return null  ; }
+            else
+                { return $user ; }
+        }
+
+        $user = login( $this->jsonData['params']['username'] , $this->jsonData['params']['passwd'] ) ;
         if ( is_null( $user ) )
         {
             $this->setError(  
@@ -33,48 +44,3 @@
         $this->jsonData['result']['user']       = $user->getData() ;
 
     }
-
-    private function login( $login , $password )
-    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        // print_r( [ $login , $password ] ) ;
-
-        $user = new UserLogin( [ 'username' => $login , 'passwd' => $password ] ) ;
-        if ( is_null( $user->getData() ) ) 
-            { return null  ; }
-        else
-            { return $user ; }
-    }
-
-    private function checkAuth()
-    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-
-        $checkAuth = true ;
-
-        if ( ! isset( $this->jsonData['params']['authstring'] ) )
-        {
-            $this->setError(  
-                $this->jsonData['id'] ,
-                [
-                    'code'   => -2850 ,
-                    'message' => "not authenticated" ,
-                    'data'    => ''
-                ] 
-            ) ;
-        return $checkAuth = false ; }
-
-        session_write_close() ;
-        session_id( $this->jsonData['params']['authstring'] ) ;
-        session_start() ;
-        if ( ! isset( $_SESSION['username'] ) )
-        {
-            $this->setError(  
-                $this->jsonData['id'] ,
-                [
-                    'code'   => -2860 ,
-                    'message' => "not authenticated" ,
-                    'data'    => ''
-                ] 
-            ) ;
-        return $checkAuth = false ; }
-    
-    return $checkAuth ; }
