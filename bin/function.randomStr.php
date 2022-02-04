@@ -1,5 +1,6 @@
-#!/opt/local/bin/php
+#!/usr/bin/env php
 <?php
+error_reporting(0) ;
 // print_r( [ $argc , $argv ] ) ;
 
 if ( in_array( $argv[1], [ '-h' , '--help' ] ) )
@@ -13,8 +14,8 @@ if ( in_array( $argv[1], [ '-h' , '--help' ] ) )
 HELP;
 exit() ; }
 
-set_include_path( '/Volumes/Bjarne/Sites/info/mathiesen/zbc/stader/php' ) ;
-require_once( dirname( __file__ , 2 ) . '/php/functions/randomStr.php' ) ;
+set_include_path( dirname( __DIR__) . '/php' ) ;
+require_once( dirname( __DIR__) . '/php/functions/randomStr.php' ) ;
 
 for ( $i = 0 ; 
       $i < ( $argv[1] ?: 5 ) ; 

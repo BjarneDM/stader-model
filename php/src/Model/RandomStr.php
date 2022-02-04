@@ -23,9 +23,40 @@ class RandomStr
     private $randomstr = '' ;
     private $keyspace = '' ;
 
+    private $kSpace = [] ;
+    private $keyspaces = [] ;
+
+    function initKeySpaces ()
+    {
+        // $kSpace[''] = '' ;
+        $this->kSpace['digits']  = '0123456789' ;
+        $this->kSpace['enLower'] = 'abcdefghijklmnopqrstuvwxyz' ;
+        $this->kSpace['enUpper'] = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' ;
+        $this->kSpace['special'] = '-=~!@#$%^&*()_+,./<>?;:[]{}\\|\'' ;
+        $this->kSpace['daDK']    = 'æøåÆØÅ' ;
+
+        
+        // array[string] $keyspaces    Strings of all possible characters to select from
+        $this->keyspaces[0] =  $this->kSpace['digits'] . $this->kSpace['enLower'] . $this->kSpace['enUpper'] ;
+        $this->keyspaces[1] =  $this->keyspaces[0] . $this->kSpace['special'] ;
+        $this->keyspaces[2] =  $this->keyspaces[0] . $this->kSpace['daDK'] ;
+        $this->keyspaces[3] =  $this->keyspaces[0] . $this->kSpace['special'] . $this->kSpace['daDK'] ;
+        $this->keyspaces[4] =  $this->kSpace['digits'] ;
+        $this->keyspaces[5] =  $this->kSpace['digits'] . 'abcdef' ;
+        $this->keyspaces[6] =  $this->kSpace['digits'] . 'ABCDEF' ;
+    }
+
+    public function getKeyspaces ()
+    {
+        $this->initKeySpaces() ;
+        print_r( $this->keyspaces ) ;
+    }
+
     function __construct( ...$args )
     {   // echo 'class RandomStr __construct' . \PHP_EOL ;
         // print_r( $args ) ;
+
+        $this->initKeySpaces() ;
 
         if ( count( $args ) == 1 )
         {
@@ -39,34 +70,18 @@ class RandomStr
         }
         // print_r( [ $this->length , $this->ks ] ) ;
 
-        $kSpace = [] ;
-        // $kSpace[''] = '' ;
-        $kSpace['digits']  = '0123456789' ;
-        $kSpace['enLower'] = 'abcdefghijklmnopqrstuvwxyz' ;
-        $kSpace['enUpper'] = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' ;
-        $kSpace['special'] = '-=~!@#$%^&*()_+,./<>?;:[]{}\\|\'' ;
-//         $kSpace['daDK']    = 'æøåÆØÅ' ;
-
-        $keyspaces = [] ;
-        // array[string] $keyspaces    Strings of all possible characters to select from
-        $keyspaces[0] =  $kSpace['digits'] . $kSpace['enLower'] . $kSpace['enUpper'] ;
-        $keyspaces[1] =  $keyspaces[0] . $kSpace['special'] ;
-        $keyspaces[2] =  $keyspaces[0] ; // . $kSpace['daDK'] ;
-        $keyspaces[3] =  $keyspaces[0]  . $kSpace['special'] ; // . $kSpace['daDK'] ;
-        $keyspaces[4] =  $kSpace['digits'] ;
-        $keyspaces[5] =  $kSpace['digits'] . 'abcdef' ;
-        $keyspaces[6] =  $kSpace['digits'] . 'ABCDEF' ;
+        
 
         /*
          *  tjek
          *  let's make sure we always return something sensible
          */
-        $this->ks = max( 0 , min( count( $keyspaces ) -1 , (int) $this->ks ) ) ; // 0 <= ks < count(keyspaces)
+        $this->ks = max( 0 , min( count( $this->keyspaces ) -1 , (int) $this->ks ) ) ; // 0 <= ks < count(keyspaces)
         if   ( $this->ks === 4 )
              { $this->length = max( 4 , ((int) $this->length) %  7 ) ; } // PinKoder
         else { $this->length = max( 8 , ((int) $this->length) % 33 ) ; } // 8 <= length <= 32
 
-        $this->keyspace = $keyspaces[ $this->ks ] ;
+        $this->keyspace = $this->keyspaces[ $this->ks ] ;
         $this->generate() ;
     }
 

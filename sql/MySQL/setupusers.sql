@@ -1,7 +1,6 @@
 #
 #   staderdata
 #
-drop database if exists staderdata ;
 create database if not exists `staderdata` default character set utf8mb4 collate utf8mb4_unicode_ci ;
 
 create user 'staderdata'@'localhost' identified with mysql_native_password ;
@@ -19,7 +18,6 @@ grant select, insert, update, delete
 #
 #   staderlogs
 #
-drop database if exists staderlogs ;
 create database if not exists `staderlogs` default character set utf8mb4 collate utf8mb4_unicode_ci ;
 
 create user 'staderlogs'@'localhost' identified with mysql_native_password ;
