@@ -1,6 +1,6 @@
 <?php namespace Stader\Model\Tables\UserBeredskab ;
 
-use \Stader\Model\Abstract\ObjectDao ;
+use \Stader\Model\Abstract\DataObjectDao ;
 
 /*
 
@@ -19,7 +19,7 @@ create table if not exists user_beredskab
 
  */
 
-class UserBeredskab extends ObjectDao
+class UserBeredskab extends DataObjectDao
 {
     public static $allowedKeys = 
         [ 'user_id'      => 'int' ,

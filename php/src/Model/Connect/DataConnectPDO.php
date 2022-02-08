@@ -2,7 +2,7 @@
 
 use \Stader\Model\Interfaces\DbDriver ;
 
-class ConnectPDO extends DbDriver
+class DataConnectPDO extends DbDriver
 {
     protected static $conn = null ;
     protected static $type = null ;

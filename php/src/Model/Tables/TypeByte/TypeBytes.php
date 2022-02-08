@@ -1,8 +1,8 @@
 <?php namespace Stader\Model\Tables\TypeByte ;
 
-use \Stader\Model\Abstract\ObjectsDao ;
+use \Stader\Model\Abstract\DataObjectsDao ;
 
-class TypeBytes extends ObjectsDao
+class TypeBytes extends DataObjectsDao
 {
     public static $allowedKeys = [ 'name' => 'varchar' ] ;
     protected   $class  = '\\Stader\\Model\\Tables\\TypeByte\\TypeByte' ;

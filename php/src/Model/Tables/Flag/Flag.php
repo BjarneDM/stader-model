@@ -1,6 +1,6 @@
 <?php namespace Stader\Model\Tables\Flag ;
 
-use \Stader\Model\Abstract\ObjectDao ;
+use \Stader\Model\Abstract\DataObjectDao ;
 
 /*
 
@@ -14,7 +14,7 @@ create table if not exists flag
 
  */
 
-class Flag extends ObjectDao
+class Flag extends DataObjectDao
 {
     public static $allowedKeys = 
         [ 'text'    => 'varchar' , 

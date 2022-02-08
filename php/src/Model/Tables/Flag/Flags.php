@@ -1,8 +1,8 @@
 <?php namespace Stader\Model\Tables\Flag ;
 
-use \Stader\Model\Abstract\ObjectsDao ;
+use \Stader\Model\Abstract\DataObjectsDao ;
 
-class Flags extends ObjectsDao
+class Flags extends DataObjectsDao
 {
     public static $allowedKeys = 
         [ 'text'    => 'varchar' , 

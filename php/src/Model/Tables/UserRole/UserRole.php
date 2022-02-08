@@ -1,6 +1,6 @@
 <?php namespace Stader\Model\Tables\UserRole ;
 
-use \Stader\Model\Abstract\ObjectDao ;
+use \Stader\Model\Abstract\DataObjectDao ;
 use \Stader\Model\Tables\User\{User} ;
 use \Stader\Model\Tables\Role\{URole} ;
 
@@ -21,7 +21,7 @@ create table if not exists users_roles
 
  */
 
-class UserRole extends ObjectDao
+class UserRole extends DataObjectDao
 {
     public static $allowedKeys = 
         [ 'user_id' => 'int' , 

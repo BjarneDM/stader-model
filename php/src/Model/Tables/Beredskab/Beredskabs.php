@@ -1,8 +1,8 @@
 <?php namespace Stader\Model\Tables\Beredskab ;
 
-use \Stader\Model\Abstract\ObjectsDao ;
+use \Stader\Model\Abstract\DataObjectsDao ;
 
-class Beredskabs extends ObjectsDao
+class Beredskabs extends DataObjectsDao
 {
     public static $allowedKeys = 
         [ 'message'       => 'text'    , 

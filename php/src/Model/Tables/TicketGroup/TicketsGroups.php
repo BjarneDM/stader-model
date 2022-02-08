@@ -1,8 +1,8 @@
 <?php namespace Stader\Model\Tables\TicketGroup ;
 
-use \Stader\Model\Abstract\ObjectsDao ;
+use \Stader\Model\Abstract\DataObjectsDao ;
 
-class TicketsGroups extends ObjectsDao
+class TicketsGroups extends DataObjectsDao
 {
     public static $allowedKeys = 
         [ 'ticket_id' => 'int' , 

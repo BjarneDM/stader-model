@@ -1,8 +1,8 @@
 <?php namespace Stader\Model\Tables\Ticket ;
 
-use \Stader\Model\Abstract\ObjectsDao ;
+use \Stader\Model\Abstract\DataObjectsDao ;
 
-class Tickets extends ObjectsDao
+class Tickets extends DataObjectsDao
 {
     public static $allowedKeys = 
         [ 'header'            => 'varchar' , 

@@ -1,6 +1,6 @@
 <?php namespace Stader\Model\Tables\TicketGroup ;
 
-use \Stader\Model\Abstract\ObjectDao ;
+use \Stader\Model\Abstract\DataObjectDao ;
 
 /*
 
@@ -19,7 +19,7 @@ create table if not exists ticketgroup
 
  */
 
-class TicketGroup extends ObjectDao
+class TicketGroup extends DataObjectDao
 {
     public static $allowedKeys = 
         [ 'ticket_id' => 'int' , 

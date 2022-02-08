@@ -1,6 +1,6 @@
 <?php namespace Stader\Model\Tables\Group ;
 
-use \Stader\Model\Abstract\ObjectDao ;
+use \Stader\Model\Abstract\DataObjectDao ;
 
 /*
 
@@ -14,7 +14,7 @@ create table if not exists ugroup
 
  */
 
-class UGroup extends ObjectDao
+class UGroup extends DataObjectDao
 {
     public static $allowedKeys = 
         [ 'name'        => 'varchar' , 

@@ -1,8 +1,8 @@
 <?php namespace Stader\Model\Tables\TicketStatus ;
 
-use \Stader\Model\Abstract\ObjectsDao ;
+use \Stader\Model\Abstract\DataObjectsDao ;
 
-class TicketStatuses extends ObjectsDao
+class TicketStatuses extends DataObjectsDao
 {
     public static $allowedKeys = 
         [ 'name'           => 'varchar' , 

@@ -1,6 +1,6 @@
 <?php namespace Stader\Model\Tables\Place ;
 
-use \Stader\Model\Abstract\ObjectDao ;
+use \Stader\Model\Abstract\DataObjectDao ;
 use \Stader\Model\OurDateTime ;
 
 /*
@@ -27,7 +27,7 @@ create table if not exists place
 
  */
 
-class Place extends ObjectDao
+class Place extends DataObjectDao
 {
     public static $allowedKeys = 
         [ 'place_nr'       => 'varchar' , 

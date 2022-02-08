@@ -1,6 +1,6 @@
 <?php namespace Stader\Model\Tables\UserGroup ;
 
-use \Stader\Model\Abstract\ObjectDao ;
+use \Stader\Model\Abstract\DataObjectDao ;
 use \Stader\Model\Tables\User\User ;
 use \Stader\Model\Tables\Group\UGroup ;
 
@@ -21,7 +21,7 @@ create table usersgroups
 
  */
 
-class UserGroup extends ObjectDao
+class UserGroup extends DataObjectDao
 {
     public static $allowedKeys = 
         [ 'user_id'  => 'int' , 

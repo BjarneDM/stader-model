@@ -1,6 +1,6 @@
 <?php namespace Stader\Model\Tables\Area ;
 
-use \Stader\Model\Abstract\ObjectDao ;
+use \Stader\Model\Abstract\DataObjectDao ;
 
 /*
 
@@ -17,7 +17,7 @@ name er primary key da getAll() ønskes sorteret efter denne
 
  */
 
-class Area extends ObjectDao
+class Area extends DataObjectDao
 {
     public static $allowedKeys = 
         [ 'name'        => 'varchar' , 

@@ -1,8 +1,8 @@
 <?php namespace Stader\Model\Tables\Area ;
 
-use \Stader\Model\Abstract\ObjectsDao ;
+use \Stader\Model\Abstract\DataObjectsDao ;
 
-class Areas extends ObjectsDao
+class Areas extends DataObjectsDao
 {
     public static $allowedKeys = 
         [ 'name'        => 'varchar' , 

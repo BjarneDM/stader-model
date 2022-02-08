@@ -1,6 +1,6 @@
 <?php namespace Stader\Model\Tables\Beredskab ;
 
-use \Stader\Model\Abstract\ObjectDao ;
+use \Stader\Model\Abstract\DataObjectDao ;
 use \Stader\Model\OurDateTime ;
 use \Stader\Model\Tables\Beredskab\BeredskabLog ;
 
@@ -24,7 +24,7 @@ create table if not exists beredskab
 
  */
 
-class Beredskab extends ObjectDao
+class Beredskab extends DataObjectDao
 {
     public static $allowedKeys = 
         [ 'message'       => 'text'    , 

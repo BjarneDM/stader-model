@@ -1,6 +1,6 @@
 <?php namespace Stader\Model\Tables\Ticket ;
 
-use \Stader\Model\Abstract\ObjectDao ;
+use \Stader\Model\Abstract\DataObjectDao ;
 use \Stader\Model\OurDateTime ;
 
 /*
@@ -32,7 +32,7 @@ create table if not exists ticket
 
  */
 
-class Ticket extends ObjectDao
+class Ticket extends DataObjectDao
 {
     public static $allowedKeys = 
         [ 'header'            => 'varchar' , 

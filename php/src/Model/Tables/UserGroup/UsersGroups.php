@@ -1,8 +1,8 @@
 <?php namespace Stader\Model\Tables\UserGroup ;
 
-use \Stader\Model\Abstract\ObjectsDao ;
+use \Stader\Model\Abstract\DataObjectsDao ;
 
-class UsersGroups extends ObjectsDao
+class UsersGroups extends DataObjectsDao
 {
     public static $allowedKeys = 
         [ 'user_id'  => 'int' , 

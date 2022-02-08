@@ -1,6 +1,6 @@
 <?php namespace Stader\Model\Tables\PlaceOwner ;
 
-use \Stader\Model\Abstract\ObjectDao ;
+use \Stader\Model\Abstract\DataObjectDao ;
 
 /*
 
@@ -16,7 +16,7 @@ create table if not exists placeowner
 
  */
 
-class PlaceOwner extends ObjectDao
+class PlaceOwner extends DataObjectDao
 {
     public static $allowedKeys = 
         [ 'name'         => 'varchar' , 

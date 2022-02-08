@@ -1,8 +1,8 @@
 <?php namespace Stader\Model\Tables\Role ;
 
-use \Stader\Model\Abstract\ObjectsDao ;
+use \Stader\Model\Abstract\DataObjectsDao ;
 
-class URoles extends ObjectsDao
+class URoles extends DataObjectsDao
 {
     public static $allowedKeys = 
         [ 'role'     => 'varchar' , 

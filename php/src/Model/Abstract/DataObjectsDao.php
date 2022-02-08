@@ -1,9 +1,9 @@
 <?php namespace Stader\Model\Abstract ;
 
-use \Stader\Model\Connect\Setup ;
+use \Stader\Model\Connect\DataSetup ;
 
-abstract class ObjectsDao
-         extends Setup
+abstract class DataObjectsDao
+         extends DataSetup
          implements \Iterator
 {
     private    $keysAllowed = []   ;

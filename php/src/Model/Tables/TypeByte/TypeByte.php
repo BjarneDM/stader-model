@@ -1,6 +1,6 @@
 <?php namespace Stader\Model\Tables\TypeByte ;
 
-use \Stader\Model\Abstract\ObjectDao ;
+use \Stader\Model\Abstract\DataObjectDao ;
 
 /*
 
@@ -13,7 +13,7 @@ create table in not exists type_byte
 
  */
 
-class TypeByte extends ObjectDao
+class TypeByte extends DataObjectDao
 {
     public static $allowedKeys = [ 'name' => 'varchar' ] ;
     protected   $class  = '\\Stader\\Model\\Tables\\TypeByte\\TypeByte' ;

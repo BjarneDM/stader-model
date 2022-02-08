@@ -1,6 +1,6 @@
 <?php namespace Stader\Model\Tables\User ;
 
-use \Stader\Model\Abstract\ObjectDao ;
+use \Stader\Model\Abstract\DataObjectDao ;
 
 /*
 
@@ -19,7 +19,7 @@ create table users
 
  */
 
-class User extends ObjectDao
+class User extends DataObjectDao
 {
     public static $allowedKeys = 
         [ 'name'     => 'varchar' , 

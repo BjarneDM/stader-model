@@ -1,6 +1,6 @@
 <?php namespace Stader\Model\Tables\Role ;
 
-use \Stader\Model\Abstract\ObjectDao ;
+use \Stader\Model\Abstract\DataObjectDao ;
 
 /*
 
@@ -16,7 +16,7 @@ create table if not exists urole
 
  */
 
-class URole extends ObjectDao
+class URole extends DataObjectDao
 {
     public static $allowedKeys = 
         [ 'role'     => 'varchar' , 

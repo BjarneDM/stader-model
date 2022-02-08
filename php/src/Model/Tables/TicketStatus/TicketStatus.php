@@ -1,6 +1,6 @@
 <?php namespace Stader\Model\Tables\TicketStatus ;
 
-use \Stader\Model\Abstract\ObjectDao ;
+use \Stader\Model\Abstract\DataObjectDao ;
 
 /*
 
@@ -19,7 +19,7 @@ create table if not exists ticket_status
 
  */
 
-class TicketStatus extends ObjectDao
+class TicketStatus extends DataObjectDao
 {
     public static $allowedKeys = 
         [ 'name'           => 'varchar' , 
