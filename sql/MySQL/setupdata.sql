@@ -38,15 +38,18 @@ drop table if exists flag ;
 
 create table if not exists user
 (
-    id          int auto_increment primary key ,
-    name        varchar(255) not null ,
-    surname     varchar(255) not null ,
-    phone       varchar(255) not null ,
-    username    varchar(255) not null ,
-        constraint unique (username) ,
-    passwd      varchar(255) not null ,
-    email       varchar(255) not null ,
-        constraint unique (email)
+    id              int auto_increment primary key ,
+    name            varchar(255) not null ,
+    surname         varchar(255) not null ,
+    phone           varchar(255) not null ,
+    username        varchar(255) not null ,
+        constraint  unique (username) ,
+    passwd          varchar(255) not null ,
+    email           varchar(255) not null ,
+        constraint  unique (email) ,
+    lastlogintime   datetime
+        default     null ,
+    loginfailures   int default 0
 ) ;
 # ) engine = memory ;
 

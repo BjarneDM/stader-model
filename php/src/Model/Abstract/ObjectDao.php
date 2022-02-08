@@ -63,6 +63,7 @@ abstract class ObjectDao extends Setup
                                 $this->check( $args[0] ) ;
                                 $this->values       = ( new \ArrayObject( $args[0] ) )->getArrayCopy() ;
                                 $this->values['id'] = $this->create( $this ) ;
+                                $this->notify( 'create' ) ;
                                 break ;
                             default :
                                 throw new \Exception( count( $args[0] ) . " : forkert antal parametre [" . count( $this->keysAllowed ) . "]" ) ;
@@ -126,6 +127,7 @@ abstract class ObjectDao extends Setup
                                 $this->values       = ( new \ArrayObject( $args[0] ) )->getArrayCopy() ;
                                 $this->values['id'] = $this->create( $this ) ;
                                 $this->valuesOld    = ( new \ArrayObject( $this->values ) )->getArrayCopy() ;
+                                $this->notify( 'create' ) ;
                                 break ;
                             default :
                                 throw new \Exception( count( $args[0] ) . " : forkert antal parametre [" . count( $this->keysAllowed ) . "]" ) ;
@@ -147,7 +149,6 @@ abstract class ObjectDao extends Setup
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $array ) ;
 
-        $this->notify( 'create' ) ;
     return self::$functions->create( $object ) ; }
 
     protected function read( $object ) : Array
@@ -229,7 +230,7 @@ abstract class ObjectDao extends Setup
      *  denne skal udfyldes i de aktuelle class
      *  der har brug for dette
      */
-    protected function notify ( $action ) {}
+    protected function notify ( string $action ) : void {}
 
 }
 

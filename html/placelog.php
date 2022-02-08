@@ -1,7 +1,6 @@
-<?php namespace stader\html ;
-require_once( dirname( __file__ , 2 ) . '/php/settings/phpValues.php') ;
+<?php namespace Stader\HTML ;
 
-   $include_paths[] =  '/Volumes/Bjarne/Sites/info/mathiesen/zbc/stader/php' ;
+   $include_paths[] = dirname( __DIR__ ) . '/php' ;
 // $include_paths[] =  '/Volumes/Bjarne/Sites/info/mathiesen/zbc/cdn/php' ;
 // $include_paths[] =  '.' ;
 // $include_paths[] =  '/Volumes/Bjarne/Sites/info/mathiesen/cdn/_/php' ;
@@ -10,14 +9,16 @@ set_include_path( implode( ':' , $include_paths ) ) ;
 // echo 'IncludePaths : ' . \PHP_EOL ;
 // print_r( explode( ':' , get_include_path() ) ) ;
 
-require_once( dirname( __file__ , 2 ) . '/php/model/class.classloader.php' ) ;
-require_once( dirname( __file__ , 2 ) . '/php/control/class.classloader.php' ) ;
+require_once( 'settings/phpValues.php') ;
+require_once( 'classloader.php' ) ;
 
-use \stader\model\{Area,Places,PlaceLog,PlaceLogs,Tickets,TicketLog,TicketLogs} ;
+use \Stader\Model\Tables\Area\{Area} ;
+use \Stader\Model\Tables\Place\{Places,PlaceLog,PlaceLogs} ;
+use \Stader\Model\Tables\Ticket\{Tickets,TicketLog,TicketLogs} ;
 
 $format = 'csv' ;
 $stader = new Places() ;
-foreach ( $stader->getPlaces() as $stade )
+foreach ( $stader as $stade )
 {
 //     echo str_repeat( '-', 50 ) . \PHP_EOL ;
 //     error_log( print_r( $stade->getData() , true ) );
@@ -25,7 +26,7 @@ foreach ( $stader->getPlaces() as $stade )
     $headers = [] ;
     $fullplace = ( new Area( $stade->getData()['area_id'] ) )->getData()['name'] . $stade->getData()['place_nr'] ;
     $fullplace = 'A1' ; // testværdi
-    $denneLogs = new PlaceLogs( 'full_place' , $fullplace ) ;
+    $denneLogs = new PlaceLog( 'full_place' , $fullplace ) ;
 
     $fileName = "dump_" . $stade->getData()['ticket_id'] . ".{$format}" ;
     header("Content-Type: text/csv") ;
@@ -34,16 +35,16 @@ foreach ( $stader->getPlaces() as $stade )
     if ( ! $fileHandle = fopen( "php://output" , "w" )  ) 
         die( "!!! kunne ikke åbne {$fileName} for skrivning !!!" . \PHP_EOL ) ;
 
-    foreach ( $denneLogs->getPlaceLogs() as $stadeLog )
+    foreach ( $denneLogs as $stadeLog )
     {
 
         switch ( count( json_decode( $stadeLog->getData()['data'] , true ) ) )
         {
             case  7 :
-                $thisLog = new \stader\control\PlaceLoggen( $stadeLog ) ;
+                $thisLog = new \Stader\Control\PlaceLog( $stadeLog ) ;
                 break ;
             case 11 :
-                $thisLog = new \stader\control\TicketLog( $stadeLog ) ;
+                $thisLog = new \Stader\Control\TicketLog( $stadeLog ) ;
                 break ;
         } continue ;
 

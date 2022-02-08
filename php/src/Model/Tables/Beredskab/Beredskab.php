@@ -2,6 +2,7 @@
 
 use \Stader\Model\Abstract\ObjectDao ;
 use \Stader\Model\OurDateTime ;
+use \Stader\Model\Tables\Beredskab\BeredskabLog ;
 
 /*
 
@@ -36,7 +37,7 @@ class Beredskab extends ObjectDao
     protected   $class  = '\\Stader\\Model\\Tables\\Beredskab\\Beredskab' ;
 
     function __construct ( ...$args )
-    {   // echo 'class Beredskab extends BeredskabDao __construct' . \PHP_EOL ;
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $args ) ;
 
         parent::__construct( 'data' , self::$allowedKeys ) ;
@@ -65,9 +66,49 @@ class Beredskab extends ObjectDao
     }
 
     public function switchOff()
-    {
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         $this->setValues( [ 'active' => false ] ) ;
     }
+
+/*
+    protected function notify ( string $action ) : void
+    {   echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        echo $action . PHP_EOL ;
+        print_r( $this->valuesOld ) ;
+        print_r( $this->values ) ;
+
+        switch( $action )
+        {
+            case 'create' :
+                new BeredskabLog( [
+                    'beredskab_id' => $this->values['id'] ,
+                    'header'       => $this->values['header'] ,
+                    'old_value'    => '' ,
+                    'new_value'    => json_encode( $this->values )
+                    ] ) ;
+                break ;
+            case 'read' :
+                break ;
+            case 'update' :
+                new BeredskabLog( [
+                    'beredskab_id' => $this->values['id'] ,
+                    'header'       => $this->values['header'] ,
+                    'old_value'    => json_encode( array_diff( $this->valuesOld , $this->values ) ) ,
+                    'new_value'    => json_encode( array_diff( $this->values , $this->valuesOld ) )
+                    ] ) ;
+                break ;
+            case 'delete' :
+                new BeredskabLog( [
+                    'beredskab_id' => $this->values['id'] ,
+                    'header'       => $this->values['header'] ,
+                    'old_value'    => json_encode( $this->values ) ,
+                    'new_value'    => ''
+                    ] ) ;
+                break ;
+        }
+
+    }
+*/
 
 }
 

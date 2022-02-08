@@ -1,4 +1,4 @@
-<?php  namespace Stader\Control ;
+<?php  namespace Stader\Rpc ;
 ob_start() ;
 error_reporting( E_ERROR ) ;
 header( 'Content-Type: application/json' ) ;

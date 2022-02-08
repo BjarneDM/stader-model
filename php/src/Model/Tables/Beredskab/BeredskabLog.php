@@ -1,4 +1,7 @@
-<?php namespace Stader\Model ;
+<?php namespace Stader\Model\Tables\Beredskab ;
+
+use \Stader\Model\Abstract\ObjectDao ;
+use \Stader\Model\OurDateTime ;
 
 /*
 
@@ -18,8 +21,6 @@ create table if not exists beredskablog
 
  */
 
-require_once( __dir__ . '/class.beredskablogdao.php' ) ;
-
 class BeredskabLog extends ObjectDao
 {
     public static $allowedKeys = 
@@ -28,26 +29,32 @@ class BeredskabLog extends ObjectDao
           'old_value'    => 'text'    , 
           'new_value'    => 'text'
         ] ;
-    protected     $class       = '\\stader\\model\\BeredskabLog' ;
+    protected     $class       = '\\Stader\\Model\\Tables\\Bredskab\\BeredskabLog' ;
 
     function __construct ( ...$args )
     {   // echo 'class BeredskabLog extends BeredskabLogDao __construct' . \PHP_EOL ;
         // print_r( $args ) ;
 
-        parent::__construct( 'logs' , self::$allowedKeys , $args ) ;
+        parent::__construct( 'logs' , self::$allowedKeys ) ;
 
         $this->setupLogs( $args ) ;
+        $this->values['id'] = (int) $this->values['id'] ;
+        $this->values['beredskab_id'] = (int) $this->values['beredskab_id'] ;
+        $this->values['log_timestamp']  = 
+            @is_null( $this->values['log_timestamp'] ) 
+            ? new OurDateTime()
+            : OurDateTime::createFromFormat( 'Y-m-d H:i:s' , $this->values['creationtime'] ) ;
 
     }
 
-    private function check( Array &$toCheck )
-    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        // print_r( $toCheck ) ;
+    protected function check( Array &$toCheck )
+    {   echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        print_r( $toCheck ) ;
 
         foreach ( array_keys( $toCheck ) as $key )
         {
-            if ( ! in_array( $key , self::$allowedKeys ) )
-                throw new \Exception( "'{$key}' doesn't exist in [ " . implode( ' , ' , self::$allowedKeys ) . " ]" ) ;
+            if ( ! array_key_exists( $key , self::$allowedKeys ) )
+                throw new \Exception( "'{$key}' doesn't exist in [" . implode( ',' , array_keys( self::$allowedKeys ) ) . "]" ) ;
 
             switch ( $key )
             {

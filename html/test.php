@@ -1,11 +1,11 @@
-<?php  namespace stader\control ;
-
-set_include_path( '/Volumes/Bjarne/Sites/info/mathiesen/zbc/stader/php' ) ;
-
+<?php  namespace Stader\Rpc ;
+ob_start() ;
+error_reporting( E_ERROR ) ;
 header( 'Content-Type: application/json' ) ;
 
-require_once( dirname( __file__ , 2 ) . '/rpc/class.jsonrpc.php' ) ;
-use \stader\rpc\{JsonRPC} ;
+set_include_path( dirname( __DIR__ ) . '/php' ) ;
+require_once( 'classloader.php' ) ;
+use \Stader\Rpc\{JsonRPC} ;
 
 $input = [] ;
 
@@ -23,4 +23,4 @@ foreach ( $input as $jsonData )
 
 echo implode( \PHP_EOL .  ',' . \PHP_EOL , $response ) ;
 
-?>
+ob_end_flush() ; ?>

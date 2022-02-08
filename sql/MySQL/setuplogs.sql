@@ -17,8 +17,8 @@ use staderlogs ;
 # bruges den, !!!SKAL!!! man huske den modsvarende kommando !!!
 # set foreign_key_checks = 0 ;
 
-drop table if exists loginlog :
-create table if not exists ticketlog
+drop table if exists loginlog ;
+create table if not exists loginlog
 (
     id              int auto_increment primary key ,
     user_id         int not null ,
