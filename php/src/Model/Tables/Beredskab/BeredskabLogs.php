@@ -1,5 +1,7 @@
 <?php namespace Stader\Model ;
 
+use \Stader\Model\Abstract\LogObjectsDao ;
+
 /*
 
 create table if not exists beredskab_log
@@ -14,9 +16,7 @@ create table if not exists beredskab_log
 
  */
 
-require_once( __dir__ . '/class.beredskablogsdao.php' ) ;
-
-class BeredskabLogs extends ObjectsDao
+class BeredskabLogs extends LogObjectsDao
 {
     public static $allowedKeys = 
         [ 'beredskab_id' => 'int'     , 

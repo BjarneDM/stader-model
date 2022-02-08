@@ -70,12 +70,11 @@ class Beredskab extends ObjectDao
         $this->setValues( [ 'active' => false ] ) ;
     }
 
-/*
     protected function notify ( string $action ) : void
-    {   echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        echo $action . PHP_EOL ;
-        print_r( $this->valuesOld ) ;
-        print_r( $this->values ) ;
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        // echo $action . PHP_EOL ;
+        // print_r( $this->valuesOld ) ;
+        // print_r( $this->values ) ;
 
         switch( $action )
         {
@@ -108,7 +107,6 @@ class Beredskab extends ObjectDao
         }
 
     }
-*/
 
 }
 

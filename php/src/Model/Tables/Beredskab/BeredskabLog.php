@@ -1,6 +1,6 @@
 <?php namespace Stader\Model\Tables\Beredskab ;
 
-use \Stader\Model\Abstract\ObjectDao ;
+use \Stader\Model\Abstract\LogObjectDao ;
 use \Stader\Model\OurDateTime ;
 
 /*
@@ -21,7 +21,7 @@ create table if not exists beredskablog
 
  */
 
-class BeredskabLog extends ObjectDao
+class BeredskabLog extends LogObjectDao
 {
     public static $allowedKeys = 
         [ 'beredskab_id' => 'int'     , 
@@ -48,8 +48,8 @@ class BeredskabLog extends ObjectDao
     }
 
     protected function check( Array &$toCheck )
-    {   echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        print_r( $toCheck ) ;
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        // print_r( $toCheck ) ;
 
         foreach ( array_keys( $toCheck ) as $key )
         {
