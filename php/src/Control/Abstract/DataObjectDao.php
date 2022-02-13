@@ -1,31 +1,17 @@
-<?php namespace Stader\Model\Abstract ;
+<?php namespace Stader\Control\Abstract ;
 
-use \Stader\Model\Connect\DataSetup ;
-use \Stader\Model\Abstract\{TableDaoPdo} ;
 
-abstract class DataObjectDao extends DataSetup
+abstract class DataObjectDao
 {
-    private           $keysAllowed = []   ;
-    private   static  $functions   = null ;
-    protected         $values      = []   ;
-    protected         $valuesOld   = []   ;
-    protected         $class       = ''   ;
+    private     $keysAllowed = []   ;
+    protected   $values      = []   ;
+    protected   $valuesOld   = []   ;
+    protected   $class       = ''   ;
     
-    function __construct ( string $dbType , Array $allowedKeys )
+    function __construct ( Array $allowedKeys )
     {   // echo 'abstract class ObjectDao extends Setup __construct' . \PHP_EOL ;
 
-        parent::__construct( $dbType ) ;
         $this->keysAllowed = $allowedKeys ;
-
-        switch ( self::$connect->getType() )
-        {
-            case "mysql"        : self::$functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
-            case "pgsql"        : self::$functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
-            case "sqlite"       : self::$functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
-            case "xml"          : self::$functions = new TableDaoXml( self::$connect , $this->class ) ; break ;
-            default: throw new \Exception() ;
-            // var_dump( self::$functions ) ;
-        }
 
     }
 
@@ -61,7 +47,7 @@ abstract class DataObjectDao extends DataSetup
                             case count( $this->keysAllowed ) :
                                 $this->check( $args[0] ) ;
                                 $this->values       = ( new \ArrayObject( $args[0] ) )->getArrayCopy() ;
-                                $this->values['id'] = $this->create( $this ) ;
+                                $this->values['id'] = $this->create() ;
                                 $this->notify( 'create' ) ;
                                 break ;
                             default :
@@ -144,42 +130,18 @@ abstract class DataObjectDao extends DataSetup
         }
     }
 
-    protected function create( $object ) : int
-    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        // print_r( $array ) ;
-
-    return self::$functions->create( $object ) ; }
-
-    protected function read( $object ) : Array
-    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        // print_r( $args ) ;
-
-        $this->notify( 'read' ) ;
-    return self::$functions->readOne( $object ) ; }
-
-    protected function update( $object ) : int
-    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        // print_r( [ $key , $value ] ) ;
-
-        $this->notify( 'update' ) ;
-    return self::$functions->update( $object , array_diff( $this->values , $this->valuesOld ) ) ; }
-
-    protected function deleteThis( $object ) : int
-    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-
-        $rowCount = self::$functions->delete( $object ) ;
-        $this->notify( 'delete' ) ;
+    abstract protected function create() : int ;
+    abstract protected function read( $object ) : Array ;
+    abstract protected function update( $values ) : void ;
+    protected function delete() : void 
+    {
         unset( $this->values , $this->valuesOld ) ;
-    return $rowCount ; }
+    }
 
     public function getData()   { return $this->values ; }
     public function getValues() { return array_values( $this->values ) ; }
     public function getKeys()   { return array_keys( $this->values ) ; }
-
-    public function delete() : int
-    {
-    return $this->deleteThis( $this ) ; }
-
+ 
     public function setValues( $values )
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $values ) ;
@@ -193,7 +155,7 @@ abstract class DataObjectDao extends DataSetup
                     $this->valuesOld[ $key ] = $this->values[ $key ] ;
                     $this->values[ $key ] = $value ;
                 }
-                $this->update( $this ) ;
+                $this->update( $values ) ;
                 break ;
             default :
                 throw new \Exception( gettype( $values ) . " : forkert input type [array]" ) ;

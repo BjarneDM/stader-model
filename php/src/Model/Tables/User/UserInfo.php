@@ -4,32 +4,29 @@ use \Stader\Model\Abstract\DataObjectDao ;
 
 /*
 
-create table users
+create table if not exists userinfo
 (
-    id          int auto_increment primary key , <- denne bliver genereret af DB
-    name        varchar(255) not null ,          <- de resterende felter er krævede
-    surname     varchar(255) default '' ,
-    phone       varchar(255) not null ,
-    username    varchar(255) not null ,
-        constraint unique (username) ,
-    passwd      varchar(255) not null ,
-    email       varchar(255) not null ,
-        constraint unique (email) ,
-) engine = memory ;
+    id              int auto_increment primary key ,
+    userlogin_id     int ,
+        foreign key (userlogin_id) references userlogin(id)
+        on update cascade
+        on delete cascade
+    name            varchar(255) not null ,
+    surname         varchar(255) not null ,
+    phone           varchar(255) not null 
+) ;
 
  */
 
-class User extends DataObjectDao
+class UserInfo extends DataObjectDao
 {
     public static $allowedKeys = 
-        [ 'name'     => 'varchar' , 
-          'surname'  => 'varchar' , 
-          'phone'    => 'varchar' , 
-          'username' => 'varchar' , 
-          'passwd'   => 'varchar' , 
-          'email'    => 'varchar' 
+        [ 'name'         => 'varchar' , 
+          'surname'      => 'varchar' , 
+          'phone'        => 'varchar' ,
+          'userlogin_id' => 'int'
         ] ;
-    protected   $class  = '\\Stader\\Model\\Tables\\User\\User' ;
+    protected   $class  = '\\Stader\\Model\\Tables\\User\\UserInfo' ;
 
     function __construct ( ...$args )
     {   // echo 'class User extends ObjectDao __construct' . \PHP_EOL ;

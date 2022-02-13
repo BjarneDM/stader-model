@@ -26,7 +26,7 @@ create table users
  */
 
 require_once( dirname( __dir__ ) . '/classloader.php' ) ;
-use \Stader\Model\Tables\User\{User,Users} ;
+use \Stader\Control\User\{User,Users} ;
 use \Stader\Model\RandomStr ;
 
 /*
@@ -94,7 +94,7 @@ foreach ( $users as $key => $user )
  *  main
  */
 
-( new Users() )->deleteAll() ;
+( new Users() )->deleteAll() ; // echo __LINE__ ; exit ;
 
 /*
 $testUser = new User( $users[0] ) ;

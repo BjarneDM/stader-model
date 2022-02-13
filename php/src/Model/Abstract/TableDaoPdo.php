@@ -324,7 +324,7 @@ class TableDaoPdo implements ICrudDao
     }
 
     public function count() : int
-    {
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         return $this->stmt->rowCount() ;
     }
 
@@ -352,8 +352,10 @@ class TableDaoPdo implements ICrudDao
         else { return (int) $this->row['id'] ; }
     }
 
-    public function deleteAll( $object ) : void
-    {
+    public function deleteAllOld( $object ) : void
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        // print_r( $object ) ;
+
         $sql  = 'delete from ' . $this->table . ' ' ;
         $sql .= 'where id = :id' ;
         $stmtHere = $this->dbh->prepare( $sql ) ;
@@ -366,6 +368,13 @@ class TableDaoPdo implements ICrudDao
         }   unset( $rowHere ) ;
     }
 
+    public function deleteAll() : void
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+
+        $sql  = 'delete from ' . $this->table . ' ' ;
+        $stmt = $this->dbh->prepare( $sql ) ;
+        $stmt->execute() ;
+    }
 
     public function __destruct() 
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;

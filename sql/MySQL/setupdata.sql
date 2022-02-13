@@ -31,10 +31,40 @@ drop table if exists area ;
 drop table if exists placeowner ;
 drop table if exists ticketstatus ;
 drop table if exists typebyte ;
+drop table if exists userinfo ;
+drop table if exists userlogin ;
 drop table if exists user ;
 drop table if exists usercrypt ;
 drop table if exists flag ;
 
+# create tabellerne i den rigtige rækkefølge
+
+create table if not exists userlogin
+(
+    id              int auto_increment primary key ,
+    username        varchar(255) not null ,
+        constraint  unique (username) ,
+    email           varchar(255) not null ,
+        constraint  unique (email) ,
+    passwd          varchar(255) not null ,
+    lastlogintime   datetime
+        default     null ,
+    lastloginfail   datetime
+        default     null ,
+    loginfailures   int default 0 
+) ;
+
+create table if not exists userinfo
+(
+    id              int auto_increment primary key ,
+    userlogin_id     int ,
+        foreign key (userlogin_id) references userlogin(id)
+        on update cascade
+        on delete cascade ,
+    name            varchar(255) not null ,
+    surname         varchar(255) not null ,
+    phone           varchar(255) not null 
+) ;
 
 create table if not exists user
 (
@@ -51,9 +81,7 @@ create table if not exists user
         default     null ,
     loginfailures   int default 0
 ) ;
-# ) engine = memory ;
 
-# create tabellerne i den rigtige rækkefølge
 create table if not exists usercrypt
 (
     id      int primary key ,

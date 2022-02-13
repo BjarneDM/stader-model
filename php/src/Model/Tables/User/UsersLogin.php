@@ -2,7 +2,7 @@
 
 use \Stader\Model\Abstract\DataObjectsDao ;
 
-class Users extends DataObjectsDao
+class UsersLogin extends DataObjectsDao
 {
     public static $allowedKeys = 
         [ 'name'     => 'varchar' , 
@@ -12,7 +12,7 @@ class Users extends DataObjectsDao
           'passwd'   => 'varchar' , 
           'email'    => 'varchar' 
         ] ;
-    protected   $class  = '\\Stader\\Model\\Tables\\User\\User' ;
+    protected   $class  = '\\Stader\\Model\\Tables\\User\\UserLogin' ;
 
     function __construct ( ...$args )
     {   // echo 'class Users extends ObjectsDao __construct' . \PHP_EOL ;

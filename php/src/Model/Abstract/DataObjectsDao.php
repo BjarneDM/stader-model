@@ -6,11 +6,10 @@ abstract class DataObjectsDao
          extends DataSetup
          implements \Iterator
 {
-    private    $keysAllowed = []   ;
-    private    $functions   = null ;
-    protected  $values      = []   ;
-    protected  $class       = ''   ;
-    private    $position    = 0    ;
+    private           $keysAllowed = []   ;
+    private   static  $functions   = null ;
+    protected         $class       = ''   ;
+    private           $position    = 0    ;
     
     function __construct ( string $dbType , Array $allowedKeys )
     {   // echo 'abstract class ObjectsDao extends Setup __construct' . \PHP_EOL ;
@@ -20,11 +19,10 @@ abstract class DataObjectsDao
 
         switch ( self::$connect->getType() )
         {
-            case "mysql"        : $this->functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
-            case "mysqlcrypt"   : $this->functions = new TableCryptDaoPdo( self::$connect , $this->class ) ; break ;
-            case "pgsql"        : $this->functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
-            case "sqlite"       : $this->functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
-            case "xml"          : $this->functions = new TableDaoXml( self::$connect , $this->class ) ; break ;
+            case "mysql"        : self::$functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
+            case "pgsql"        : self::$functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
+            case "sqlite"       : self::$functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
+            case "xml"          : self::$functions = new TableDaoXml( self::$connect , $this->class ) ; break ;
             default: throw new \Exception() ;
             // var_dump( self::functions ) ;
         }
@@ -78,45 +76,62 @@ abstract class DataObjectsDao
         }
     }
 
+    public function getData()   { return [] ; }
+    public function getValues() { return [] ; }
+    public function getKeys()   { return [] ; }
+
 // https://www.php.net/manual/en/class.iterator.php
 
     private function getOne( int $index ) { return new $this->class( $index ) ; }
 
     public function rewind() : void 
-    {
-        $this->functions->rewind( $this ) ;
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        // echo $this->class . \PHP_EOL ;
+        self::$functions->rewind( $this ) ;
         $this->position = 0 ;
     }
 
     public function count() : int
-    {
-        return $this->functions->count() ;
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        // echo $this->class . \PHP_EOL ;
+        return self::$functions->count() ;
     }
 
     public function next() : void 
-    {
-        $this->row = $this->functions->next() ;
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        // echo $this->class . \PHP_EOL ;
+        $this->row = self::$functions->next() ;
         ++$this->position ; 
     }
 
     public function valid() : bool
-    {
-        return $this->functions->valid() ;
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        // echo $this->class . \PHP_EOL ;
+        return self::$functions->valid() ;
     }
 
     public function current() : object
-    {
-        return $this->getOne( $this->functions->current() ) ;
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        // echo $this->class . \PHP_EOL ;
+        return $this->getOne( self::$functions->current() ) ;
     }
 
     public function key() : int | false
-    {
-        return $this->functions->key() ;
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        // echo $this->class . \PHP_EOL ;
+        return self::$functions->key() ;
     }
 
+    public function deleteAllOld() : void
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        // echo $this->class . \PHP_EOL ;
+        self::$functions->deleteAll( $this ) ;
+    }
+    
     public function deleteAll() : void
-    {
-        $this->functions->deleteAll( $this ) ;
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        // echo $this->class . \PHP_EOL ;
+        self::$functions->deleteAll() ;
     }
     
 /*
@@ -130,9 +145,6 @@ abstract class DataObjectsDao
     return  $allObjects ; }
  */
 
-    public function getData()   { return $this->values ; }
-    public function getValues() { return array_values( $this->values ) ; }
-    public function getKeys()   { return array_keys( $this->values ) ; }
 }
 
 ?>
