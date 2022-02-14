@@ -4,11 +4,11 @@
  *  setup
  */
 
-set_include_path( '/Volumes/Bjarne/Sites/info/mathiesen/zbc/stader/php' ) ;
+set_include_path( dirname( __DIR__ ) ) ;
 require_once( 'settings/phpValues.php' ) ;
 
-require_once( dirname( __file__ , 2 ) . '/model/class.classloader.php' ) ;
-use \stader\model\{User,UserLogin} ;
+require_once( 'classloader.php' ) ;
+use \Stader\Control\User\{User,UserCheck} ;
 
 
 $method    = ( $argv[1] ) ?: 'manual' ;
@@ -69,7 +69,7 @@ switch ( $method )
 function theCheck( $login , $password )
 {
 
-    $user = new UserLogin( [ 'username' => $login , 'passwd' => $password ] ) ;
+    $user = new UserCheck( [ 'username' => $login , 'passwd' => $password ] ) ;
 
     if ( is_null( $user->getData() ) ) 
         { return 'login fejlede' ; }
@@ -80,7 +80,7 @@ function theCheck( $login , $password )
 function theCheck2( $login , $password )
 {
 
-    $user = new UserLogin( [ 'username' => $login , 'passwd' => $password ] ) ;
+    $user = new UserCheck( [ 'username' => $login , 'passwd' => $password ] ) ;
 
     if ( is_null( $user->getData() ) ) 
         { return null ; }

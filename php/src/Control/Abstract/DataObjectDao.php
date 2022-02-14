@@ -36,7 +36,7 @@ abstract class DataObjectDao
                 {
                     case 'integer' :
                         $this->values['id'] = $args[0] ;
-                        $this->values       = $this->read( $this ) ;
+                        $this->values       = $this->read() ;
                        break ;
                     case 'array' :
                         switch ( count( $args[0] ) )
@@ -77,7 +77,7 @@ abstract class DataObjectDao
                         throw new \Exception( gettype( $args[0] ) . " : forkert input type [string,array]" ) ;
                         break ;
                 }
-                $this->values = $this->read( $this ) ;
+                $this->values = $this->read() ;
                 break ;
             default :
                 throw new \Exception( count( $args ) . " : forkert antal parametre [1,2]" ) ;
@@ -130,10 +130,10 @@ abstract class DataObjectDao
         }
     }
 
-    abstract protected function create() : int ;
-    abstract protected function read( $object ) : Array ;
-    abstract protected function update( $values ) : void ;
-    protected function delete() : void 
+    abstract protected function create ()                 : int   ;
+    abstract protected function read   ()                 : Array  ;
+    abstract protected function update ( Array  $values ) : void  ;
+    public             function delete ()                 : void 
     {
         unset( $this->values , $this->valuesOld ) ;
     }
@@ -142,8 +142,9 @@ abstract class DataObjectDao
     public function getValues() { return array_values( $this->values ) ; }
     public function getKeys()   { return array_keys( $this->values ) ; }
  
-    public function setValues( $values )
+    public function setValues( Array $values )
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        // echo $this->class. \PHP_EOL ;
         // print_r( $values ) ;
 
         switch ( strtolower( gettype( $values ) ) )

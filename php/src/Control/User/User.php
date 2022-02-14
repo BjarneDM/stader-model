@@ -42,23 +42,78 @@ class User extends DataObjectDao
         parent::__construct( self::$allowedKeys ) ;
 
         $this->setupData( $args ) ;
-        $this->usersLogin = new UsersLogin() ;
 
     }
 
-    protected function read( $object ) : Array { return [] ; }
-    protected function update( $values ) : void
+    public static function userCheck () : User|null
     {
-        foreach ( $values as $key => $value )
+    return null ; }
+
+    protected function read() : Array 
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        $values  = [] ;
+        $ulKeyes = [] ; $ulValues = [] ;
+        $uiKeyes = [] ; $uiValues = [] ;
+
+        if ( isset( $this->values['id'] ) )
         {
-            if ( in_array( $key , $this->userInfo::$allowedKeys  ) ) 
+            $this->userLogin = new UserLogin( $this->values['id'] ) ;
+            $this->userInfo  = new UserInfo( 'userlogin_id' , (int) $this->userLogin->getData()['id'] ) ;
+
+        } else {
+
+            foreach ( $this->values as $key => $value )
+            {   
+                if ( array_key_exists( $key , UserInfo::$allowedKeys  ) ) 
+                {
+                    $uiKeyes[]  = $key   ;
+                    $uiValues[] = $value ;
+                }
+                if ( array_key_exists( $key , UserLogin::$allowedKeys ) ) 
+                {
+                    $ulKeyes[]  = $key   ;
+                    $ulValues[] = $value ;
+                }
+            }   unset( $key , $value ) ;
+
+            if ( ! empty( $ulKeyes ) ) 
+            {
+                $this->userLogin = new UserLogin( $ulKeyes , $ulValues ) ;
+                $this->userInfo  = new UserInfo( ['userlogin_id'] , [  $this->userLogin->getData()['id'] ] ) ;
+            }
+            if ( ! empty( $uiKeyes ) )
+            {
+                $this->userInfo  = new UserInfo(  $uiKeyes , $uiValues ) ;
+                $this->userLogin = new UserLogin( $this->userInfo->getData()['userlogin_id'] ) ;
+            }
+
+        }
+
+        $values = array_merge( $this->userInfo->getData() , $this->userLogin->getData() ) ;
+        unset( $values['userlogin_id'] ) ;
+        return $values ;
+   }
+
+    protected function update( Array $values ) : void
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        // print_r( $values ) ;
+        foreach ( $values as $key => $value )
+        {   // print_r( [  $key , $value ] ) ;
+            // print_r( array_keys( UserInfo::$allowedKeys ) ) ;
+            if ( array_key_exists( $key , UserInfo::$allowedKeys  ) )
                 { $this->userInfo->setValues(  [ $key => $value ] ) ; }
-            if ( in_array( $key , $this->userLogin::$allowedKeys ) ) 
+            // print_r( array_keys( UserLogin::$allowedKeys ) ) ;
+            if ( array_key_exists( $key , UserLogin::$allowedKeys ) )
                 { $this->userLogin->setValues( [ $key => $value ] ) ; }
         }
     }
+    
+    public function pwdVerify( $password )
+    {
+        return $this->userLogin->pwdVerify( $password ) ;
+    }
 
-    protected function delete() : void
+    public function delete() : void
     {
         $this->userLogin->delete() ;
         unset( $this->userInfo , $this->userLogin ) ;

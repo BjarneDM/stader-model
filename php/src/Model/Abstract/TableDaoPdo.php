@@ -323,30 +323,35 @@ class TableDaoPdo implements ICrudDao
         $this->row  = $this->stmt->fetch( \PDO::FETCH_ASSOC ) ;
     }
 
-    public function count() : int
+    public function count( $object ) : int
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        if ( is_null( $this->stmt ) ) $this->rewind( $object ) ;
         return $this->stmt->rowCount() ;
     }
 
-    public function next() : void
-    {
+    public function next( $object ) : void
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        if ( is_null( $this->stmt ) ) $this->rewind( $object ) ;
         $this->row = $this->stmt->fetch( \PDO::FETCH_ASSOC ) ;
     }
 
-    public function valid()  : bool
-    {
+    public function valid( $object )  : bool
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        if ( is_null( $this->stmt ) ) $this->rewind( $object ) ;
         if ( $this->row === false )
              { return false ; } 
         else { return true ; }
     }
 
-    public function current() : int
-    { 
+    public function current( $object ) : int
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        if ( is_null( $this->stmt ) ) $this->rewind( $object ) ;
         return (int) $this->row['id'] ;
     }
 
-    public function key() : int | false
-    {
+    public function key( $object ) : int | false
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        if ( is_null( $this->stmt ) ) $this->rewind( $object ) ;
         if ( $this->row === false )
              { return false ; } 
         else { return (int) $this->row['id'] ; }

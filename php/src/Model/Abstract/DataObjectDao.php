@@ -159,7 +159,7 @@ abstract class DataObjectDao extends DataSetup
 
     protected function update( $object ) : int
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        // print_r( [ $key , $value ] ) ;
+        // echo $this->class. \PHP_EOL ;
 
         $this->notify( 'update' ) ;
     return self::$functions->update( $object , array_diff( $this->values , $this->valuesOld ) ) ; }

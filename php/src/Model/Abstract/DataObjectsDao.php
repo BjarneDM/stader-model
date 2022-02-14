@@ -94,32 +94,32 @@ abstract class DataObjectsDao
     public function count() : int
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // echo $this->class . \PHP_EOL ;
-        return self::$functions->count() ;
+        return self::$functions->count( $this ) ;
     }
 
     public function next() : void 
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // echo $this->class . \PHP_EOL ;
-        $this->row = self::$functions->next() ;
+        $this->row = self::$functions->next( $this ) ;
         ++$this->position ; 
     }
 
     public function valid() : bool
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // echo $this->class . \PHP_EOL ;
-        return self::$functions->valid() ;
+        return self::$functions->valid( $this ) ;
     }
 
     public function current() : object
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // echo $this->class . \PHP_EOL ;
-        return $this->getOne( self::$functions->current() ) ;
+        return $this->getOne( self::$functions->current( $this ) ) ;
     }
 
     public function key() : int | false
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // echo $this->class . \PHP_EOL ;
-        return self::$functions->key() ;
+        return self::$functions->key( $this ) ;
     }
 
     public function deleteAllOld() : void

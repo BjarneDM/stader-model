@@ -1,7 +1,7 @@
 <?php namespace Stader\Control\User ;
 
 use \Stader\Control\Abstract\DataObjectsDao ;
-use \Stader\Model\Tables\User\UsersLogin ;
+use \Stader\Model\Tables\User\{UserLogin,UsersLogin} ;
 
 class Users extends DataObjectsDao
 {
@@ -14,6 +14,7 @@ class Users extends DataObjectsDao
           'email'    => 'varchar' 
         ] ;
     protected   $class  = '\\Stader\\Control\\User\\User' ;
+    private UserLogin  $userLogin  ;
     private UsersLogin $usersLogin ;
 
     function __construct ( ...$args )
@@ -49,9 +50,10 @@ class Users extends DataObjectsDao
         return $this->usersLogin->valid() ;
     }
 
-    public function current() : object 
+    public function current() : Object 
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        return $this->usersLogin->current() ;
+        $this->userLogin = $this->usersLogin->current() ;
+        return $this->getOne( $this->userLogin->getData()['id'] ) ;
     }
 
     public function key() : int | false 

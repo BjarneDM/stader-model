@@ -67,7 +67,12 @@ abstract class DataObjectsDao
 
 // https://www.php.net/manual/en/class.iterator.php
 
-    private function getOne( int $index ) { return new $this->class( $index ) ; }
+    protected function getOne( int $index ) 
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        // echo $this->class. \PHP_EOL ;
+        // echo "int \$index : {$index}" . \PHP_EOL ;
+        return new $this->class( $index ) ; 
+    }
 
     abstract public function rewind() : void ;
         // $this->functions->rewind( $this ) ;
