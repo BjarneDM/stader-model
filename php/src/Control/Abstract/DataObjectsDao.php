@@ -36,9 +36,7 @@ abstract class DataObjectsDao
             case 'array' :
                 if ( count( $args[0] ) !== count( $args[1] ) )
                     throw new \Exception( 'count() for $args[0] & $args[1] er forskellige' ) ;
-                foreach ( $args[0] as $i => $key )
-                    $this->values[$key] = $args[$i] ;
-                    unset( $i , $key ) ;
+                $this->values  = array_combine( $args[0] , $args[1] ) ;
                 $this->check( $this->values ) ;
                 break ;
             default :

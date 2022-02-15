@@ -9,7 +9,7 @@ create table if not exists place
 (
     id              int auto_increment primary key ,
     place_nr        varchar(8) not null ,
-    description     text ,
+    header          text ,
     place_owner_id  int default null ,
         foreign key (place_owner_id) references placeowner(id)
         on update cascade 
@@ -31,7 +31,7 @@ class Place extends DataObjectDao
 {
     public static $allowedKeys = 
         [ 'place_nr'       => 'varchar' , 
-          'description'    => 'text'    , 
+          'header'         => 'text'    , 
           'place_owner_id' => 'int'     , 
           'area_id'        => 'int'     , 
           'active'         => 'bool'
@@ -86,7 +86,7 @@ class Place extends DataObjectDao
             case 'create' :
                 new PlaceLog( [
                     'place_id'     => $this->values['id'] ,
-                    'header'       => $this->values['description'] ,
+                    'header'       => $this->values['header'] ,
                     'old_value'    => '' ,
                     'new_value'    => json_encode( $this->values )
                     ] ) ;
@@ -96,7 +96,7 @@ class Place extends DataObjectDao
             case 'update' :
                 new PlaceLog( [
                     'place_id'     => $this->values['id'] ,
-                    'header'       => $this->values['description'] ,
+                    'header'       => $this->values['header'] ,
                     'old_value'    => json_encode( array_diff( $this->valuesOld , $this->values ) ) ,
                     'new_value'    => json_encode( array_diff( $this->values , $this->valuesOld ) )
                     ] ) ;
@@ -104,7 +104,7 @@ class Place extends DataObjectDao
             case 'delete' :
                 new PlaceLog( [
                     'place_id'     => $this->values['id'] ,
-                    'header'       => $this->values['description'] ,
+                    'header'       => $this->values['header'] ,
                     'old_value'    => json_encode( $this->values ) ,
                     'new_value'    => ''
                     ] ) ;

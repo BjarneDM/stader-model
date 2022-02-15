@@ -140,7 +140,7 @@ create table if not exists place
 (
     id              int auto_increment primary key ,
     place_nr        varchar(8) not null ,
-    description     text ,
+    header          text ,
     place_owner_id  int default null ,
         foreign key (place_owner_id) references placeowner(id)
         on update cascade 

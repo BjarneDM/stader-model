@@ -6,7 +6,7 @@ class Places extends DataObjectsDao
 {
     public static $allowedKeys = 
         [ 'place_nr'       => 'varchar' , 
-          'description'    => 'text'    , 
+          'header'         => 'text'    , 
           'place_owner_id' => 'int'     , 
           'area_id'        => 'int'     , 
           'active'         => 'bool'

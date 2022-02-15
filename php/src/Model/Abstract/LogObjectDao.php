@@ -108,7 +108,7 @@ abstract class LogObjectDao extends LogSetup
          *      opret en Log på basis af værdierne i $args[0]
          *      $testLog = new Log( $args[0] )
          *
-         *  idéen er, at den almindelige drift !!!KUN!!! kan oprette logs
+         *  idéen er, at den almindelige drift !!!KUN!!! kan oprette & læse logs
          */
         switch ( count( $args ) )
         {
@@ -157,49 +157,9 @@ abstract class LogObjectDao extends LogSetup
         $this->notify( 'read' ) ;
     return self::$functions->readOne( $object ) ; }
 
-    protected function update( $object ) : int
-    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        // print_r( [ $key , $value ] ) ;
-
-        $this->notify( 'update' ) ;
-    return self::$functions->update( $object , array_diff( $this->values , $this->valuesOld ) ) ; }
-
-    protected function deleteThis( $object ) : int
-    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-
-        $rowCount = self::$functions->delete( $object ) ;
-        $this->notify( 'delete' ) ;
-        unset( $this->values , $this->valuesOld ) ;
-    return $rowCount ; }
-
     public function getData()   { return $this->values ; }
     public function getValues() { return array_values( $this->values ) ; }
     public function getKeys()   { return array_keys( $this->values ) ; }
-
-    public function delete() : int
-    {
-    return $this->deleteThis( $this ) ; }
-
-    public function setValues( $values )
-    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        // print_r( $values ) ;
-
-        switch ( strtolower( gettype( $values ) ) )
-        {
-            case 'array' :
-                $this->check( $values ) ;
-                foreach ( $values as $key => $value )
-                {
-                    $this->valuesOld[ $key ] = $this->values[ $key ] ;
-                    $this->values[ $key ] = $value ;
-                }
-                $this->update( $this ) ;
-                break ;
-            default :
-                throw new \Exception( gettype( $values ) . " : forkert input type [array]" ) ;
-                break ;
-        }
-    }
 
     /*
      *  default minimalt integritets check
