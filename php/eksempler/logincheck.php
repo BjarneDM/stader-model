@@ -8,12 +8,12 @@ set_include_path( dirname( __DIR__ ) ) ;
 require_once( 'settings/phpValues.php' ) ;
 
 require_once( 'classloader.php' ) ;
-use \Stader\Control\User\{User,UserCheck} ;
+use \Stader\Control\User\{User} ;
 
 
-$method    = ( $argv[1] ) ?: 'manual' ;
-$login     = ( $argv[2] ) ?: 'krkr' ;
-$password  = ( $argv[3] ) ?: 'password' ;
+$method    = @( $argv[1] ) ?: 'manual' ;
+$login     = @( $argv[2] ) ?: 'krkr' ;
+$password  = @( $argv[3] ) ?: 'flnQpN6I' ;
 
 /*
  *  data
@@ -28,8 +28,8 @@ $passwords[] = 'WYa9yhZ8' ; $passwords[] = 'dqJzbf6D' ; $passwords[] = '56JCxPRK
 
 $userNames = 
 [
-    'bjar9215' , 'casp7654'  , 'krik.zbc' , 'mike4098'   , 'toke1254' , 
-    'alex303a' , 'zbcadbac1' , 'ande319i' , 'zbcanols21' , 'benj6414' 
+    'bjar9215' ,
+    'mich' , 'last' , 'skp' , 'lani' , 'krkr'
 ] ;
 
 /*
@@ -40,49 +40,53 @@ switch ( $method )
 {
     case 'manual' :
         echo "manuelt tjek af en bruger" . PHP_EOL ;
-        print_r( [ 'username' => $login , 'passwd' => $password ] ) ;
+        print_r( [ 'username' => $login , 'password' => $password ] ) ;
         echo theCheck( $login , $password ) ;
         break ;
     case 'auto' :
         echo "automatiserede tjek af brugere" . PHP_EOL ;
+
         $users = setUpOK() ;
         foreach ( $users as $user )
         {
-            print_r( [ 'username' => $user['username'] , 'passwd' => $user['passwd'] ] ) ;
+            print_r( [ 'username' => $user['username'] , 'password' => $user['passwd'] ] ) ;
             echo $user['result'] . ' : ' . theCheck( $user['username'] , $user['passwd'] ) . \PHP_EOL ;
         }
+ 
         $users = setUpPassword() ;
         foreach ( $users as $user )
         {
-            print_r( [ 'username' => $user['username'] , 'passwd' => $user['passwd'] ] ) ;
+            print_r( [ 'username' => $user['username'] , 'password' => $user['passwd'] ] ) ;
             echo $user['result'] . ' : ' . theCheck( $user['username'] , $user['passwd'] ) . \PHP_EOL ;
         }
+
         $users = setUpUsername() ;
         foreach ( $users as $user )
         {
-            print_r( [ 'username' => $user['username'] , 'passwd' => $user['passwd'] ] ) ;
+            print_r( [ 'username' => $user['username'] , 'password' => $user['passwd'] ] ) ;
             echo $user['result'] . ' : ' . theCheck( $user['username'] , $user['passwd'] ) . \PHP_EOL ;
         }
+
         break ;
 }
 
 function theCheck( $login , $password )
 {
 
-    $user = new UserCheck( [ 'username' => $login , 'passwd' => $password ] ) ;
+    $user = User::userCheck( [ 'username' => $login , 'password' => $password ] ) ;
 
-    if ( is_null( $user->getData() ) ) 
-        { return 'login fejlede' ; }
+    if ( is_null( $user ) ) { return 'login fejlede' ; }
     else
-        { return 'succefuld login' ;}
+    {   print_r( $user->getData() ) ;
+        return 'succefuld login' ; }
 }
 
 function theCheck2( $login , $password )
 {
 
-    $user = new UserCheck( [ 'username' => $login , 'passwd' => $password ] ) ;
+    $user = User::userCheck( [ 'username' => $login , 'passwd' => $password ] ) ;
 
-    if ( is_null( $user->getData() ) ) 
+    if ( is_null( $user ) ) 
         { return null ; }
     else
         { return $user ; }

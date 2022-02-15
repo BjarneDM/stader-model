@@ -7,7 +7,7 @@ use \Stader\Model\Abstract\DataObjectDao ;
 create table if not exists userinfo
 (
     id              int auto_increment primary key ,
-    userlogin_id     int ,
+    userlogin_id    int ,
         foreign key (userlogin_id) references userlogin(id)
         on update cascade
         on delete cascade
@@ -35,6 +35,8 @@ class UserInfo extends DataObjectDao
         parent::__construct( 'data' , self::$allowedKeys ) ;
 
         $this->setupData( $args ) ;
+        $this->values['id']             = (int) $this->values['id'] ;
+        $this->values['userlogin_id']   = (int) $this->values['userlogin_id'] ;
 
     }
 

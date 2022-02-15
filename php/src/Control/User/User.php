@@ -16,7 +16,49 @@ create table users
     passwd      varchar(255) not null ,
     email       varchar(255) not null ,
         constraint unique (email) ,
-) engine = memory ;
+) ;
+
+select * from userlogin as ul , userinfo as ui where ul.id = ui.userlogin_id \G
+*************************** 3. row ***************************
+           id: 99
+     username: skp
+        email: skp@example.com
+       passwd: $2y$04$xDxkVtrjfaTO4QHBnEuqKe6rlK2LVFx0wpkQzDocNsIDfR3zvu1q2
+lastlogintime: 2022-02-15 16:28:18
+lastloginfail: 2022-02-15 16:20:13
+loginfailures: 0
+           id: 99
+ userlogin_id: 99
+         name: SKP-IT
+      surname: Slagelse
+        phone: 8892 4596
+
+Array
+(
+    [id] => 99
+    [name] => SKP-IT
+    [surname] => Slagelse
+    [phone] => 8892 4596
+    [username] => skp
+    [email] => skp@example.com
+    [passwd] => $2y$04$xDxkVtrjfaTO4QHBnEuqKe6rlK2LVFx0wpkQzDocNsIDfR3zvu1q2
+    [lastlogintime] => Stader\Model\OurDateTime Object
+        (
+            [displayFormat:Stader\Model\OurDateTime:private] => mysql
+            [date] => 2022-02-15 16:28:18.000000
+            [timezone_type] => 3
+            [timezone] => Europe/Copenhagen
+        )
+
+    [lastloginfail] => Stader\Model\OurDateTime Object
+        (
+            [displayFormat:Stader\Model\OurDateTime:private] => mysql
+            [date] => 2022-02-15 16:20:13.000000
+            [timezone_type] => 3
+            [timezone] => Europe/Copenhagen
+        )
+
+    [loginfailures] => 0
 
  */
 
@@ -36,7 +78,7 @@ class User extends DataObjectDao
     protected UserLogin $userLogin ;
 
     function __construct ( ...$args )
-    {   // echo 'class User extends ObjectDao __construct' . \PHP_EOL ;
+    {   // echo 'class User extends DataObjectDao __construct' . \PHP_EOL ;
         // print_r( $args ) ;
         
         parent::__construct( self::$allowedKeys ) ;
@@ -45,8 +87,25 @@ class User extends DataObjectDao
 
     }
 
-    public static function userCheck () : User|null
-    {
+    public static function userCheck ( Array $args ) : User|null
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        // print_r( $args ) ;
+
+        try {
+            $password = $args['password'] ;
+            unset( $args['password'] ) ;
+            // print_r( $args ) ;
+            $checkUser = new UserLogin( array_keys( $args ) , array_values( $args ) ) ;
+            // echo "checkUser : " ; print_r( $checkUser->getData() ) ;
+            if ( $checkUser->pwdVerify( $password ) )
+            {
+                $checkUser->setLoginTime() ;
+                return new User( $checkUser->getData()['id'] ) ;
+            } else {
+                $checkUser->setLoginFailure() ;
+            }
+        } catch ( \Exception $e ) { return null ; }
+
     return null ; }
 
     protected function read() : Array 
@@ -135,7 +194,7 @@ class User extends DataObjectDao
                 'phone'        => $this->values['phone'] ,
                 'userlogin_id' => $this->userLogin->getData()['id']
                 ]) ;
-        $this->values['passwd'] = $this->userLogin->getData()['passwd'] ;
+        // $this->values['passwd'] = $this->userLogin->getData()['passwd'] ;
     return $this->userLogin->getData()['id'] ; }
 
 }

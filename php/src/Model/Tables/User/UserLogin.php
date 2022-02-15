@@ -1,6 +1,7 @@
 <?php namespace Stader\Model\Tables\User ;
 
 use \Stader\Model\Abstract\DataObjectDao ;
+use \Stader\Model\OurDateTime ;
 
 /*
 
@@ -23,24 +24,65 @@ create table if not exists userlogin
 
 class UserLogin extends DataObjectDao
 {
-    public static $allowedKeys = 
-        [ 'username'    => 'varchar' , 
-          'passwd'      => 'varchar' , 
-          'email'       => 'varchar'
+    public  static $allowedKeys = 
+        [ 'username'      => 'varchar' , 
+          'passwd'        => 'varchar' , 
+          'email'         => 'varchar'
+        ] ;
+    private static $privateKeys =
+        [ 'lastlogintime' => 'datetime' ,
+          'lastloginfail' => 'datetime' ,
+          'loginfailures' => 'int'
         ] ;
     protected   $class  = '\\Stader\\Model\\Tables\\User\\UserLogin' ;
 
     function __construct ( ...$args )
-    {   // echo 'class User extends ObjectDao __construct' . \PHP_EOL ;
+    {   // echo 'class UserLogin extends DataObjectDao __construct' . \PHP_EOL ;
         // print_r( $args ) ;
 
         parent::__construct( 'data' , self::$allowedKeys ) ;
 
         $this->setupData( $args ) ;
+        $this->values['id']             = (int) $this->values['id'] ;
+        $this->values['lastlogintime']  = @is_null( $this->values['lastlogintime']   ) 
+                                          ? null
+                                          : OurDateTime::createFromFormat( 'Y-m-d H:i:s' , $this->values['lastlogintime']   ) ;
+        $this->values['lastloginfail']  = @is_null( $this->values['lastloginfail'] ) 
+                                          ? null 
+                                          : OurDateTime::createFromFormat( 'Y-m-d H:i:s' , $this->values['lastloginfail'] ) ;
+        $this->values['loginfailures']  = @empty( $this->values['loginfailures'] )
+                                          ? 0
+                                          : (int) $this->values['loginfailures'] ;
+
 
     }
 
-    private function pwdHash( string $password )
+    public function setLoginTime() : void
+    {
+        $this->valuesOld['lastlogintime'] = $this->values['lastlogintime'] ;
+        $this->values['lastlogintime']    = new OurDateTime() ;
+        $this->valuesOld['loginfailures'] = $this->values['loginfailures'] ;
+        $this->values['loginfailures']    = 0 ;
+        $this->update( $this ) ;
+    }
+
+    public function getLoginTime() : OurDateTime
+    {
+        return $this->getData()['lastlogintime'] ;
+    }
+
+    public function setLoginFailure() : void 
+    {
+        $this->valuesOld['lastloginfail'] = $this->values['lastloginfail'] ;
+        $this->values['lastloginfail']    = new OurDateTime() ;
+        $this->valuesOld['loginfailures'] = $this->values['loginfailures'] ;
+        $this->values['loginfailures']++ ;
+        $this->update( $this ) ;
+    }
+
+    public function getLoginFailure() : Array { return [] ; }
+
+    private function pwdHash( string $password ) : string 
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( [ $password ] ) ;
 
@@ -77,7 +119,7 @@ class UserLogin extends DataObjectDao
         }
     }
 
-    public function pwdVerify( string $pwd )
+    public function pwdVerify( string $pwd ) : bool
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( [ $pwd ] ) ;
 

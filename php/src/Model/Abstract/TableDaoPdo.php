@@ -27,6 +27,7 @@ class TableDaoPdo implements ICrudDao
             case 'char' :
             case 'varchar' :
             case 'text' :
+            case 'datetime' :
                 $dataType = \PDO::PARAM_STR ;
                 break ;
             case 'int' :
