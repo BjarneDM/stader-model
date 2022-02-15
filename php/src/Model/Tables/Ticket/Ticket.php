@@ -19,7 +19,7 @@ create table if not exists ticket
         on update cascade 
         on delete restrict ,
     assigned_user_id    int default null ,
-        foreign key (assigned_user_id) references usercrypt(id)
+        foreign key (assigned_user_id) references userlogin(id)
         on update cascade 
         on delete restrict ,
     creationtime        datetime
@@ -62,6 +62,46 @@ class Ticket extends DataObjectDao
                                              : OurDateTime::createFromFormat( 'Y-m-d H:i:s' , $this->values['lastupdatetime'] ) ;
 
     }
+
+/*
+    protected function notify ( string $action ) : void
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        // echo $action . PHP_EOL ;
+        // print_r( $this->valuesOld ) ;
+        // print_r( $this->values ) ;
+
+        switch( $action )
+        {
+            case 'create' :
+                new TicketLog( [
+                    'ticket_id' => $this->values['id'] ,
+                    'header'       => $this->values['header'] ,
+                    'old_value'    => '' ,
+                    'new_value'    => json_encode( $this->values )
+                    ] ) ;
+                break ;
+            case 'read' :
+                break ;
+            case 'update' :
+                new TicketLog( [
+                    'ticket_id' => $this->values['id'] ,
+                    'header'       => $this->values['header'] ,
+                    'old_value'    => json_encode( array_diff( $this->valuesOld , $this->values ) ) ,
+                    'new_value'    => json_encode( array_diff( $this->values , $this->valuesOld ) )
+                    ] ) ;
+                break ;
+            case 'delete' :
+                new TicketLog( [
+                    'ticket_id' => $this->values['id'] ,
+                    'header'       => $this->values['header'] ,
+                    'old_value'    => json_encode( $this->values ) ,
+                    'new_value'    => ''
+                    ] ) ;
+                break ;
+        }
+
+    }
+ */
 
 }
 

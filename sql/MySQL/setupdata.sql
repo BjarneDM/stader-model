@@ -170,7 +170,7 @@ create table if not exists ticket
         on update cascade 
         on delete restrict ,
     assigned_user_id    int default null ,
-        foreign key (assigned_user_id) references user(id)
+        foreign key (assigned_user_id) references userlogin(id)
         on update cascade 
         on delete restrict ,
     creationtime        datetime
@@ -193,7 +193,7 @@ create table if not exists usergroup
 (
     id                  int auto_increment primary key ,
     user_id             int ,
-        foreign key (user_id) references user(id)
+        foreign key (user_id) references userlogin(id)
         on update cascade 
         on delete cascade ,
     group_id            int ,
@@ -221,7 +221,7 @@ create table if not exists beredskab
     message         text not null ,
     header          text ,
     created_by_id   int not null ,
-        foreign key (created_by_id) references user(id)
+        foreign key (created_by_id) references userlogin(id)
         on update cascade 
         on delete restrict ,
     active          boolean default true ,
@@ -235,7 +235,7 @@ create table if not exists userberedskab
 (
     id              int auto_increment primary key ,
     user_id         int ,
-        foreign key (user_id) references user(id)
+        foreign key (user_id) references userlogin(id)
         on update cascade 
         on delete cascade ,
     beredskab_id    int ,
@@ -258,7 +258,7 @@ create table if not exists userrole
 (
     id          int auto_increment primary key ,
     user_id     int ,
-        foreign key (user_id) references user(id)
+        foreign key (user_id) references userlogin(id)
         on update cascade 
         on delete cascade ,
     role_id     int ,

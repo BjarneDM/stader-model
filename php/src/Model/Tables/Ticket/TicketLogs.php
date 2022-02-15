@@ -1,6 +1,9 @@
-<?php namespace Stader\Model ;
+<?php namespace Stader\Model\Tables\Ticket ;
 
-class TicketLogs extends ObjectsDao
+use \Stader\Model\Abstract\LogObjectsDao ;
+
+
+class TicketLogs extends LogObjectsDao
 {
     private $allowedKeys = 
         [ 'ticket_id' => 'int'     , 

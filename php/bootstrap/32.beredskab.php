@@ -28,7 +28,7 @@ create table if not exists beredskab
  */
 
 require_once( dirname( __dir__ ) . '/classloader.php' ) ;
-use \Stader\Model\Tables\User\{User} ;
+use \Stader\Control\User\{User} ;
 use \Stader\Model\Tables\Beredskab\{Beredskabs,Beredskab} ;
 
 /*

@@ -26,7 +26,7 @@ create table if not exists userrole
  */
 
 require_once( dirname( __dir__ ) . '/classloader.php' ) ;
-use \Stader\Model\Tables\User\{User,Users} ;
+use \Stader\Control\User\{User,Users} ;
 use \Stader\Model\Tables\Role\{URole,URoles} ;
 use \Stader\Model\Tables\UserRole\{UserRole,UsersRoles} ;
 
