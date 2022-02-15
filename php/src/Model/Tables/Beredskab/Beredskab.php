@@ -3,6 +3,7 @@
 use \Stader\Model\Abstract\DataObjectDao ;
 use \Stader\Model\OurDateTime ;
 use \Stader\Model\Tables\Beredskab\BeredskabLog ;
+use \Stader\Model\Traits\DataObjectConstruct ;
 
 /*
 
@@ -34,14 +35,12 @@ class Beredskab extends DataObjectDao
           'colour'        => 'varchar' , 
           'active'        => 'bool' 
         ] ;
-    protected   $class  = '\\Stader\\Model\\Tables\\Beredskab\\Beredskab' ;
+    public static $thisClass   = '\\Stader\\Model\\Tables\\Beredskab\\Beredskab' ;
 
-    function __construct ( ...$args )
-    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        // print_r( $args ) ;
+    use DataObjectConstruct ;
 
-        parent::__construct( self::$allowedKeys ) ;
-
+    function setValuesDefault ( &$args ) : void 
+    {
         switch ( count( $args ) )
         {
             case 1 :
@@ -55,14 +54,15 @@ class Beredskab extends DataObjectDao
                 }
                 break ;
         }
+    }
 
-        $this->setupData( $args ) ;
+    function fixValuesType () : void 
+    {
         $this->values['created_by_id'] = (int)  $this->values['created_by_id'] ;
         $this->values['active']        = (bool) $this->values['active']        ;
         $this->values['creationtime']  = 
             @is_null( $this->values['creationtime'] ) 
             ? new OurDateTime() : OurDateTime::createFromFormat( 'Y-m-d H:i:s' , $this->values['creationtime'] ) ;
-
     }
 
     public function switchOff()

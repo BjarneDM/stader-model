@@ -3,6 +3,7 @@
 use \Stader\Model\Abstract\DataObjectDao ;
 use \Stader\Control\User\User ;
 use \Stader\Model\Tables\Group\UGroup ;
+use \Stader\Model\Traits\DataObjectConstruct ;
 
 /*
 
@@ -27,12 +28,12 @@ class UserGroup extends DataObjectDao
         [ 'user_id'  => 'int' , 
           'group_id' => 'int'
         ] ;
-    protected   $class  = '\\Stader\\Model\\Tables\\UserGroup\\UserGroup' ;
+    public static $thisClass   = '\\Stader\\Model\\Tables\\UserGroup\\UserGroup' ;
 
-    function __construct ( ...$args )
-    {   // echo 'class UserGroup extends ObjectDao __construct' . \PHP_EOL ;
-        // print_r( $args ) ;
+    use DataObjectConstruct ;
 
+    function setValuesDefault ( &$args ) : void 
+    {
         try {
             /*  [ 'user_id'  => 'int' , 
                   'group_id' => 'int' ,
@@ -43,13 +44,12 @@ class UserGroup extends DataObjectDao
             $args[0] = $this->convertKeys( $args[0] ) ;
         } catch ( \TypeError $e ) {}
         // print_r( $args ) ;
- 
-        parent::__construct( self::$allowedKeys ) ;
+    }
 
-        $this->setupData( $args ) ;
+    function fixValuesType () : void 
+    {
         $this->values['user_id']  = (int) $this->values['user_id']  ;
         $this->values['group_id'] = (int) $this->values['group_id'] ;
-
     }
 
     private function convertKeys( Array $array )

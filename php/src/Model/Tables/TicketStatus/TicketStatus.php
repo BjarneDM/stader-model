@@ -1,6 +1,7 @@
 <?php namespace Stader\Model\Tables\TicketStatus ;
 
 use \Stader\Model\Abstract\DataObjectDao ;
+use \Stader\Model\Traits\DataObjectConstruct ;
 
 /*
 
@@ -27,7 +28,7 @@ class TicketStatus extends DataObjectDao
           'description'    => 'text' , 
           'type_byte_id'   => 'int' 
         ] ;
-    protected   $class  = '\\Stader\\Model\\Tables\\TicketStatus\\TicketStatus' ;
+    public static $thisClass   = '\\Stader\\Model\\Tables\\TicketStatus\\TicketStatus' ;
 
     public static $allowedColours =
         [
@@ -55,16 +56,11 @@ class TicketStatus extends DataObjectDao
             ]
         ] ;
 
+    use DataObjectConstruct ;
 
-    function __construct ( ...$args )
-    {   // echo 'class TicketStatus extends ObjectDao __construct' . \PHP_EOL ;
-        // print_r( $args ) ;
-
-        parent::__construct( self::$allowedKeys ) ;
-
-        $this->setupData( $args ) ;
+    function fixValuesType () : void
+    {
         $this->values['type_byte_id'] = (int) $this->values['type_byte_id'] ;
-
     }
 
     protected function check( Array &$toCheck )

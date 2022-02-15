@@ -2,6 +2,7 @@
 
 use \Stader\Model\Abstract\DataObjectDao ;
 use \Stader\Model\OurDateTime ;
+use \Stader\Model\Traits\DataObjectConstruct ;
 
 /*
 
@@ -42,15 +43,12 @@ class Ticket extends DataObjectDao
           'assigned_user_id'  => 'int'     , 
           'active'            => 'bool'
         ] ;
-    protected   $class  = '\\Stader\\Model\\Tables\\Ticket\\Ticket' ;
+    public static $thisClass   = '\\Stader\\Model\\Tables\\Ticket\\Ticket' ;
 
-    function __construct ( ...$args )
-    {   // echo 'class Ticket extends ObjectDao __construct' . \PHP_EOL ;
-        // print_r( $args ) ;
+    use DataObjectConstruct ;
 
-        parent::__construct( self::$allowedKeys ) ;
-
-        $this->setupData( $args ) ;
+    function fixValuesType () : void
+    {
         $this->values['assigned_place_id'] = (int) $this->values['assigned_place_id'] ;
         $this->values['ticket_status_id']  = (int) $this->values['ticket_status_id']  ;
         $this->values['assigned_user_id']  = (int) $this->values['assigned_user_id']  ;
@@ -60,7 +58,6 @@ class Ticket extends DataObjectDao
         $this->values['lastupdatetime']    = @is_null( $this->values['lastupdatetime'] ) 
                                              ? null 
                                              : OurDateTime::createFromFormat( 'Y-m-d H:i:s' , $this->values['lastupdatetime'] ) ;
-
     }
 
     protected function notify ( string $action ) : void

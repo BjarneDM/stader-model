@@ -5,17 +5,16 @@ use \Stader\Model\Abstract\{TableDaoPdo} ;
 
 abstract class DataObjectDao extends DataSetup
 {
-    private           $keysAllowed = []   ;
+    protected         $keysAllowed = []   ;
     private   static  $functions   = null ;
     protected         $values      = []   ;
     protected         $valuesOld   = []   ;
     protected         $class       = ''   ;
     
-    function __construct ( Array $allowedKeys )
+    function __construct ()
     {   // echo 'abstract class ObjectDao extends Setup __construct' . \PHP_EOL ;
 
         parent::__construct() ;
-        $this->keysAllowed = $allowedKeys ;
 
         switch ( self::$connect->getType() )
         {
@@ -99,6 +98,9 @@ abstract class DataObjectDao extends DataSetup
         }
         $this->valuesOld = ( new \ArrayObject( $this->values ) )->getArrayCopy() ;
 }
+
+    function setValuesDefault ( &$args ) : void {}
+    function fixValuesType () : void {}
 
     protected function create( $object ) : int
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;

@@ -4,18 +4,14 @@ use \Stader\Model\Abstract\DataObjectsDao ;
 
 class UsersRoles extends DataObjectsDao
 {
-    public static $allowedKeys = 
-        [ 'user_id' => 'int' , 
-          'role_id' => 'int' 
-        ] ;
-    protected   $class  = '\\Stader\\Model\\Tables\\UserRole\\UserRole' ;
 
     function __construct ( ...$args )
-    {   // echo 'class UsersRoles extends ObjectsDao __construct' . \PHP_EOL ;
-        // print_r( $args ) ;
+    {   // echo "class UGroups extends DataObjectsDao __construct" . \PHP_EOL ;
+        // var_dump( $args ) ;
 
-        parent::__construct( self::$allowedKeys ) ;
-
+        $this->keysAllowed = ( new \ArrayObject( UserRole::$allowedKeys ) )->getArrayCopy() ;
+        $this->class = UserRole::$thisClass ;
+        parent::__construct() ;
         $this->setupData( $args ) ;
 
     }

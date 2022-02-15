@@ -4,22 +4,18 @@ use \Stader\Model\Abstract\DataObjectsDao ;
 
 class UsersInfo extends DataObjectsDao
 {
-    public static $allowedKeys = 
-        [ 'name'     => 'varchar' , 
-          'surname'  => 'varchar' , 
-          'phone'    => 'varchar' 
-        ] ;
-    protected   $class  = '\\Stader\\Model\\Tables\\User\\User' ;
 
     function __construct ( ...$args )
-    {   // echo 'class Users extends ObjectsDao __construct' . \PHP_EOL ;
-        // print_r( $args ) ;
+    {   // echo "class UGroups extends DataObjectsDao __construct" . \PHP_EOL ;
+        // var_dump( $args ) ;
 
-        parent::__construct( self::$allowedKeys ) ;
-
+        $this->keysAllowed = ( new \ArrayObject( UserInfo::$allowedKeys ) )->getArrayCopy() ;
+        $this->class = UserInfo::$thisClass ;
+        parent::__construct() ;
         $this->setupData( $args ) ;
 
     }
+
 }
 
 ?>

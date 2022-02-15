@@ -1,6 +1,7 @@
 <?php namespace Stader\Model\Tables\PlaceOwner ;
 
 use \Stader\Model\Abstract\DataObjectDao ;
+use \Stader\Model\Traits\DataObjectConstruct ;
 
 /*
 
@@ -25,17 +26,9 @@ class PlaceOwner extends DataObjectDao
           'email'        => 'varchar' , 
           'organisation' => 'varchar' 
         ] ;
-    protected   $class  = '\\Stader\\Model\\Tables\\PlaceOwner\\PlaceOwner' ;
+    public static $thisClass   = '\\Stader\\Model\\Tables\\PlaceOwner\\PlaceOwner' ;
 
-    function __construct ( ...$args )
-    {   // echo 'class PlaceOwner extends ObjectDao __construct' . \PHP_EOL ;
-        // print_r( $args ) ;
-
-        parent::__construct( self::$allowedKeys ) ;
-
-        $this->setupData( $args ) ;
-
-    }
+    use DataObjectConstruct ;
 
 }
 

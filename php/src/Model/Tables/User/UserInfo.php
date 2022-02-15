@@ -1,6 +1,7 @@
 <?php namespace Stader\Model\Tables\User ;
 
 use \Stader\Model\Abstract\DataObjectDao ;
+use \Stader\Model\Traits\DataObjectConstruct ;
 
 /*
 
@@ -26,18 +27,14 @@ class UserInfo extends DataObjectDao
           'phone'        => 'varchar' ,
           'userlogin_id' => 'int'
         ] ;
-    protected   $class  = '\\Stader\\Model\\Tables\\User\\UserInfo' ;
+    public static $thisClass   = '\\Stader\\Model\\Tables\\User\\UserInfo' ;
 
-    function __construct ( ...$args )
-    {   // echo 'class User extends ObjectDao __construct' . \PHP_EOL ;
-        // print_r( $args ) ;
+    use DataObjectConstruct ;
 
-        parent::__construct( self::$allowedKeys ) ;
-
-        $this->setupData( $args ) ;
+    function fixValuesType () : void
+    {
         $this->values['id']             = (int) $this->values['id'] ;
         $this->values['userlogin_id']   = (int) $this->values['userlogin_id'] ;
-
     }
 
     private function pwdHash( string $password )

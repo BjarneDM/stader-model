@@ -4,20 +4,13 @@ use \Stader\Model\Abstract\DataObjectsDao ;
 
 class TicketStatuses extends DataObjectsDao
 {
-    public static $allowedKeys = 
-        [ 'name'           => 'varchar' , 
-          'default_colour' => 'varchar' , 
-          'description'    => 'text' , 
-          'type_byte_id'   => 'int' 
-        ] ;
-    protected   $class  = '\\Stader\\Model\\Tables\\TicketStatus\\TicketStatus' ;
-
     function __construct ( ...$args )
-    {   // echo 'class TicketStatuses extends ObjectsDao __construct' . \PHP_EOL ;
-        // print_r( $args ) ;
+    {   // echo "class UGroups extends DataObjectsDao __construct" . \PHP_EOL ;
+        // var_dump( $args ) ;
 
-        parent::__construct( self::$allowedKeys ) ;
-
+        $this->keysAllowed = ( new \ArrayObject( TicketStatus::$allowedKeys ) )->getArrayCopy() ;
+        $this->class = TicketStatus::$thisClass ;
+        parent::__construct() ;
         $this->setupData( $args ) ;
 
     }

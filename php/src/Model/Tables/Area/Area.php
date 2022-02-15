@@ -1,6 +1,7 @@
 <?php namespace Stader\Model\Tables\Area ;
 
 use \Stader\Model\Abstract\DataObjectDao ;
+use \Stader\Model\Traits\DataObjectConstruct ;
 
 /*
 
@@ -23,17 +24,9 @@ class Area extends DataObjectDao
         [ 'name'        => 'varchar' , 
           'description' => 'text' 
         ] ;
-    protected   $class  = '\\Stader\\Model\\Tables\\Area\\Area' ;
+    public static $thisClass   = '\\Stader\\Model\\Tables\\Area\\Area' ;
 
-    public function __construct ( ...$args )
-    {   // echo 'class Area extends ObjectDao __construct' . \PHP_EOL ;
-        // print_r( $args ) ;
-
-        parent::__construct( self::$allowedKeys ) ;
-
-        $this->setupData( $args ) ;
-
-    }
+    use DataObjectConstruct ;
 
 }
 

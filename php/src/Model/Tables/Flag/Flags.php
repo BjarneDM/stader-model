@@ -4,18 +4,13 @@ use \Stader\Model\Abstract\DataObjectsDao ;
 
 class Flags extends DataObjectsDao
 {
-    public static $allowedKeys = 
-        [ 'text'    => 'varchar' , 
-          'unicode' => 'char'
-        ] ;
-    protected     $class       = '\\Stader\\Model\\Tables\\Flag\\Flag' ;
-
     function __construct ( ...$args )
-    {   // echo 'class Flags extends ObjectsDao __construct' . \PHP_EOL ;
-        // print_r( $args ) ;
+    {   // echo "class UGroups extends DataObjectsDao __construct" . \PHP_EOL ;
+        // var_dump( $args ) ;
 
-        parent::__construct( self::$allowedKeys ) ;
-
+        $this->keysAllowed = ( new \ArrayObject( Flag::$allowedKeys ) )->getArrayCopy() ;
+        $this->class = Flag::$thisClass ;
+        parent::__construct() ;
         $this->setupData( $args ) ;
 
     }

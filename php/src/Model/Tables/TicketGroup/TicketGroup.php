@@ -1,6 +1,7 @@
 <?php namespace Stader\Model\Tables\TicketGroup ;
 
 use \Stader\Model\Abstract\DataObjectDao ;
+use \Stader\Model\Traits\DataObjectConstruct ;
 
 /*
 
@@ -25,15 +26,12 @@ class TicketGroup extends DataObjectDao
         [ 'ticket_id' => 'int' , 
           'group_id'  => 'int' 
         ] ;
-    protected   $class  = '\\Stader\\Model\\Tables\\TicketGroup\\TicketGroup' ;
+    public static $thisClass   = '\\Stader\\Model\\Tables\\TicketGroup\\TicketGroup' ;
 
-    function __construct ( ...$args )
-    {   // echo 'class TicketGroup extends ObjectDao __construct' . \PHP_EOL ;
-        // print_r( $args ) ;
+    use DataObjectConstruct ;
 
-        parent::__construct( self::$allowedKeys ) ;
-
-        $this->setupData( $args ) ;
+    function fixValuesType () : void
+    {
         $this->values['ticket_id'] = (int) $this->values['ticket_id'] ;
         $this->values['group_id']  = (int) $this->values['group_id']  ;
 

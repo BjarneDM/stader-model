@@ -4,15 +4,13 @@ use \Stader\Model\Abstract\DataObjectsDao ;
 
 class TypeBytes extends DataObjectsDao
 {
-    public static $allowedKeys = [ 'name' => 'varchar' ] ;
-    protected   $class  = '\\Stader\\Model\\Tables\\TypeByte\\TypeByte' ;
-
     function __construct ( ...$args )
-    {   // echo 'class TypeBytes extends ObjectsDao __construct' . \PHP_EOL ;
-        // print_r( $args ) ;
+    {   // echo "class UGroups extends DataObjectsDao __construct" . \PHP_EOL ;
+        // var_dump( $args ) ;
 
-        parent::__construct( self::$allowedKeys ) ;
-
+        $this->keysAllowed = ( new \ArrayObject( TypeByte::$allowedKeys ) )->getArrayCopy() ;
+        $this->class = TypeByte::$thisClass ;
+        parent::__construct() ;
         $this->setupData( $args ) ;
 
     }

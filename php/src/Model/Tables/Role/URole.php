@@ -1,6 +1,7 @@
 <?php namespace Stader\Model\Tables\Role ;
 
 use \Stader\Model\Abstract\DataObjectDao ;
+use \Stader\Model\Traits\DataObjectConstruct ;
 
 /*
 
@@ -23,18 +24,9 @@ class URole extends DataObjectDao
           'note'     => 'text'    , 
           'priority' => 'int'
         ] ;
-    protected   $class  = '\\Stader\\Model\\Tables\\Role\\URole' ;
+    public static $thisClass   = '\\Stader\\Model\\Tables\\Role\\URole' ;
 
-    function __construct ( ...$args )
-    {   // echo 'class URole extends ObjectDao __construct' . \PHP_EOL ;
-        // print_r( $args ) ;
-
-        parent::__construct( self::$allowedKeys ) ;
-
-        $this->setupData( $args ) ;
-        $this->values['priority'] = (int) $this->values['priority'] ;
-
-    }
+    use DataObjectConstruct ;
 
 }
 

@@ -1,6 +1,7 @@
 <?php namespace Stader\Model\Tables\TypeByte ;
 
 use \Stader\Model\Abstract\DataObjectDao ;
+use \Stader\Model\Traits\DataObjectConstruct ;
 
 /*
 
@@ -16,17 +17,9 @@ create table in not exists type_byte
 class TypeByte extends DataObjectDao
 {
     public static $allowedKeys = [ 'name' => 'varchar' ] ;
-    protected   $class  = '\\Stader\\Model\\Tables\\TypeByte\\TypeByte' ;
+    public static $thisClass   = '\\Stader\\Model\\Tables\\TypeByte\\TypeByte' ;
 
-    function __construct ( ...$args )
-    {   // echo 'class TypeByte extends ObjectDao __construct' . \PHP_EOL ;
-        // print_r( $args ) ;
-
-        parent::__construct( self::$allowedKeys ) ;
-
-        $this->setupData( $args ) ;
-
-    }
+    use DataObjectConstruct ;
 
 }
 

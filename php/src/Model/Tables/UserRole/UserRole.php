@@ -3,6 +3,7 @@
 use \Stader\Model\Abstract\DataObjectDao ;
 use \Stader\Control\User\{User} ;
 use \Stader\Model\Tables\Role\{URole} ;
+use \Stader\Model\Traits\DataObjectConstruct ;
 
 /*
 
@@ -27,12 +28,12 @@ class UserRole extends DataObjectDao
         [ 'user_id' => 'int' , 
           'role_id' => 'int' 
         ] ;
-    protected   $class  = '\\Stader\\Model\\Tables\\UserRole\\UserRole' ;
+    public static $thisClass   = '\\Stader\\Model\\Tables\\UserRole\\UserRole' ;
 
-    function __construct ( ...$args )
-    {   // echo 'class UserRole extends ObjectDao __construct' . \PHP_EOL ;
-        // print_r( $args ) ;
+    use DataObjectConstruct ;
 
+    function setValuesDefault ( &$args ) : void 
+    {
         try {
             /*  [ 'user_id'  => 'int'    , 
                   'role_id'  => 'int'    ,
@@ -42,13 +43,11 @@ class UserRole extends DataObjectDao
                 ] ; */
             $args[0] = $this->convertKeys( $args[0] ) ;
         } catch ( \TypeError $e ) {}
-
-        parent::__construct( self::$allowedKeys ) ;
-
-        $this->setupData( $args ) ;
+    }
+    function fixValuesType () : void 
+    {
         $this->values['user_id'] = (int) $this->values['user_id'] ;
         $this->values['role_id'] = (int) $this->values['role_id'] ;
-
     }
 
     private function convertKeys( Array $array )

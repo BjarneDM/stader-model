@@ -6,16 +6,15 @@ abstract class DataObjectsDao
          extends DataSetup
          implements \Iterator
 {
-    private           $keysAllowed = []   ;
+    protected         $keysAllowed = []   ;
     private   static  $functions   = null ;
     protected         $class       = ''   ;
     private           $position    = 0    ;
     
-    function __construct ( Array $allowedKeys )
+    function __construct ()
     {   // echo 'abstract class ObjectsDao extends Setup __construct' . \PHP_EOL ;
 
         parent::__construct() ;
-        $this->keysAllowed = $allowedKeys ;
 
         switch ( self::$connect->getType() )
         {

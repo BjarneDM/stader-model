@@ -1,6 +1,7 @@
 <?php namespace Stader\Model\Tables\Group ;
 
 use \Stader\Model\Abstract\DataObjectDao ;
+use \Stader\Model\Traits\DataObjectConstruct ;
 
 /*
 
@@ -20,17 +21,9 @@ class UGroup extends DataObjectDao
         [ 'name'        => 'varchar' , 
           'description' => 'varchar'
         ] ;
-    protected   $class  = '\\Stader\\Model\\Tables\\Group\\UGroup' ;
+    public static $thisClass  = '\\Stader\\Model\\Tables\\Group\\UGroup' ;
 
-    function __construct ( ...$args )
-    {   // echo 'class UGroup extends ObjectDao __construct' . \PHP_EOL ;
-        // var_dump( $args ) ;
-
-        parent::__construct( self::$allowedKeys ) ;
-
-        $this->setupData( $args ) ;
-
-    }
+    use DataObjectConstruct ;
 
 }
 

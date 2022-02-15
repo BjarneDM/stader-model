@@ -1,10 +1,13 @@
-<?php namespace Stader\Model\Tables\Group ;
+<?php namespace Stader\Model\Traits ;
 
-use \Stader\Model\Abstract\DataObjectsDao ;
+/*
+    Dette her fungerer ikke endnu, 
+    idet der er et eksplicit kald t/ den grundlæggede Class
+    & dette kald skal så på en-eller-anden måde abstraheres
+ */
 
-class UGroups extends DataObjectsDao
+trait DataObjectsConstruct
 {
-
     function __construct ( ...$args )
     {   // echo "class UGroups extends DataObjectsDao __construct" . \PHP_EOL ;
         // var_dump( $args ) ;
@@ -15,7 +18,6 @@ class UGroups extends DataObjectsDao
         $this->setupData( $args ) ;
 
     }
-
 }
 
 ?>

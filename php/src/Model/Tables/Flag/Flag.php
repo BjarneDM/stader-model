@@ -1,6 +1,7 @@
 <?php namespace Stader\Model\Tables\Flag ;
 
 use \Stader\Model\Abstract\DataObjectDao ;
+use \Stader\Model\Traits\DataObjectConstruct ;
 
 /*
 
@@ -20,17 +21,9 @@ class Flag extends DataObjectDao
         [ 'text'    => 'varchar' , 
           'unicode' => 'char'
         ] ;
-    protected   $class  = '\\Stader\\Model\\Tables\\Flag\\Flag' ;
+    public static $thisClass   = '\\Stader\\Model\\Tables\\Flag\\Flag' ;
 
-    function __construct ( ...$args )
-    {   // echo 'class Flag extends ObjectDao __construct' . \PHP_EOL ;
-        // print_r( $args ) ;
-
-        parent::__construct( self::$allowedKeys ) ;
-
-        $this->setupData( $args ) ;
-
-    }
+    use DataObjectConstruct ;
 
 }
 

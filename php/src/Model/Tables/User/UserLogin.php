@@ -2,6 +2,7 @@
 
 use \Stader\Model\Abstract\DataObjectDao ;
 use \Stader\Model\OurDateTime ;
+use \Stader\Model\Traits\DataObjectConstruct ;
 
 /*
 
@@ -29,20 +30,12 @@ class UserLogin extends DataObjectDao
           'passwd'        => 'varchar' , 
           'email'         => 'varchar'
         ] ;
-    private static $privateKeys =
-        [ 'lastlogintime' => 'datetime' ,
-          'lastloginfail' => 'datetime' ,
-          'loginfailures' => 'int'
-        ] ;
-    protected   $class  = '\\Stader\\Model\\Tables\\User\\UserLogin' ;
+    public static $thisClass   = '\\Stader\\Model\\Tables\\User\\UserLogin' ;
 
-    function __construct ( ...$args )
-    {   // echo 'class UserLogin extends DataObjectDao __construct' . \PHP_EOL ;
-        // print_r( $args ) ;
+    use DataObjectConstruct ;
 
-        parent::__construct( self::$allowedKeys ) ;
-
-        $this->setupData( $args ) ;
+    function fixValuesType () : void
+    {
         $this->values['id']             = (int) $this->values['id'] ;
         $this->values['lastlogintime']  = @is_null( $this->values['lastlogintime']   ) 
                                           ? null
@@ -53,8 +46,6 @@ class UserLogin extends DataObjectDao
         $this->values['loginfailures']  = @empty( $this->values['loginfailures'] )
                                           ? 0
                                           : (int) $this->values['loginfailures'] ;
-
-
     }
 
     public function setLoginTime() : void

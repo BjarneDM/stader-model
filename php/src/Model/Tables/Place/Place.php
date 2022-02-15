@@ -2,6 +2,7 @@
 
 use \Stader\Model\Abstract\DataObjectDao ;
 use \Stader\Model\OurDateTime ;
+use \Stader\Model\Traits\DataObjectConstruct ;
 
 /*
 
@@ -36,15 +37,11 @@ class Place extends DataObjectDao
           'area_id'        => 'int'     , 
           'active'         => 'bool'
         ] ;
-    protected   $class  = '\\Stader\\Model\\Tables\\Place\\Place' ;
+    public static $thisClass   = '\\Stader\\Model\\Tables\\Place\\Place' ;
 
-    function __construct ( ...$args )
-    {   // echo 'class Place extends ObjectDao __construct' . \PHP_EOL ;
-        // print_r( $args ) ;
+    use DataObjectConstruct ;
 
-        parent::__construct( self::$allowedKeys ) ;
-
-        $this->setupData( $args ) ;
+    function fixValuesType () : void {
         $this->values['place_owner_id'] = @is_null( $this->values['place_owner_id'] ) 
                                           ? null 
                                           : (int)  $this->values['place_owner_id'] ;
