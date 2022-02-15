@@ -14,7 +14,7 @@ class Flags extends DataObjectsDao
     {   // echo 'class Flags extends ObjectsDao __construct' . \PHP_EOL ;
         // print_r( $args ) ;
 
-        parent::__construct( 'data' , self::$allowedKeys ) ;
+        parent::__construct( self::$allowedKeys ) ;
 
         $this->setupData( $args ) ;
 

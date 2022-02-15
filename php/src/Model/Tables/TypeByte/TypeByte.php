@@ -22,7 +22,7 @@ class TypeByte extends DataObjectDao
     {   // echo 'class TypeByte extends ObjectDao __construct' . \PHP_EOL ;
         // print_r( $args ) ;
 
-        parent::__construct( 'data' , self::$allowedKeys ) ;
+        parent::__construct( self::$allowedKeys ) ;
 
         $this->setupData( $args ) ;
 

@@ -11,10 +11,10 @@ abstract class DataObjectDao extends DataSetup
     protected         $valuesOld   = []   ;
     protected         $class       = ''   ;
     
-    function __construct ( string $dbType , Array $allowedKeys )
+    function __construct ( Array $allowedKeys )
     {   // echo 'abstract class ObjectDao extends Setup __construct' . \PHP_EOL ;
 
-        parent::__construct( $dbType ) ;
+        parent::__construct() ;
         $this->keysAllowed = $allowedKeys ;
 
         switch ( self::$connect->getType() )

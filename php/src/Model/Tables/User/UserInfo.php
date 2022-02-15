@@ -32,7 +32,7 @@ class UserInfo extends DataObjectDao
     {   // echo 'class User extends ObjectDao __construct' . \PHP_EOL ;
         // print_r( $args ) ;
 
-        parent::__construct( 'data' , self::$allowedKeys ) ;
+        parent::__construct( self::$allowedKeys ) ;
 
         $this->setupData( $args ) ;
         $this->values['id']             = (int) $this->values['id'] ;

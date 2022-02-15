@@ -60,7 +60,7 @@ class TicketStatus extends DataObjectDao
     {   // echo 'class TicketStatus extends ObjectDao __construct' . \PHP_EOL ;
         // print_r( $args ) ;
 
-        parent::__construct( 'data' , self::$allowedKeys ) ;
+        parent::__construct( self::$allowedKeys ) ;
 
         $this->setupData( $args ) ;
         $this->values['type_byte_id'] = (int) $this->values['type_byte_id'] ;

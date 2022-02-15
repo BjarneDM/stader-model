@@ -48,7 +48,7 @@ class Ticket extends DataObjectDao
     {   // echo 'class Ticket extends ObjectDao __construct' . \PHP_EOL ;
         // print_r( $args ) ;
 
-        parent::__construct( 'data' , self::$allowedKeys ) ;
+        parent::__construct( self::$allowedKeys ) ;
 
         $this->setupData( $args ) ;
         $this->values['assigned_place_id'] = (int) $this->values['assigned_place_id'] ;

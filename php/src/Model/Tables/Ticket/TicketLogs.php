@@ -17,7 +17,7 @@ class TicketLogs extends LogObjectsDao
     {   // echo 'class TicketLogs extends ObjectsDao __construct' . \PHP_EOL ;
         // print_r( $args ) ;
 
-        parent::__construct( 'logs' , self::$allowedKeys ) ;
+        parent::__construct( self::$allowedKeys ) ;
 
         $this->setupData( $args ) ;
 

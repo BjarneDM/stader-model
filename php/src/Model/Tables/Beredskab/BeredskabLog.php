@@ -35,7 +35,7 @@ class BeredskabLog extends LogObjectDao
     {   // echo 'class BeredskabLog extends BeredskabLogDao __construct' . \PHP_EOL ;
         // print_r( $args ) ;
 
-        parent::__construct( 'logs' , self::$allowedKeys ) ;
+        parent::__construct( self::$allowedKeys ) ;
 
         $this->setupLogs( $args ) ;
         $this->values['id'] = (int) $this->values['id'] ;

@@ -11,10 +11,10 @@ abstract class DataObjectsDao
     protected         $class       = ''   ;
     private           $position    = 0    ;
     
-    function __construct ( string $dbType , Array $allowedKeys )
+    function __construct ( Array $allowedKeys )
     {   // echo 'abstract class ObjectsDao extends Setup __construct' . \PHP_EOL ;
 
-        parent::__construct( $dbType ) ;
+        parent::__construct() ;
         $this->keysAllowed = $allowedKeys ;
 
         switch ( self::$connect->getType() )

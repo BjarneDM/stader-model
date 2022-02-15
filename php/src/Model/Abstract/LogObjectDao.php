@@ -11,16 +11,15 @@ abstract class LogObjectDao extends LogSetup
     protected         $valuesOld   = []   ;
     protected         $class       = ''   ;
     
-    function __construct ( string $dbType , Array $allowedKeys )
+    function __construct ( Array $allowedKeys )
     {   // echo 'abstract class LogObjectDao extends LogSetup __construct' . \PHP_EOL ;
 
-        parent::__construct( $dbType ) ;
+        parent::__construct( 'logs' ) ;
         $this->keysAllowed = $allowedKeys ;
 
         switch ( self::$connect->getType() )
         {
             case "mysql"        : self::$functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
-            case "mysqlcrypt"   : self::$functions = new TableCryptDaoPdo( self::$connect , $this->class ) ; break ;
             case "pgsql"        : self::$functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
             case "sqlite"       : self::$functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
             case "xml"          : self::$functions = new TableDaoXml( self::$connect , $this->class ) ; break ;

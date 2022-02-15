@@ -6,6 +6,7 @@ class LogConnectPDO extends DbDriver
 {
     protected static $conn = null ;
     protected static $type = null ;
+    private   static $dbType = 'logs' ;
  
     /**
     * This method returns the connection object.
@@ -14,7 +15,7 @@ class LogConnectPDO extends DbDriver
     * variables defined in connect.ini
     * @return PDO the connection object
     */
-    function __construct( $dbType )
+    function __construct()
     {   // echo 'class ConnectPDO extends DbDriver __construct' . \PHP_EOL ;
         // print_r( ['before',self::$conn,self::$type] ) ;
 
@@ -23,13 +24,13 @@ class LogConnectPDO extends DbDriver
             $iniSettings =  parse_ini_file ( dirname( __file__ , 4 ) . "/settings/connect.ini" , true ) ;
 //             print_r( $iniSettings ) ;
 
-            self::$type = $iniSettings[$dbType]['method'] ;
+            self::$type = $iniSettings[self::$dbType]['method'] ;
 
-            $connStr  = $iniSettings[$dbType]['pdo'] ;
-            $connStr .= ':host=' . $iniSettings[$dbType]['host'] ;
-            if ( $iniSettings[$dbType]['host'] !== 'localhost')
-                $connStr .= ';port=' . $iniSettings[$dbType]['port'] ;
-            $connStr .= ';dbname=' . $iniSettings[$dbType]['dbname'] ;
+            $connStr  = $iniSettings[self::$dbType]['pdo'] ;
+            $connStr .= ':host=' . $iniSettings[self::$dbType]['host'] ;
+            if ( $iniSettings[self::$dbType]['host'] !== 'localhost')
+                $connStr .= ';port=' . $iniSettings[self::$dbType]['port'] ;
+            $connStr .= ';dbname=' . $iniSettings[self::$dbType]['dbname'] ;
             if ( self::$type === 'mysql')
                 $connStr .= ';charset=utf8mb4' ;
 
@@ -44,7 +45,7 @@ class LogConnectPDO extends DbDriver
 
             try
             {
-                self::$conn = new \PDO( $connStr , $iniSettings[$dbType]['user'] , $iniSettings[$dbType]['pass'] ) ;
+                self::$conn = new \PDO( $connStr , $iniSettings[self::$dbType]['user'] , $iniSettings[self::$dbType]['pass'] ) ;
                 self::$conn->setAttribute
                 (
                     \PDO::ATTR_ERRMODE,

@@ -31,7 +31,7 @@ class UserBeredskab extends DataObjectDao
     {   // echo 'class UserBeredskab extends ObjectDao __construct' . \PHP_EOL ;
         // print_r( $args ) ;
 
-        parent::__construct( 'data' , self::$allowedKeys ) ;
+        parent::__construct( self::$allowedKeys ) ;
 
         $this->setupData( $args ) ;
         $this->values['user_id']      = (int) $this->values['user_id']      ;

@@ -26,7 +26,7 @@ class UGroup extends DataObjectDao
     {   // echo 'class UGroup extends ObjectDao __construct' . \PHP_EOL ;
         // var_dump( $args ) ;
 
-        parent::__construct( 'data' , self::$allowedKeys ) ;
+        parent::__construct( self::$allowedKeys ) ;
 
         $this->setupData( $args ) ;
 

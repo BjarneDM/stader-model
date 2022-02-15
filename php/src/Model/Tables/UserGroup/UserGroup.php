@@ -44,7 +44,7 @@ class UserGroup extends DataObjectDao
         } catch ( \TypeError $e ) {}
         // print_r( $args ) ;
  
-        parent::__construct( 'data' , self::$allowedKeys ) ;
+        parent::__construct( self::$allowedKeys ) ;
 
         $this->setupData( $args ) ;
         $this->values['user_id']  = (int) $this->values['user_id']  ;

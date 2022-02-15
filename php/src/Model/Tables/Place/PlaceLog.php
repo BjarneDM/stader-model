@@ -35,7 +35,7 @@ class PlaceLog extends LogObjectDao
     {   // echo 'class PlaceLog extends PlaceLogDao __construct' . \PHP_EOL ;
         // print_r( $args ) ;
 
-        parent::__construct( 'logs' , self::$allowedKeys ) ;
+        parent::__construct( self::$allowedKeys ) ;
 
         $this->setupLogs( $args ) ;
         $this->values['id'] = (int) $this->values['id'] ;

@@ -18,7 +18,7 @@ class UsersLogin extends DataObjectsDao
     {   // echo 'class Users extends ObjectsDao __construct' . \PHP_EOL ;
         // print_r( $args ) ;
 
-        parent::__construct( 'data' , self::$allowedKeys ) ;
+        parent::__construct( self::$allowedKeys ) ;
 
         $this->setupData( $args ) ;
 

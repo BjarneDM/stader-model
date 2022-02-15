@@ -16,7 +16,7 @@ class TicketStatuses extends DataObjectsDao
     {   // echo 'class TicketStatuses extends ObjectsDao __construct' . \PHP_EOL ;
         // print_r( $args ) ;
 
-        parent::__construct( 'data' , self::$allowedKeys ) ;
+        parent::__construct( self::$allowedKeys ) ;
 
         $this->setupData( $args ) ;
 

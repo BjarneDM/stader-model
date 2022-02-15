@@ -40,7 +40,7 @@ class Beredskab extends DataObjectDao
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $args ) ;
 
-        parent::__construct( 'data' , self::$allowedKeys ) ;
+        parent::__construct( self::$allowedKeys ) ;
 
         switch ( count( $args ) )
         {

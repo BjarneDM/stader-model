@@ -6,22 +6,23 @@ class DataSetup
 {
     /* private static $connect  = new IDbDriver() ; */
     protected static $connect ;
-    protected static $iniSettings ; 
+    protected static $iniSettings ;
+    private   static $dbType = 'data' ;
 
     /*
      */
-    function __construct( string $dbType )
+    function __construct()
     {   // echo 'class Setup __construct' . \PHP_EOL ;
 
         if ( ! self::$connect ) 
         {
             self::$iniSettings = parse_ini_file( dirname( __file__ , 4 ) . '/settings/connect.ini' , true ) ;
-            $dbMethod = self::$iniSettings[$dbType]['method'] ;
+            $dbMethod = self::$iniSettings[self::$dbType]['method'] ;
             switch ( $dbMethod )
             {
-                case "mysql"    : self::$connect = new DataConnectPDO( $dbType ) ; break ;
-                case "pgsql"    : self::$connect = new DataConnectPDO( $dbType ) ; break ;
-                case "sqlite"   : self::$connect = new DataConnectPDO( $dbType ) ; break ;
+                case "mysql"    : self::$connect = new DataConnectPDO() ; break ;
+                case "pgsql"    : self::$connect = new DataConnectPDO() ; break ;
+                case "sqlite"   : self::$connect = new DataConnectPDO() ; break ;
                 case "xml"      : self::$connect = new DataConnectXML()          ; break ;
                 default: throw new \Exception() ;
             } // echo $this::$connect->getType() . PHP_EOL ;

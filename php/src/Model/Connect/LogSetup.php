@@ -7,21 +7,22 @@ class LogSetup
     /* private static $connect  = new IDbDriver() ; */
     protected static $connect ;
     protected static $iniSettings ; 
+    private   static $dbType = 'logs' ;
 
     /*
      */
-    function __construct( string $dbType )
+    function __construct()
     {   // echo 'class LogSetup __construct' . \PHP_EOL ;
 
         if ( ! self::$connect ) 
         {
             self::$iniSettings = parse_ini_file( dirname( __file__ , 4 ) . '/settings/connect.ini' , true ) ;
-            $dbMethod = self::$iniSettings[$dbType]['method'] ;
+            $dbMethod = self::$iniSettings[self::$dbType]['method'] ;
             switch ( $dbMethod )
             {
-                case "mysql"    : self::$connect = new LogConnectPDO( $dbType ) ; break ;
-                case "pgsql"    : self::$connect = new LogConnectPDO( $dbType ) ; break ;
-                case "sqlite"   : self::$connect = new LogConnectPDO( $dbType ) ; break ;
+                case "mysql"    : self::$connect = new LogConnectPDO() ; break ;
+                case "pgsql"    : self::$connect = new LogConnectPDO() ; break ;
+                case "sqlite"   : self::$connect = new LogConnectPDO() ; break ;
                 case "xml"      : self::$connect = new LogConnectXML()          ; break ;
                 default: throw new \Exception() ;
             } // echo $this::$connect->getType() . PHP_EOL ;

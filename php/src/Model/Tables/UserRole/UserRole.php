@@ -43,7 +43,7 @@ class UserRole extends DataObjectDao
             $args[0] = $this->convertKeys( $args[0] ) ;
         } catch ( \TypeError $e ) {}
 
-        parent::__construct( 'data' , self::$allowedKeys ) ;
+        parent::__construct( self::$allowedKeys ) ;
 
         $this->setupData( $args ) ;
         $this->values['user_id'] = (int) $this->values['user_id'] ;
