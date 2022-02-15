@@ -1,15 +1,15 @@
-<?php namespace Stader\Model\Tables\Beredskab ;
+<?php namespace Stader\Model\Tables\Place ;
 
 use \Stader\Model\Abstract\LogObjectDao ;
 use \Stader\Model\OurDateTime ;
 
 /*
 
-create table if not exists beredskablog
+create table if not exists placelog
 (
     id                  int auto_increment primary key ,
-    beredskab_id        int ,
-        index (beredskab_id) ,
+    place_id        int ,
+        index (place_id) ,
     header              varchar(255) ,
         index (header) ,
     log_timestamp       datetime
@@ -21,25 +21,25 @@ create table if not exists beredskablog
 
  */
 
-class BeredskabLog extends LogObjectDao
+class PlaceLog extends LogObjectDao
 {
     public static $allowedKeys = 
-        [ 'beredskab_id' => 'int'     , 
+        [ 'place_id' => 'int'     , 
           'header'       => 'varchar' , 
           'old_value'    => 'text'    , 
           'new_value'    => 'text'
         ] ;
-    protected $class = '\\Stader\\Model\\Tables\\Beredskab\\BeredskabLog' ;
+    protected $class = '\\Stader\\Model\\Tables\\Place\\PlaceLog' ;
 
     function __construct ( ...$args )
-    {   // echo 'class BeredskabLog extends BeredskabLogDao __construct' . \PHP_EOL ;
+    {   // echo 'class PlaceLog extends PlaceLogDao __construct' . \PHP_EOL ;
         // print_r( $args ) ;
 
         parent::__construct( 'logs' , self::$allowedKeys ) ;
 
         $this->setupLogs( $args ) ;
         $this->values['id'] = (int) $this->values['id'] ;
-        $this->values['beredskab_id'] = (int) $this->values['beredskab_id'] ;
+        $this->values['place_id'] = (int) $this->values['place_id'] ;
         $this->values['log_timestamp']  = 
             @is_null( $this->values['log_timestamp'] ) 
             ? new OurDateTime()
@@ -67,7 +67,7 @@ class BeredskabLog extends LogObjectDao
                     if ( strtolower( gettype( $toCheck[ $key ] ) ) !== 'string' )
                         throw new \Exception( gettype( $toCheck[ $key ] ) . " : forkert input type for {$key} [string]" ) ;
                     break ;
-                case 'beredskab_id' :
+                case 'place_id' :
                     if ( strtolower( gettype( $toCheck[ $key ] ) ) !== 'integer' )
                         throw new \Exception( gettype( $toCheck[ $key ] ) . " : forkert input type for {$key} [integer]" ) ;
                     break ;

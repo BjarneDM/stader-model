@@ -29,6 +29,21 @@ create table if not exists loginlog
         index (log_timestamp)
 ) ;
 
+drop table if exists beredskablog ;
+create table if not exists beredskablog
+(
+    id                  int auto_increment primary key ,
+    beredskab_id        int ,
+        index (beredskab_id) ,
+    header              varchar(255) ,
+        index (header) ,
+    old_value           text default null ,
+    new_value           text default null ,
+    log_timestamp       datetime
+        default current_timestamp ,
+        index (log_timestamp)
+) ;
+
 drop table if exists ticketlog ;
 create table if not exists ticketlog
 (
@@ -37,11 +52,11 @@ create table if not exists ticketlog
         index (ticket_id) ,
     header          varchar(255) ,
         index (header) ,
+    old_value       text default null ,
+    new_value       text default null ,
     log_timestamp   datetime
         default current_timestamp ,
-        index (log_timestamp) ,
-    old_value       text default null ,
-    new_value       text default null
+        index (log_timestamp)
 ) ;
 
 drop table if exists placelog ;
@@ -52,26 +67,11 @@ create table if not exists placelog
         index (place_id) ,
     header          varchar(255) ,
         index (header) ,
+    old_value       text default null ,
+    new_value       text default null ,
     log_timestamp   datetime
         default current_timestamp ,
-        index (log_timestamp) ,
-    old_value       text default null ,
-    new_value       text default null
-) ;
-
-drop table if exists beredskablog ;
-create table if not exists beredskablog
-(
-    id                  int auto_increment primary key ,
-    beredskab_id        int ,
-        index (beredskab_id) ,
-    header              varchar(255) ,
-        index (header) ,
-    log_timestamp       datetime
-        default current_timestamp ,
-        index (log_timestamp) ,
-    old_value           text default null ,
-    new_value           text default null
+        index (log_timestamp)
 ) ;
 
 

@@ -29,6 +29,7 @@ class TicketLog extends LogObjectDao
           'old_value' => 'text'    , 
           'new_value' => 'text' 
         ] ;
+    protected $class = '\\Stader\\Model\\Tables\\Ticket\\TicketLog' ;
 
     function __construct ( ...$args )
     {   // echo 'class BeredskabLog extends BeredskabLogDao __construct' . \PHP_EOL ;
@@ -38,7 +39,7 @@ class TicketLog extends LogObjectDao
 
         $this->setupLogs( $args ) ;
         $this->values['id'] = (int) $this->values['id'] ;
-        $this->values['ticket_id'] = (int) $this->values['beredskab_id'] ;
+        $this->values['ticket_id'] = (int) $this->values['ticket_id'] ;
         $this->values['log_timestamp']  = 
             @is_null( $this->values['log_timestamp'] ) 
             ? new OurDateTime()

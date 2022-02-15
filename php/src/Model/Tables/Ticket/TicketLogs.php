@@ -11,12 +11,13 @@ class TicketLogs extends LogObjectsDao
           'old_value' => 'text'    , 
           'new_value' => 'text' 
         ] ;
+    protected $class = '\\Stader\\Model\\Tables\\Ticket\\TicketLog' ;
 
     function __construct ( ...$args )
     {   // echo 'class TicketLogs extends ObjectsDao __construct' . \PHP_EOL ;
         // print_r( $args ) ;
 
-        parent::__construct( 'logs' , self::$allowedKeys , $args ) ;
+        parent::__construct( 'logs' , self::$allowedKeys ) ;
 
         $this->setupData( $args ) ;
 

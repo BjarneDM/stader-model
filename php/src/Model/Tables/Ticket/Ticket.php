@@ -63,7 +63,6 @@ class Ticket extends DataObjectDao
 
     }
 
-/*
     protected function notify ( string $action ) : void
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // echo $action . PHP_EOL ;
@@ -101,7 +100,6 @@ class Ticket extends DataObjectDao
         }
 
     }
- */
 
 }
 

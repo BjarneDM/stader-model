@@ -107,15 +107,14 @@ abstract class LogObjectDao extends LogSetup
          *  gettype( $args[0] ) === 'array'
          *      opret en Log på basis af værdierne i $args[0]
          *      $testLog = new Log( $args[0] )
+         *
+         *  idéen er, at den almindelige drift !!!KUN!!! kan oprette logs
          */
         switch ( count( $args ) )
         {
             case 1 :
                 switch ( strtolower( gettype( $args[0] ) ) )
                 {
-                    case 'integer' :
-                        $this->values = $this->read( $args[0] ) ;
-                        break ;
                     case 'array' :
                         /*
                          *  count( $args[0] ) === count( $this->keysAllowed ) : ny Log, der skal oprettes
@@ -135,7 +134,7 @@ abstract class LogObjectDao extends LogSetup
                         }
                         break ;
                     default :
-                        throw new \Exception( gettype( $args[0] ) . " : forkert input type [integer,array]" ) ;
+                        throw new \Exception( gettype( $args[0] ) . " : forkert input type [array]" ) ;
                         break ;
                 }
                 break ;
