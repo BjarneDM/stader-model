@@ -9,6 +9,7 @@ abstract class DataObjectsDao
     protected         $keysAllowed = []   ;
     private   static  $functions   = null ;
     protected         $class       = ''   ;
+    protected         $values      = []   ;
     private           $position    = 0    ;
     
     function __construct ()

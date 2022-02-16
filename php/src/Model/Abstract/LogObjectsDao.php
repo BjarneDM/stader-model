@@ -6,17 +6,16 @@ abstract class LogObjectsDao
          extends LogSetup
          implements \Iterator
 {
-    private    $keysAllowed = []   ;
-    private    $functions   = null ;
-    protected  $values      = []   ;
-    protected  $class       = ''   ;
-    private    $position    = 0    ;
-    
-    function __construct ( Array $allowedKeys )
+    protected         $keysAllowed = []   ;
+    private   static  $functions   = null ;
+    protected         $values      = []   ;
+    protected         $class       = ''   ;
+    private           $position    = 0    ;
+
+    function __construct ()
     {   // echo 'abstract class ObjectsDao extends Setup __construct' . \PHP_EOL ;
 
         parent::__construct() ;
-        $this->keysAllowed = $allowedKeys ;
 
         switch ( self::$connect->getType() )
         {

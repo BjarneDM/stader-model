@@ -65,8 +65,8 @@ create table if not exists placelog
     id              int auto_increment primary key ,
     place_id        int ,
         index (place_id) ,
-    header          varchar(255) ,
-        index (header) ,
+    description     varchar(255) ,
+        index (description) ,
     old_value       text default null ,
     new_value       text default null ,
     log_timestamp   datetime

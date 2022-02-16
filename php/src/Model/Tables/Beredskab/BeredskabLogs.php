@@ -1,4 +1,4 @@
-<?php namespace Stader\Model ;
+<?php namespace Stader\Model\Tables\Beredskab ;
 
 use \Stader\Model\Abstract\LogObjectsDao ;
 
@@ -18,20 +18,14 @@ create table if not exists beredskab_log
 
 class BeredskabLogs extends LogObjectsDao
 {
-    public static $allowedKeys = 
-        [ 'beredskab_id' => 'int'     , 
-          'header'       => 'varchar' , 
-          'old_value'    => 'text'    , 
-          'new_value'    => 'text'
-        ] ;
-    protected $class = '\\Stader\\Model\\Tables\\Beredskab\\BeredskabLog' ;
 
     function __construct ( ...$args )
-    {   // echo 'class BeredskabLogss extends BeredskabLogssDao __construct' . \PHP_EOL ;
-        // print_r( $args ) ;
+    {   // echo "class UGroups extends DataObjectsDao __construct" . \PHP_EOL ;
+        // var_dump( $args ) ;
 
-        parent::__construct( self::$allowedKeys ) ;
-
+        $this->keysAllowed = ( new \ArrayObject( BeredskabLog::$allowedKeys ) )->getArrayCopy() ;
+        $this->class = BeredskabLog::$thisClass ;
+        parent::__construct() ;
         $this->setupData( $args ) ;
 
     }
