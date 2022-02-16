@@ -5,20 +5,14 @@ use \Stader\Model\Abstract\LogObjectsDao ;
 
 class TicketLogs extends LogObjectsDao
 {
-    private $allowedKeys = 
-        [ 'ticket_id' => 'int'     , 
-          'header'    => 'varchar' , 
-          'old_value' => 'text'    , 
-          'new_value' => 'text' 
-        ] ;
-    protected $class = '\\Stader\\Model\\Tables\\Ticket\\TicketLog' ;
 
     function __construct ( ...$args )
-    {   // echo 'class TicketLogs extends ObjectsDao __construct' . \PHP_EOL ;
-        // print_r( $args ) ;
+    {   // echo "class UGroups extends DataObjectsDao __construct" . \PHP_EOL ;
+        // var_dump( $args ) ;
 
-        parent::__construct( self::$allowedKeys ) ;
-
+        $this->keysAllowed = ( new \ArrayObject( TicketLog::$allowedKeys ) )->getArrayCopy() ;
+        $this->class = TicketLog::$thisClass ;
+        parent::__construct() ;
         $this->setupData( $args ) ;
 
     }

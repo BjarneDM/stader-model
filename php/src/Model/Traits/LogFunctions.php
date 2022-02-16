@@ -13,7 +13,7 @@ trait LogFunctions
     function fixValuesType () : void
     {
         $this->values['id'] = (int) $this->values['id'] ;
-        $this->values[$this->referenceID] = (int) $this->values[$this->referenceID] ;
+        $this->values["{$this->referenceID}"] = (int) $this->values["{$this->referenceID}"] ;
         $this->values['log_timestamp']  = 
             @is_null( $this->values['log_timestamp'] ) 
             ? new OurDateTime()
