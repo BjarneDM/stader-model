@@ -1,24 +1,13 @@
 <?php namespace Stader\Model\Tables\User ;
 
 use \Stader\Model\Abstract\DataObjectsDao ;
+use \Stader\Model\Traits\DataObjectsConstruct ;
 
 class UsersLogin extends DataObjectsDao
 {
-    public static $allowedKeys = [] ;
-    public static $thisClass   = '' ;
+    private static $baseClass = '\\Stader\\Model\\Tables\\User\\UserLogin' ;
 
-    function __construct ( ...$args )
-    {   // echo "class UGroups extends DataObjectsDao __construct" . \PHP_EOL ;
-        // var_dump( $args ) ;
-
-        self::$allowedKeys = ( new \ArrayObject( UserLogin::$allowedKeys ) )->getArrayCopy() ;
-        $this->keysAllowed = ( new \ArrayObject( UserLogin::$allowedKeys ) )->getArrayCopy() ;
-        self::$thisClass = UserLogin::$thisClass ;
-        $this->class     = UserLogin::$thisClass ;
-        parent::__construct() ;
-        $this->setupData( $args ) ;
-
-    }
+    use DataObjectsConstruct ;
 
 }
 
