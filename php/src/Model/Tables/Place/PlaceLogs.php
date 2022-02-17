@@ -1,6 +1,7 @@
 <?php namespace Stader\Model\Tables\Place ;
 
 use \Stader\Model\Abstract\LogObjectsDao ;
+use \Stader\Model\Traits\DataObjectsConstruct ;
 
 /*
 
@@ -18,21 +19,9 @@ create table if not exists place_log
 
 class PlaceLogs extends LogObjectsDao
 {
-    public static $allowedKeys = [] ;
-    public static $thisClass   = '' ;
+    private static $baseClass = '\\Stader\\Model\\Tables\\Place\\PlaceLog' ;
 
-    function __construct ( ...$args )
-    {   // echo "class UGroups extends DataObjectsDao __construct" . \PHP_EOL ;
-        // var_dump( $args ) ;
-
-        self::$allowedKeys = ( new \ArrayObject( PlaceLog::$allowedKeys ) )->getArrayCopy() ;
-        $this->keysAllowed = ( new \ArrayObject( PlaceLog::$allowedKeys ) )->getArrayCopy() ;
-        self::$thisClass = PlaceLog::$thisClass ;
-        $this->class     = PlaceLog::$thisClass ;
-        parent::__construct() ;
-        $this->setupData( $args ) ;
-
-    }
+    use DataObjectsConstruct ;
 
 }
 
