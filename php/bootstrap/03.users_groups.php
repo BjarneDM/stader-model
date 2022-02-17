@@ -61,12 +61,12 @@ use \Stader\Model\Tables\UserGroup\{UserGroup,UsersGroups} ;
  */
 
 $userNames = [] ;
-$userNames['BackOffice']          = [ 'skp' ] ;
-$userNames['Tlf.Sup.']            = [] ;
-$userNames['Klargøring']          = [] ;
-$userNames['Transport']           = [] ;
-$userNames['Runderings Tekniker'] = [] ;
-$userNames['Support Tekniker']    = [] ;
+$userNames['BackOffice']          = [ 'mich' ] ;
+$userNames['Tlf.Sup.']            = [ 'last' , 'skp'  ] ;
+$userNames['Klargøring']          = [ 'skp'  , 'lani' , 'krkr' ] ;
+$userNames['Transport']           = [ 'lani' , 'krkr' , 'mich' , 'last' , 'skp'  ] ;
+$userNames['Runderings Tekniker'] = [ 'krkr' , 'mich' , 'last' , 'skp'  , 'lani' ] ;
+$userNames['Support Tekniker']    = [ 'mich' , 'last' , 'skp'  , 'lani' , 'krkr' ] ;
 // $userNames['Mail']                = [ 'casp7654'  , 'LarsL' , 'kriskris' , 'MichaleM' , 'toke1254' , 'JanJ' , 'skp-IT' ] ;
 // $userNames['Normal Besked']       = [ 'casp7654'  , 'LarsL' , 'kriskris' , 'MichaleM' , 'toke1254' , 'JanJ' , 'skp-IT' ] ;
 
