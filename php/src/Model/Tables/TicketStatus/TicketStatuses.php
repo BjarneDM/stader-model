@@ -1,24 +1,13 @@
 <?php namespace Stader\Model\Tables\TicketStatus ;
 
 use \Stader\Model\Abstract\DataObjectsDao ;
+use \Stader\Model\Traits\DataObjectsConstruct ;
 
 class TicketStatuses extends DataObjectsDao
 {
-    public static $allowedKeys = [] ;
-    public static $thisClass   = '' ;
+    private static $baseClass = '\\Stader\\Model\\Tables\\TicketStatus\\TicketStatus' ;
 
-    function __construct ( ...$args )
-    {   // echo "class UGroups extends DataObjectsDao __construct" . \PHP_EOL ;
-        // var_dump( $args ) ;
-
-        self::$allowedKeys = ( new \ArrayObject( TicketStatus::$allowedKeys ) )->getArrayCopy() ;
-        $this->keysAllowed = ( new \ArrayObject( TicketStatus::$allowedKeys ) )->getArrayCopy() ;
-        self::$thisClass = TicketStatus::$thisClass ;
-        $this->class     = TicketStatus::$thisClass ;
-        parent::__construct() ;
-        $this->setupData( $args ) ;
-
-    }
+    use DataObjectsConstruct ;
 
 }
 
