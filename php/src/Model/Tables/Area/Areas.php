@@ -4,13 +4,17 @@ use \Stader\Model\Abstract\DataObjectsDao ;
 
 class Areas extends DataObjectsDao
 {
+    public static $allowedKeys = [] ;
+    public static $thisClass   = '' ;
 
-    public function __construct ( ...$args )
-    {   // echo 'class Area extends ObjectsDao __construct' . \PHP_EOL ;
-        // print_r( $args ) ;
+    function __construct ( ...$args )
+    {   // echo "class UGroups extends DataObjectsDao __construct" . \PHP_EOL ;
+        // var_dump( $args ) ;
 
+        self::$allowedKeys = ( new \ArrayObject( Area::$allowedKeys ) )->getArrayCopy() ;
         $this->keysAllowed = ( new \ArrayObject( Area::$allowedKeys ) )->getArrayCopy() ;
-        $this->class = Area::$thisClass ;
+        self::$thisClass = Area::$thisClass ;
+        $this->class     = Area::$thisClass ;
         parent::__construct() ;
         $this->setupData( $args ) ;
 

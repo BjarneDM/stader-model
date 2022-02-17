@@ -32,7 +32,7 @@ class UserRole extends DataObjectDao
 
     use DataObjectConstruct ;
 
-    function setValuesDefault ( &$args ) : void 
+    protected function setValuesDefault ( &$args ) : void 
     {
         try {
             /*  [ 'user_id'  => 'int'    , 
@@ -44,7 +44,8 @@ class UserRole extends DataObjectDao
             $args[0] = $this->convertKeys( $args[0] ) ;
         } catch ( \TypeError $e ) {}
     }
-    function fixValuesType () : void 
+
+    protected function fixValuesType () : void 
     {
         $this->values['user_id'] = (int) $this->values['user_id'] ;
         $this->values['role_id'] = (int) $this->values['role_id'] ;

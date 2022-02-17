@@ -9,7 +9,7 @@ class MInstances
         'Beredskabs' , 'Flags' , 'TypeBytes' ,
         'UGroups' , 'URoles' ,
         'Tickets' ,  'TicketsGroups' , 'TicketStatuses' ,
-        'Users' , 'UsersBeredskabs' , 'UsersGroups' , 'UsersRoles' 
+        'UsersLogin' , 'UsersInfo' , 'UsersBeredskabs' , 'UsersGroups' , 'UsersRoles' 
     ] ;
 
     public static $allowedLogs =

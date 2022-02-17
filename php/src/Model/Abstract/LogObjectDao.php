@@ -1,7 +1,8 @@
 <?php namespace Stader\Model\Abstract ;
 
 use \Stader\Model\Connect\LogSetup ;
-use \Stader\Model\Abstract\{TableDaoPdo} ;
+use \Stader\Model\DatabaseAccessObjects\{TableDaoPdo} ;
+use \Stader\Model\Traits\{ObjectDaoConstruct,ObjectDaoFunctions} ;
 
 abstract class LogObjectDao extends LogSetup
 {
@@ -10,23 +11,8 @@ abstract class LogObjectDao extends LogSetup
     protected         $values      = []   ;
     protected         $valuesOld   = []   ;
     protected         $class       = ''   ;
-    
-    function __construct ()
-    {   // echo 'abstract class LogObjectDao extends LogSetup __construct' . \PHP_EOL ;
 
-        parent::__construct( 'logs' ) ;
-
-        switch ( self::$connect->getType() )
-        {
-            case "mysql"        : self::$functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
-            case "pgsql"        : self::$functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
-            case "sqlite"       : self::$functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
-            case "xml"          : self::$functions = new TableDaoXml( self::$connect , $this->class ) ; break ;
-            default: throw new \Exception() ;
-            // var_dump( self::$functions ) ;
-        }
-
-    }
+    use ObjectDaoConstruct ;
 
     protected function setupData ( $args )
     {
@@ -71,52 +57,7 @@ abstract class LogObjectDao extends LogSetup
         }
     }
 
-    protected function create( $object ) : int
-    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        // print_r( $array ) ;
-
-    return self::$functions->create( $object ) ; }
-
-    protected function read( $object ) : Array
-    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        // print_r( $args ) ;
-
-        $this->notify( 'read' ) ;
-    return self::$functions->readOne( $object ) ; }
-
-    public function getData()   { return $this->values ; }
-    public function getValues() { return array_values( $this->values ) ; }
-    public function getKeys()   { return array_keys( $this->values ) ; }
-
-    /*
-     *  default minimalt integritets check
-     */
-    protected function check( Array &$toCheck )
-    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        // print_r( $toCheck ) ;
-
-        foreach ( array_keys( $toCheck ) as $key )
-        {
-            if ( ! array_key_exists( $key , $this->keysAllowed ) )
-                throw new \Exception( "'{$key}' doesn't exist in [" . implode( ',' , array_keys( $this->keysAllowed ) ) . "]" ) ;
-
-            switch ( $this->keysAllowed[$key] )
-            {
-                case 'int' :
-                case 'integer' :
-                    break ;
-                case 'bool' :
-                    break ;
-            }
-
-        }
-    }
-
-    /*
-     *  denne skal udfyldes i de aktuelle class
-     *  der har brug for dette
-     */
-    protected function notify ( string $action ) : void {}
+    use ObjectDaoFunctions ;
 
 }
 

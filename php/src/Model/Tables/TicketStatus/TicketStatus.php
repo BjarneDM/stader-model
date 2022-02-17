@@ -58,12 +58,12 @@ class TicketStatus extends DataObjectDao
 
     use DataObjectConstruct ;
 
-    function fixValuesType () : void
+    protected function fixValuesType () : void
     {
         $this->values['type_byte_id'] = (int) $this->values['type_byte_id'] ;
     }
 
-    protected function check( Array &$toCheck )
+    protected function check( Array &$toCheck ) : void
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $toCheck ) ;
 

@@ -1,4 +1,4 @@
-<?php namespace Stader\Model\Abstract ;
+<?php namespace Stader\Model\DatabaseAccessObjects ;
 
 use \Stader\Model\Interfaces\ICrudDao ;
 
@@ -41,7 +41,7 @@ class TableDaoPdo implements ICrudDao
                 $dataType = \PDO::PARAM_NULL ;
                 break ;
             default :
-                throw new \Exception( $valType . ' : unknow PDO dataType') ;
+                throw new \Exception( $valType . ' : unknown PDO dataType') ;
         } 
     return $dataType ; }
 
@@ -82,6 +82,7 @@ class TableDaoPdo implements ICrudDao
     private function readDataNamed( $object )
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $object ) ;
+        // print_r( $object::$allowedKeys ) ;
 
         $sql  = 'select * from ' . $this->table . ' ' ;
         $stmt = null ;
@@ -234,8 +235,6 @@ class TableDaoPdo implements ICrudDao
 
         $stmt->execute() ;
         $rowCount = $stmt->rowCount();
-        if ( $rowCount !== 1 )
-            throw new \Exception('PDO : rowCount != 1') ;
         $stmt = null ;
 
     return $rowCount ; }
@@ -263,8 +262,6 @@ class TableDaoPdo implements ICrudDao
 
         $stmt->execute( array_values( $diffValues ) ) ;
         $rowCount = $stmt->rowCount();
-        if ( $rowCount !== 1 )
-            throw new \Exception('PDO : rowCount != 1') ;
         $stmt = null ;
 
     return $rowCount ; }
@@ -275,13 +272,18 @@ class TableDaoPdo implements ICrudDao
         {
             case 0  :
             case 1  :
-                return $this->updateNamed( $object , $diffValues ) ;
+                $rowCount = $this->updateNamed( $object , $diffValues ) ;
                 break ;
             default :
-                return $this->updatePosit( $object , $diffValues ) ;
+                $rowCount = $this->updatePosit( $object , $diffValues ) ;
                 break ;
         }
-    }
+        if ( $rowCount !== 1 )
+            throw new \Exception('PDO : rowCount != 1') ;
+    return $rowCount ; }
+/*
+ *  update funktioner
+ *  !!! SLUT !!! */
 
     public function delete( $object )
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
@@ -302,7 +304,7 @@ class TableDaoPdo implements ICrudDao
 
     return $rowCount ; }
 
-/*
+/*  !!! START !!!
  *  functions for \Iterator
 
             OK - det viser sig, at for MySQL bliver $cursorOrientation & $cursorOffset i
@@ -318,6 +320,7 @@ class TableDaoPdo implements ICrudDao
 
     public function rewind( $object ) : void
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        // echo $object::$thisClass . \PHP_EOL ;
         // print_r( $object ) ;
 
         $this->stmt = $this->readData( $object ) ;
@@ -326,19 +329,19 @@ class TableDaoPdo implements ICrudDao
 
     public function count( $object ) : int
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        if ( is_null( $this->stmt ) ) $this->rewind( $object ) ;
+        // if ( is_null( $this->stmt ) ) $this->rewind( $object ) ;
         return $this->stmt->rowCount() ;
     }
 
     public function next( $object ) : void
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        if ( is_null( $this->stmt ) ) $this->rewind( $object ) ;
+        // if ( is_null( $this->stmt ) ) $this->rewind( $object ) ;
         $this->row = $this->stmt->fetch( \PDO::FETCH_ASSOC ) ;
     }
 
     public function valid( $object )  : bool
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        if ( is_null( $this->stmt ) ) $this->rewind( $object ) ;
+        // if ( is_null( $this->stmt ) ) $this->rewind( $object ) ;
         if ( $this->row === false )
              { return false ; } 
         else { return true ; }
@@ -346,17 +349,20 @@ class TableDaoPdo implements ICrudDao
 
     public function current( $object ) : int
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        if ( is_null( $this->stmt ) ) $this->rewind( $object ) ;
+        // if ( is_null( $this->stmt ) ) $this->rewind( $object ) ;
         return (int) $this->row['id'] ;
     }
 
     public function key( $object ) : int | false
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        if ( is_null( $this->stmt ) ) $this->rewind( $object ) ;
+        // if ( is_null( $this->stmt ) ) $this->rewind( $object ) ;
         if ( $this->row === false )
              { return false ; } 
         else { return (int) $this->row['id'] ; }
     }
+/*
+ *  functions for \Iterator
+ *  !!! SLUT !!! */
 
     public function deleteAllOld( $object ) : void
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;

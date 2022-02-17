@@ -42,7 +42,7 @@ class Beredskab extends DataObjectDao
 
     use DataObjectConstruct ;
 
-    function setValuesDefault ( &$args ) : void 
+    protected function setValuesDefault ( &$args ) : void 
     {
         $this->thisLog = self::$thisClass . 'Log' ;
         $this->referenceID = array_keys( BeredskabLog::$allowedKeys )[0] ;
@@ -63,7 +63,7 @@ class Beredskab extends DataObjectDao
         }
     }
 
-    function fixValuesType () : void 
+    protected function fixValuesType () : void 
     {
         $this->values['created_by_id'] = (int)  $this->values['created_by_id'] ;
         $this->values['active']        = (bool) $this->values['active']        ;

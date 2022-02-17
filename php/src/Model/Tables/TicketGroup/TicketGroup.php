@@ -30,7 +30,7 @@ class TicketGroup extends DataObjectDao
 
     use DataObjectConstruct ;
 
-    function fixValuesType () : void
+    protected function fixValuesType () : void
     {
         $this->values['ticket_id'] = (int) $this->values['ticket_id'] ;
         $this->values['group_id']  = (int) $this->values['group_id']  ;

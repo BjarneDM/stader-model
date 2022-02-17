@@ -1,18 +1,47 @@
 <?php namespace Stader\Model\Abstract ;
 
-use \Stader\Model\Connect\DataSetup ;
-use \Stader\Model\DatabaseAccessObjects\{TableDaoPdo} ;
-use \Stader\Model\Traits\{ObjectDaoConstruct,ObjectDaoFunctions} ;
+/*
 
-abstract class DataObjectDao extends DataSetup
+create table if not exists usercrypt
+(
+    id      int primary key ,
+    salt    varchar(255) ,
+    algo    varchar(255) ,
+    tag     varchar(255) ,
+    data    text
+) ;
+
+ */
+
+use \Stader\Model\Connect\DataSetup ;
+use \Stader\Model\DatabaseAccessObjects\{TableCryptDaoPdo} ;
+use \Stader\Model\Traits\ObjectDaoFunctions ;
+
+abstract class CryptObjectDao extends DataSetup
 {
     protected         $keysAllowed = []   ;
     private   static  $functions   = null ;
     protected         $values      = []   ;
     protected         $valuesOld   = []   ;
     protected         $class       = ''   ;
+    private           $classCrypt  = ''   ;
     
-    use ObjectDaoConstruct ;
+    function __construct ()
+    {   // echo 'abstract class ObjectDao extends Setup __construct' . \PHP_EOL ;
+
+        parent::__construct() ;
+
+        switch ( self::$connect->getType() )
+        {
+            case "mysql"        : self::$functions = new TableCryptDaoPdo( self::$connect , $this->class ) ; break ;
+            case "pgsql"        : self::$functions = new TableCryptDaoPdo( self::$connect , $this->class ) ; break ;
+            case "sqlite"       : self::$functions = new TableCryptDaoPdo( self::$connect , $this->class ) ; break ;
+            case "xml"          : self::$functions = new TableCryptDaoXml( self::$connect , $this->class ) ; break ;
+            default: throw new \Exception() ;
+            // var_dump( self::$functions ) ;
+        }
+
+    }
 
     protected function setupData ( $args )
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;

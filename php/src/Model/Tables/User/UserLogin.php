@@ -87,7 +87,7 @@ class UserLogin extends DataObjectDao
             ) ;
     }
 
-    protected function check( Array &$toCheck )
+    protected function check( Array &$toCheck ) : void
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $toCheck ) ;
 

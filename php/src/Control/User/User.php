@@ -117,7 +117,7 @@ class User extends DataObjectDao
         if ( isset( $this->values['id'] ) )
         {
             $this->userLogin = new UserLogin( $this->values['id'] ) ;
-            $this->userInfo  = new UserInfo( 'userlogin_id' , (int) $this->userLogin->getData()['id'] ) ;
+            $this->userInfo  = new UserInfo( 'reference_id' , (int) $this->userLogin->getData()['id'] ) ;
 
         } else {
 
@@ -138,18 +138,20 @@ class User extends DataObjectDao
             if ( ! empty( $ulKeyes ) ) 
             {
                 $this->userLogin = new UserLogin( $ulKeyes , $ulValues ) ;
-                $this->userInfo  = new UserInfo( ['userlogin_id'] , [  $this->userLogin->getData()['id'] ] ) ;
+                $this->userInfo  = new UserInfo( ['reference_id'] , [  $this->userLogin->getData()['id'] ] ) ;
             }
+            /*
             if ( ! empty( $uiKeyes ) )
             {
                 $this->userInfo  = new UserInfo(  $uiKeyes , $uiValues ) ;
-                $this->userLogin = new UserLogin( $this->userInfo->getData()['userlogin_id'] ) ;
+                $this->userLogin = new UserLogin( $this->userInfo->getData()['reference_id'] ) ;
             }
+            */
 
         }
 
         $values = array_merge( $this->userInfo->getData() , $this->userLogin->getData() ) ;
-        unset( $values['userlogin_id'] ) ;
+        unset( $values['reference_id'] ) ;
         return $values ;
    }
 
@@ -192,9 +194,9 @@ class User extends DataObjectDao
                 'name'         => $this->values['name'] ,
                 'surname'      => $this->values['surname'] ,
                 'phone'        => $this->values['phone'] ,
-                'userlogin_id' => $this->userLogin->getData()['id']
+                'reference_id' => $this->userLogin->getData()['id']
                 ]) ;
-        // $this->values['passwd'] = $this->userLogin->getData()['passwd'] ;
+        $this->values['passwd'] = $this->userLogin->getData()['passwd'] ;
     return $this->userLogin->getData()['id'] ; }
 
 }

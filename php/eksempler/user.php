@@ -29,10 +29,12 @@ print_r( ( new User( $id ) )->getData() ) ;
 /*
  *  test af læsning af eksisterende User på basis af forskellige værdier
  */
-$user = new User( ['name'] , ['Kris'] ) ;
-print_r( $user->getData() ) ;
+// kan ikke længere læse i userinfo efter krypteringen
+// $user = new User( ['name'] , ['Kris'] ) ;
+// print_r( $user->getData() ) ;
 $user = new User( ['email'] , ['skp@example.com'] ) ;
 print_r( $user->getData() ) ;
+// ignorerer værdier i userinfo
 $user = new User( ['email','name'] , ['skp@example.com','Kris'] ) ;
 print_r( $user->getData() ) ;
 

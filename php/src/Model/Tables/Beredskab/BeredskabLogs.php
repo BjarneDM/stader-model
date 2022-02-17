@@ -18,13 +18,17 @@ create table if not exists beredskab_log
 
 class BeredskabLogs extends LogObjectsDao
 {
+    public static $allowedKeys = [] ;
+    public static $thisClass   = '' ;
 
     function __construct ( ...$args )
     {   // echo "class UGroups extends DataObjectsDao __construct" . \PHP_EOL ;
         // var_dump( $args ) ;
 
+        self::$allowedKeys = ( new \ArrayObject( BeredskabLog::$allowedKeys ) )->getArrayCopy() ;
         $this->keysAllowed = ( new \ArrayObject( BeredskabLog::$allowedKeys ) )->getArrayCopy() ;
-        $this->class = BeredskabLog::$thisClass ;
+        self::$thisClass = BeredskabLog::$thisClass ;
+        $this->class     = BeredskabLog::$thisClass ;
         parent::__construct() ;
         $this->setupData( $args ) ;
 

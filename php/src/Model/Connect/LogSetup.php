@@ -23,7 +23,7 @@ class LogSetup
                 case "mysql"    : self::$connect = new LogConnectPDO() ; break ;
                 case "pgsql"    : self::$connect = new LogConnectPDO() ; break ;
                 case "sqlite"   : self::$connect = new LogConnectPDO() ; break ;
-                case "xml"      : self::$connect = new LogConnectXML()          ; break ;
+                case "xml"      : self::$connect = new LogConnectXML() ; break ;
                 default: throw new \Exception() ;
             } // echo $this::$connect->getType() . PHP_EOL ;
         }   // print_r( ['after',self::$connect->getConn()] ) ;

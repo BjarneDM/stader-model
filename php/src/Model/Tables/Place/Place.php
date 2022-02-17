@@ -44,14 +44,14 @@ class Place extends DataObjectDao
 
     use DataObjectConstruct ;
 
-    function setValuesDefault ( &$args ) : void
+    protected function setValuesDefault ( &$args ) : void
     {
         $this->thisLog = self::$thisClass . 'Log' ;
         $this->referenceID = array_keys( PlaceLog::$allowedKeys )[0] ;
         $this->descriptID  = array_keys( PlaceLog::$allowedKeys )[1] ;
     }
 
-    function fixValuesType () : void {
+    protected function fixValuesType () : void {
         $this->values['place_owner_id'] = @is_null( $this->values['place_owner_id'] ) 
                                           ? null 
                                           : (int)  $this->values['place_owner_id'] ;

@@ -32,7 +32,7 @@ class UserGroup extends DataObjectDao
 
     use DataObjectConstruct ;
 
-    function setValuesDefault ( &$args ) : void 
+    protected function setValuesDefault ( &$args ) : void 
     {
         try {
             /*  [ 'user_id'  => 'int' , 
@@ -46,7 +46,7 @@ class UserGroup extends DataObjectDao
         // print_r( $args ) ;
     }
 
-    function fixValuesType () : void 
+    protected function fixValuesType () : void 
     {
         $this->values['user_id']  = (int) $this->values['user_id']  ;
         $this->values['group_id'] = (int) $this->values['group_id'] ;

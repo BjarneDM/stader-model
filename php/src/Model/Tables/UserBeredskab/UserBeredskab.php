@@ -30,7 +30,7 @@ class UserBeredskab extends DataObjectDao
 
     use DataObjectConstruct ;
 
-    function fixValuesType () : void
+    protected function fixValuesType () : void
     {
         $this->values['user_id']      = (int) $this->values['user_id']      ;
         $this->values['beredskab_id'] = (int) $this->values['beredskab_id'] ;

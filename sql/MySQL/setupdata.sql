@@ -57,8 +57,9 @@ create table if not exists userlogin
 create table if not exists userinfo
 (
     id              int auto_increment primary key ,
-    userlogin_id     int ,
-        foreign key (userlogin_id) references userlogin(id)
+    reference_id    int ,
+        constraint  unique (reference_id) ,
+        foreign key (reference_id) references userlogin(id)
         on update cascade
         on delete cascade ,
     name            varchar(255) not null ,
@@ -82,13 +83,18 @@ create table if not exists user
     loginfailures   int default 0
 ) ;
 
-create table if not exists usercrypt
+create table if not exists userinfocrypt
 (
-    id      int primary key ,
-    salt    varchar(255) ,
-    algo    varchar(255) ,
-    tag     varchar(255) ,
-    data    text
+    id              int auto_increment primary key ,
+    reference_id    int ,
+        constraint  unique (reference_id) ,
+        foreign key (reference_id) references userlogin(id)
+        on update cascade
+        on delete cascade ,
+    salt            varchar(255) ,
+    algo            varchar(255) ,
+    tag             varchar(255) ,
+    data            text
 ) ;
 
 create table if not exists typebyte

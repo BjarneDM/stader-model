@@ -40,15 +40,13 @@ use \Stader\Model\Tables\UserRole\{UserRole,UsersRoles} ;
  */
 ( new UsersRoles() )->deleteAll() ;
 
-$brugere = new Users() ;
-
 $specUsers =
 [
     'ejer'  => [ 'lani' ] ,
     'admin' => [ 'lani' , 'last' ] 
 ] ;
 
-foreach ( $brugere as $user )
+foreach ( ( new Users() ) as $user )
 {
     $priv = new UserRole
     (
@@ -74,16 +72,75 @@ foreach ( $specUsers as $level => $users )
     }   unset( $username ) ;
 }   unset( $users , $level ) ;
 
-foreach ( $brugere as $user )
+/*
+ *  så dette her fungerer som forventet uden nogen som helst problemer
+ */
+// foreach ( ( new Users() ) as $user )
+// {
+//     print_r($user->getData()) ;
+// }   unset( $user ) ;
+
+/*
+ *  Men dette her fejler på en-eller-anden måde
+ *  kun den 1ste User bliver behandlet
+ */
+// foreach ( ( new Users() ) as $user )
+// {
+//     print_r($user->getData()) ;
+//     /*
+//      *  ændres $user->getData()['id'] manuelt, virker det
+//      */
+//     $roller = new UsersRoles( 'user_id' , $user->getData()['id'] ) ;
+//     $rollerne = [] ;
+//     foreach ( $roller as $rolle )
+//     {
+//         $rollerne[] = ( new URole( $rolle->getData()['role_id'] ) )->getData()['role'] ;
+//     }   unset( $rolle ) ;
+//     echo $user->getData()['username'] . ' : [ ' . implode( ' , ' ,  $rollerne )  . ' ]' . \PHP_EOL ;
+// }   unset( $user ) ;
+
+/*
+ *  så min kodning kan !!!IKKE!!! lide at have \Iteratorer indeni hinanden
+ *  dette work-around fungerer ; men er ikke bruger-venligt
+ *  der skal kigges på DB-forbindelserne ...
+ */
+$ids = [] ;
+foreach ( ( new Users() ) as $user )
 {
-        $roller = new UsersRoles( 'user_id' , $user->getData()['id'] ) ;
-        $rollerne = [] ;
-        foreach ( $roller as $rolle )
-        {
-            $rollerne[] = ( new URole( $rolle->getData()['role_id'] ) )->getData()['role'] ;
-        }   unset( $rolle ) ;
-        echo $user->getData()['username'] . ' : [ ' . implode( ' , ' ,  $rollerne )  . ' ]' . \PHP_EOL ;
+    $ids[] = $user->getData()['id'] ;
 }   unset( $user ) ;
+foreach ( $ids as $id )
+{
+    // print_r( ( new User($id) )->getData() ) ;
+    $roller = new UsersRoles( 'user_id' , $id ) ;
+    $rollerne = [] ;
+    foreach ( $roller as $rolle )
+    {
+        $rollerne[] = ( new URole( $rolle->getData()['role_id'] ) )->getData()['role'] ;
+    }   unset( $rolle ) ;
+    echo ( new User($id) )->getData()['username'] . ' : [ ' . implode( ' , ' ,  $rollerne )  . ' ]' . \PHP_EOL ;
+}   unset( $id ) ;
+
+
+
+
+/*
+ *  så lad os prøve noget andet :
+ *  den underlæggede id for User kommer fra UserLogin ...
+ *  ... & det fungerer heller ikke 
+ */
+// use \Stader\Model\Tables\User\{UserLogin,UsersLogin} ;
+// foreach ( ( new UsersLogin() ) as $user )
+// {
+//     print_r($user->getData()) ;
+//     $roller = new UsersRoles( 'user_id' , $user->getData()['id'] ) ;
+//     $rollerne = [] ;
+//     foreach ( $roller as $rolle )
+//     {
+//         $rollerne[] = ( new URole( $rolle->getData()['role_id'] ) )->getData()['role'] ;
+//     }   unset( $rolle ) ;
+//     echo $user->getData()['username'] . ' : [ ' . implode( ' , ' ,  $rollerne )  . ' ]' . \PHP_EOL ;
+// }   unset( $user ) ;
 
 echo '</pre>' ;
 ?>

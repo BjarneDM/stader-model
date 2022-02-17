@@ -50,14 +50,14 @@ class Ticket extends DataObjectDao
 
     use DataObjectConstruct ;
 
-    function setValuesDefault ( &$args ) : void
+    protected function setValuesDefault ( &$args ) : void
     {
         $this->thisLog = self::$thisClass . 'Log' ;
         $this->referenceID = array_keys( TicketLog::$allowedKeys )[0] ;
         $this->descriptID  = array_keys( TicketLog::$allowedKeys )[1] ;
     }
 
-    function fixValuesType () : void
+    protected function fixValuesType () : void
     {
         $this->values['assigned_place_id'] = (int) $this->values['assigned_place_id'] ;
         $this->values['ticket_status_id']  = (int) $this->values['ticket_status_id']  ;

@@ -1,4 +1,19 @@
-<?php namespace Stader\Model\Abstract ;
+<?php namespace Stader\Model\DatabaseAccessObjects ;
+
+/*
+
+create table if not exists usercrypt
+(
+    id              int auto_increment primary key ,
+    reference_id    int ,
+        index(reference _id) ,
+    salt            varchar(255) ,
+    algo            varchar(255) ,
+    tag             varchar(255) ,
+    data            text
+) ;
+
+ */
 
 use \Stader\Model\Interfaces\ICrudDao ;
 
@@ -6,6 +21,15 @@ class TableCryptDaoPdo implements ICrudDao
 {
     private $dbh    = null ;
     private $table  = null ;
+    private $iniSettings ; 
+
+    private static $allowedKeys =
+        [   'reference_id' => 'int' ,
+            'salt'         => 'varchar' ,
+            'algo'         => 'varchar' ,
+            'tag'          => 'varchar' ,
+            'data'         => 'text'
+        ] ;
 
     public function __construct ( $connect , $class )
     {   // echo 'class TableDaoPdo implements ICrudDao __construct' . \PHP_EOL ;
@@ -15,8 +39,9 @@ class TableCryptDaoPdo implements ICrudDao
 
         $this->dbh   = $connect->getConn() ;
         $this->table = explode( '\\' , $class ) ;
-        $this->table = strtolower( end( $this->table ) ) ;
+        $this->table = strtolower( end( $this->table ) ) . 'crypt' ;
 
+        $this->iniSettings = parse_ini_file(  dirname( __DIR__ , 3 ) . '/settings/connect.ini' , true ) ;
     }
 
     private function getPdoParamType ( $valType )
@@ -24,7 +49,6 @@ class TableCryptDaoPdo implements ICrudDao
         $dataType = null ;
         switch ( $valType )
         {
-            case 'char' :
             case 'varchar' :
             case 'text' :
                 $dataType = \PDO::PARAM_STR ;
@@ -33,14 +57,8 @@ class TableCryptDaoPdo implements ICrudDao
             case 'integer' :
                 $dataType = \PDO::PARAM_INT ;
                 break ;
-            case 'bool' :
-                $dataType = \PDO::PARAM_BOOL ;
-                break ;
-            case 'null' :
-                $dataType = \PDO::PARAM_NULL ;
-                break ;
             default :
-                throw new \Exception( $valType . ' : unknow PDO dataType') ;
+                throw new \Exception( $valType . ' : unknown / unsupported PDO dataType for encrypted data') ;
         } 
     return $dataType ; }
 
@@ -49,19 +67,21 @@ class TableCryptDaoPdo implements ICrudDao
     public function create( $object )
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $object ) ;
-        // print_r( $object::$allowedKeys ) ;
+        // print_r( self::$allowedKeys ) ;
 
         $sql  = 'insert into ' . $this->table ;
-        $sql .= '        ( '  . implode( ' , '  , array_keys( $object::$allowedKeys ) ) . ' )' ;
+        $sql .= '        ( '  . implode( ' , '  , array_keys( self::$allowedKeys ) ) . ' )' ;
         $sql .= '    values' ;
-        $sql .= '        ( :' . implode( ' , :' , array_keys( $object::$allowedKeys ) ) . ' )' ;
+        $sql .= '        ( :' . implode( ' , :' , array_keys( self::$allowedKeys ) ) . ' )' ;
 
-        // echo $sql . \PHP_EOL ;
         $stmt = $this->dbh->prepare( $sql ) ;
 
-        foreach ( $object::$allowedKeys as $param => $valType )
+        $cryptData = $this->dataEncrypt( $object->getData() ) ;
+        $cryptData['reference_id'] = $object->getData()['reference_id'] ;
+
+        foreach ( self::$allowedKeys as $param => $valType )
         {
-            $stmt->bindParam( ":{$param}" , $object->getData()[$param] , $this->getPdoParamType( $valType ) ) ;
+            $stmt->bindParam( ":{$param}" , $cryptData[$param] , $this->getPdoParamType( $valType ) ) ;
         }
 
         $stmt->execute() ;
@@ -71,6 +91,42 @@ class TableCryptDaoPdo implements ICrudDao
         $stmt = null ;
     return (int) $this->dbh->lastInsertId() ; }
 
+    private function dataEncrypt ( Array $data ) : array
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        // print_r( $user ) ;
+
+        unset( $data['id'] , $data['reference_id'] ) ;
+        $cipher = $this->iniSettings['crypt']['method'] ;
+        if ( in_array( $cipher , openssl_get_cipher_methods() ) )
+        {
+            $dataJson = json_encode( $data , JSON_NUMERIC_CHECK ) ;
+            $key   = openssl_digest( $this->iniSettings['crypt']['key'] , 'sha256' , true ) ;
+            $ivlen = openssl_cipher_iv_length( $cipher );
+            $iv    = openssl_random_pseudo_bytes( $ivlen );
+            $data = openssl_encrypt( $dataJson , $cipher , $key , 0 , $iv , $tag ) ;
+        } else { throw new \Exception( '!!!' . $cipher . ' isn\'t a valid encryption method !!!' ) ; }
+
+        return [ 
+            'salt' => base64_encode( $iv ) ,
+            'algo' => $this->iniSettings['crypt']['method'] , 
+            'tag'  => base64_encode( $tag ) , 
+            'data' => base64_encode( $data ) ] ; }
+
+    public function dataDecrypt ( Array $data ) : array
+    {
+        $cipher   = $data['algo'] ;
+        $key      = openssl_digest( $this->iniSettings['crypt']['key'] , 'sha256' , true ) ;
+        $dataJson = openssl_decrypt( 
+                        base64_decode( $data['data'] ) , 
+                        $cipher , $key , 0 , 
+                        base64_decode( $data['salt'] ) , 
+                        base64_decode( $data['tag'] ) ) ;
+        $data     = json_decode( $dataJson , true ) ;
+    return $data ; }
+
+/*  !!! START !!!
+ *  read funktioner
+ */
     /*  læser en ny user ind baseret på en select statement
      *  brug :
      *      $testArea->read( 1 ) ;
@@ -78,7 +134,7 @@ class TableCryptDaoPdo implements ICrudDao
      *      $testArea->read( ['navn_for'] , ['Anonymous'] ) ;
      *      $testArea->read( ['navn_for','alias'] , ['Bjarne','BjarneDMat'] ) ;
      */
-    private function readDataNamed( $object )
+    private function readDataNamed( $object ) : \PDOStatement
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $object ) ;
 
@@ -118,7 +174,7 @@ class TableCryptDaoPdo implements ICrudDao
 
     return $stmt ; }
 
-    private function readDataPosit( $object )
+    private function readDataPosit( $object ) :\PDOStatement
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $object ) ;
 
@@ -153,7 +209,7 @@ class TableCryptDaoPdo implements ICrudDao
 
     return $stmt ; }
 
-    private function readData( $object )
+    private function readData( $object ) : \PDOStatement
     {
         switch ( count( $object->getData() ) )
         {
@@ -167,7 +223,7 @@ class TableCryptDaoPdo implements ICrudDao
         }
     }
 
-    public function readOne( $object )
+    public function readOne( $object ) : array
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $object ) ;
 
@@ -175,13 +231,16 @@ class TableCryptDaoPdo implements ICrudDao
         if ( $stmt->rowCount() === 1 )
         {
             $values = $stmt->fetch( \PDO::FETCH_ASSOC ) ;
-            $values['id'] = (int) $values['id'] ;
+            $values = array_merge( 
+                [ 'id' => $values['id'] , 'reference_id' => $values['reference_id'] ] , 
+                $this->dataDecrypt( $values ) 
+            ) ;
             return $values ;
         } else { 
             throw new \Exception('PDO : rowCount != 1') ; }
     }
 
-    public function readAll( $object )
+    public function readAll( $object ) : array
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $object ) ;
 
@@ -199,13 +258,19 @@ class TableCryptDaoPdo implements ICrudDao
             break ; }
         }
     return $ids ; }
+/*
+ *  read funktioner
+ *  !!! SLUT !!! */
 
+/*  !!! START !!!
+ *  update funktioner
+ */
     /*  Af en eller anden mærkelig grund fungere dette ikke ?!?
      *      named        parametre fungerer for count( $object->getData() < 2
      *  men positionelle parametre fungerer altid
      *  ?!?!?!?!?
      */
-    private function updateNamed( $object , Array $diffValues )
+    private function updateNamed( $object ) : int
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $object ) ;
         // print_r( $diffValues ) ;
@@ -215,7 +280,7 @@ class TableCryptDaoPdo implements ICrudDao
         $sql  = 'update ' . $this->table . ' ' ;
 
         $set = [] ;
-        foreach ( $diffValues as $key => $value )
+        foreach ( self::$allowedKeys as $key => $value )
         {
             $set[] = "{$key} = :{$key}" ;
         }   unset( $key , $value ) ; 
@@ -225,64 +290,66 @@ class TableCryptDaoPdo implements ICrudDao
 
         $stmt = $this->dbh->prepare( $sql ) ;
 
-        foreach ( $diffValues as $param => $value )
+        $cryptData = $this->dataEncrypt( $object->getData() ) ;
+        foreach ( $cryptData as $param => $value )
         {
-            $stmt->bindParam( ":{$param}" , $value , $this->getPdoParamType( $object::$allowedKeys[$param] ) ) ;
+            $stmt->bindParam( ":{$param}" , $value , $this->getPdoParamType( self::$allowedKeys[$param] ) ) ;
         }   unset( $param , $value ) ;
-        $stmt->bindParam( ':id' , $object->getData()['id'] , \PDO::PARAM_INT ) ;
+        $stmt->bindParam( ':reference_id' , $object->getData()['reference_id'] , \PDO::PARAM_INT ) ;
+        $stmt->bindParam( ':id'           , $object->getData()['id']           , \PDO::PARAM_INT ) ;
 
         $stmt->execute() ;
         $rowCount = $stmt->rowCount();
-        if ( $rowCount !== 1 )
-            throw new \Exception('PDO : rowCount != 1') ;
         $stmt = null ;
 
     return $rowCount ; }
 
-    private function updatePosit( $object , Array $diffValues )
+    private function updatePosit( $object ) : int
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $object ) ;
 
-        if ( empty( $diffValues ) ) return 0 ;
-
         $sql  = 'update ' . $this->table . ' ' ;
 
+        $cryptData = $this->dataEncrypt( $object->getData() ) ;
+        $cryptData['reference_id'] = $object->getData()['reference_id'] ;
         $set = [] ;
-        foreach ( $diffValues as $key => $value )
+        foreach ( $cryptData as $key => $value )
         {
             $set[] = "{$key} = ?" ;
         }   unset( $key , $value ) ; 
         $sql .= 'set ' . implode( ' , ' , $set ) . ' ' ;
 
         $sql .= 'where id = ? ' ;
-
         $stmt = $this->dbh->prepare( $sql ) ;
 
-        $diffValues['id'] = $object->getData()['id'] ;
+        $cryptData['id'] = $object->getData()['id'] ;
 
-        $stmt->execute( array_values( $diffValues ) ) ;
+        $stmt->execute( array_values( $cryptData ) ) ;
         $rowCount = $stmt->rowCount();
-        if ( $rowCount !== 1 )
-            throw new \Exception('PDO : rowCount != 1') ;
         $stmt = null ;
 
     return $rowCount ; }
 
-    public function update(  $object , Array $diffValues )
+    public function update( $object , $dummy = [] ) : int
     {
         switch ( count( $object->getData() ) )
         {
             case 0  :
             case 1  :
-                return $this->updateNamed( $object , $diffValues ) ;
+                $rowCount = $this->updateNamed( $object ) ;
                 break ;
             default :
-                return $this->updatePosit( $object , $diffValues ) ;
+                $rowCount = $this->updatePosit( $object ) ;
                 break ;
         }
-    }
+        if ( $rowCount !== 1 )
+            throw new \Exception('PDO : rowCount != 1') ;
+    return $rowCount ; }
+/*
+ *  update funktioner
+ *  !!! SLUT !!! */
 
-    public function delete( $object )
+    public function delete( $object ) : int
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( [ $id ] ) ;
 
@@ -301,7 +368,7 @@ class TableCryptDaoPdo implements ICrudDao
 
     return $rowCount ; }
 
-/*
+/*  !!! START !!!
  *  functions for \Iterator
 
             OK - det viser sig, at for MySQL bliver $cursorOrientation & $cursorOffset i
@@ -351,9 +418,14 @@ class TableCryptDaoPdo implements ICrudDao
              { return false ; } 
         else { return (int) $this->row['id'] ; }
     }
+/*
+ *  funktioner for \Iterator
+ *  !!! SLUT !!! */
 
-    public function deleteAll( $object ) : void
-    {
+    public function deleteAllOld( $object ) : void
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        // print_r( $object ) ;
+
         $sql  = 'delete from ' . $this->table . ' ' ;
         $sql .= 'where id = :id' ;
         $stmtHere = $this->dbh->prepare( $sql ) ;
@@ -366,6 +438,13 @@ class TableCryptDaoPdo implements ICrudDao
         }   unset( $rowHere ) ;
     }
 
+    public function deleteAll() : void
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+
+        $sql  = 'delete from ' . $this->table . ' ' ;
+        $stmt = $this->dbh->prepare( $sql ) ;
+        $stmt->execute() ;
+    }
 
     public function __destruct() 
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;

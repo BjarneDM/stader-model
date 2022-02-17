@@ -18,13 +18,17 @@ create table if not exists place_log
 
 class PlaceLogs extends LogObjectsDao
 {
+    public static $allowedKeys = [] ;
+    public static $thisClass   = '' ;
 
     function __construct ( ...$args )
     {   // echo "class UGroups extends DataObjectsDao __construct" . \PHP_EOL ;
         // var_dump( $args ) ;
 
+        self::$allowedKeys = ( new \ArrayObject( PlaceLog::$allowedKeys ) )->getArrayCopy() ;
         $this->keysAllowed = ( new \ArrayObject( PlaceLog::$allowedKeys ) )->getArrayCopy() ;
-        $this->class = PlaceLog::$thisClass ;
+        self::$thisClass = PlaceLog::$thisClass ;
+        $this->class     = PlaceLog::$thisClass ;
         parent::__construct() ;
         $this->setupData( $args ) ;
 
