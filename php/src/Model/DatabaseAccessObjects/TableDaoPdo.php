@@ -267,9 +267,9 @@ class TableDaoPdo implements ICrudDao
     return $rowCount ; }
 
     public function update(  $object , Array $diffValues )
-    {   echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        print_r( $object ) ;
-        print_r( $diffValues ) ;
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        // print_r( $object ) ;
+        // print_r( $diffValues ) ;
 
         switch ( count( $diffValues ) )
         {
