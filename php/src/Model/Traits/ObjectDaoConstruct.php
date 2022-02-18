@@ -1,6 +1,6 @@
 <?php namespace Stader\Model\Traits ;
 
-use \Stader\Model\DatabaseAccessObjects\{TableDaoPdo} ;
+use \Stader\Model\DatabaseAccessObjects\{TableDaoPdo,TableCryptDaoPdo} ;
 
 trait ObjectDaoConstruct
 {

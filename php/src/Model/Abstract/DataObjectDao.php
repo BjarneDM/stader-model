@@ -18,6 +18,7 @@ abstract class DataObjectDao
         switch ( $this->database )
         {
             case 'data' :
+            case 'encrypted' :
                 $this->setupData( $args ) ;
                 break ;
             case 'logs' :

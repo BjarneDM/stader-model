@@ -25,6 +25,7 @@ create table if not exists userlogin
 
 class UserLogin extends DataObjectDao
 {
+    public static $dbType      = 'data' ;
     public  static $allowedKeys = 
         [ 'username'      => 'varchar' , 
           'passwd'        => 'varchar' , 

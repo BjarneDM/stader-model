@@ -16,12 +16,14 @@ create table if not exists usercrypt
  */
 
 use \Stader\Model\Interfaces\ICrudDao ;
+use \Stader\Model\Connect\DatabaseSetup ;
 
-class TableCryptDaoPdo implements ICrudDao
+class TableCryptDaoPdo 
+    extends DatabaseSetup
+    implements ICrudDao
 {
     private $dbh    = null ;
     private $table  = null ;
-    private $iniSettings ; 
 
     private static $allowedKeys =
         [   'reference_id' => 'int' ,
@@ -31,17 +33,17 @@ class TableCryptDaoPdo implements ICrudDao
             'data'         => 'text'
         ] ;
 
-    public function __construct ( $connect , $class )
+    public function __construct ( $database , $class )
     {   // echo 'class TableDaoPdo implements ICrudDao __construct' . \PHP_EOL ;
-        // var_dump( $connect ) ;
+        // var_dump( $database ) ;
         // var_dump( $class ) ;
-        // echo 'connection type : ' . $connect->getType()  . \PHP_EOL ;
 
-        $this->dbh   = $connect->getConn() ;
+        parent::__construct( $database ) ;
+
+        $this->dbh   = $this->connect->getConn() ;
         $this->table = explode( '\\' , $class ) ;
         $this->table = strtolower( end( $this->table ) ) . 'crypt' ;
 
-        $this->iniSettings = parse_ini_file(  dirname( __DIR__ , 3 ) . '/settings/connect.ini' , true ) ;
     }
 
     private function getPdoParamType ( $valType )
@@ -96,11 +98,11 @@ class TableCryptDaoPdo implements ICrudDao
         // print_r( $user ) ;
 
         unset( $data['id'] , $data['reference_id'] ) ;
-        $cipher = $this->iniSettings['crypt']['method'] ;
+        $cipher = self::$iniSettings['crypt']['method'] ;
         if ( in_array( $cipher , openssl_get_cipher_methods() ) )
         {
             $dataJson = json_encode( $data , JSON_NUMERIC_CHECK ) ;
-            $key   = openssl_digest( $this->iniSettings['crypt']['key'] , 'sha256' , true ) ;
+            $key   = openssl_digest( self::$iniSettings['crypt']['key'] , 'sha256' , true ) ;
             $ivlen = openssl_cipher_iv_length( $cipher );
             $iv    = openssl_random_pseudo_bytes( $ivlen );
             $data = openssl_encrypt( $dataJson , $cipher , $key , 0 , $iv , $tag ) ;
@@ -108,14 +110,14 @@ class TableCryptDaoPdo implements ICrudDao
 
         return [ 
             'salt' => base64_encode( $iv ) ,
-            'algo' => $this->iniSettings['crypt']['method'] , 
+            'algo' => self::$iniSettings['crypt']['method'] , 
             'tag'  => base64_encode( $tag ) , 
             'data' => base64_encode( $data ) ] ; }
 
     public function dataDecrypt ( Array $data ) : array
     {
         $cipher   = $data['algo'] ;
-        $key      = openssl_digest( $this->iniSettings['crypt']['key'] , 'sha256' , true ) ;
+        $key      = openssl_digest( self::$iniSettings['crypt']['key'] , 'sha256' , true ) ;
         $dataJson = openssl_decrypt( 
                         base64_decode( $data['data'] ) , 
                         $cipher , $key , 0 , 

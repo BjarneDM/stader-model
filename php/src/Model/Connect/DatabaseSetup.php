@@ -18,10 +18,11 @@ class DatabaseSetup
             $dbMethod = self::$iniSettings[$dbType]['method'] ;
             switch ( $dbMethod )
             {
-                case "mysql"    : $this->connect = new ConnectPDO( $dbType ) ; break ;
-                case "pgsql"    : $this->connect = new ConnectPDO( $dbType ) ; break ;
-                case "sqlite"   : $this->connect = new ConnectPDO( $dbType ) ; break ;
-                case "xml"      : $this->connect = new ConnectXML( $dbType ) ; break ;
+                case "encrypted" : $this->connect = new ConnectPDO( $dbType ) ; break ;
+                case "mysql"     : $this->connect = new ConnectPDO( $dbType ) ; break ;
+                case "pgsql"     : $this->connect = new ConnectPDO( $dbType ) ; break ;
+                case "sqlite"    : $this->connect = new ConnectPDO( $dbType ) ; break ;
+                case "xml"       : $this->connect = new ConnectXML( $dbType ) ; break ;
                 default: throw new \Exception() ;
             }   //  echo $this->connect->getType() . PHP_EOL ;
         }   //  print_r( ['after',$this->connect->getConn()] ) ;

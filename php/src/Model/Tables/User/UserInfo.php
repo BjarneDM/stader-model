@@ -1,6 +1,6 @@
 <?php namespace Stader\Model\Tables\User ;
 
-use \Stader\Model\Abstract\CryptObjectDao ;
+use \Stader\Model\Abstract\DataObjectDao ;
 use \Stader\Model\Traits\DataObjectConstruct ;
 
 /*
@@ -16,8 +16,9 @@ create table if not exists userinfo
 
  */
 
-class UserInfo extends CryptObjectDao
+class UserInfo extends DataObjectDao
 {
+    public static $dbType      = 'encrypted' ;
     public static $allowedKeys = 
         [ 'name'         => 'varchar' , 
           'surname'      => 'varchar' , 
