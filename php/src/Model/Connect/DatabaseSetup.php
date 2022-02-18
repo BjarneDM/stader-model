@@ -1,6 +1,6 @@
 <?php namespace Stader\Model\Connect ;
 
-use \Stader\Model\Connect\{DataConnectPDO,DataConnectXML} ;
+use \Stader\Model\Connect\{ConnectPDO,ConnectXML} ;
 use \Stader\Model\Traits\Settings ;
 
 class DatabaseSetup
@@ -21,12 +21,12 @@ class DatabaseSetup
             $dbMethod = self::$iniSettings[self::$dbType]['method'] ;
             switch ( $dbMethod )
             {
-                case "mysql"    : self::$connect = new DataConnectPDO( self::$dbType ) ; break ;
-                case "pgsql"    : self::$connect = new DataConnectPDO( self::$dbType ) ; break ;
-                case "sqlite"   : self::$connect = new DataConnectPDO( self::$dbType ) ; break ;
-                case "xml"      : self::$connect = new DataConnectXML( self::$dbType ) ; break ;
+                case "mysql"    : self::$connect = new ConnectPDO( self::$dbType ) ; break ;
+                case "pgsql"    : self::$connect = new ConnectPDO( self::$dbType ) ; break ;
+                case "sqlite"   : self::$connect = new ConnectPDO( self::$dbType ) ; break ;
+                case "xml"      : self::$connect = new ConnectXML( self::$dbType ) ; break ;
                 default: throw new \Exception() ;
-            }   //  echo $this::$connect->getType() . PHP_EOL ;
+            }   //  echo self::$connect->getType() . PHP_EOL ;
         }   //  print_r( ['after',self::$connect->getConn()] ) ;
 
         //  $this->checkConnection() ;
