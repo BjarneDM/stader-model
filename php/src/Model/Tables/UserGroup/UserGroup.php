@@ -24,6 +24,7 @@ create table usersgroups
 
 class UserGroup extends DataObjectDao
 {
+    public static $dbType      = 'data' ;
     public static $allowedKeys = 
         [ 'user_id'  => 'int' , 
           'group_id' => 'int'

@@ -16,6 +16,7 @@ create table in not exists type_byte
 
 class TypeByte extends DataObjectDao
 {
+    public static $dbType      = 'data' ;
     public static $allowedKeys = [ 'name' => 'varchar' ] ;
     public static $thisClass   = '\\Stader\\Model\\Tables\\TypeByte\\TypeByte' ;
 

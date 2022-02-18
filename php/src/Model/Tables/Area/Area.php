@@ -20,6 +20,7 @@ name er primary key da getAll() ønskes sorteret efter denne
 
 class Area extends DataObjectDao
 {
+    public static $dbType      = 'data' ;
     public static $allowedKeys = 
         [ 'name'        => 'varchar' , 
           'description' => 'text' 

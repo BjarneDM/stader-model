@@ -17,6 +17,7 @@ create table if not exists flag
 
 class Flag extends DataObjectDao
 {
+    public static $dbType      = 'data' ;
     public static $allowedKeys = 
         [ 'text'    => 'varchar' , 
           'unicode' => 'char'

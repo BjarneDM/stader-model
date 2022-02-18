@@ -19,6 +19,7 @@ create table if not exists placeowner
 
 class PlaceOwner extends DataObjectDao
 {
+    public static $dbType      = 'data' ;
     public static $allowedKeys = 
         [ 'name'         => 'varchar' , 
           'surname'      => 'varchar' , 

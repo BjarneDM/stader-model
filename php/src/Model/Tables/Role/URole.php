@@ -19,6 +19,7 @@ create table if not exists urole
 
 class URole extends DataObjectDao
 {
+    public static $dbType      = 'data' ;
     public static $allowedKeys = 
         [ 'role'     => 'varchar' , 
           'note'     => 'text'    , 

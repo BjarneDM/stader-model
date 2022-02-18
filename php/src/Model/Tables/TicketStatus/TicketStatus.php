@@ -22,6 +22,7 @@ create table if not exists ticket_status
 
 class TicketStatus extends DataObjectDao
 {
+    public static $dbType      = 'data' ;
     public static $allowedKeys = 
         [ 'name'           => 'varchar' , 
           'default_colour' => 'varchar' , 
