@@ -42,7 +42,7 @@ abstract class DataObjectDao
                         switch ( count( $args[0] ) )
                         {
                             /*
-                             *  count( $args[0] ) === count( $this->allowedKeys ) : nyt Object, der skal oprettes
+                             *  count( $args[0] ) === count( $this->keysAllowed ) : nyt Object, der skal oprettes
                              */
                             case count( $this->keysAllowed ) :
                                 $this->check( $args[0] ) ;
@@ -130,7 +130,8 @@ abstract class DataObjectDao
         foreach ( array_keys( $toCheck ) as $key )
         {
             if ( ! array_key_exists( $key , $this->keysAllowed ) )
-                throw new \Exception( "'{$key}' doesn't exist in [" . implode( ',' , array_keys( $this->keysAllowed ) ) . "]" ) ;
+                unset( $toCheck[ $key ] ) ;
+                // throw new \Exception( "'{$key}' doesn't exist in [" . implode( ',' , array_keys( $this->keysAllowed ) ) . "]" ) ;
 
             switch ( $this->keysAllowed[$key] )
             {

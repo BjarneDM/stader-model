@@ -118,8 +118,6 @@ abstract class DataObjectDao
                         /*
                          *  count( $args[0] ) === count( $this->keysAllowed ) : ny Log, der skal oprettes
                          */
-print_r( $args[0] ) ;
-print_r( $this->keysAllowed ) ;
                         switch ( count( $args[0] ) )
                         {
                             case count( $this->keysAllowed ) :

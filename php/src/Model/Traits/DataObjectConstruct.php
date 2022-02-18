@@ -3,8 +3,9 @@
 trait DataObjectConstruct
 {
     function __construct ( ...$args )
-    {   // echo 'class UGroup extends DataObjectDao __construct' . \PHP_EOL ;
-        // print_r( $this ) ;
+    {   // echo 'trait DataObjectConstruct __construct' . \PHP_EOL ;
+        // echo self::$thisClass . \PHP_EOL ;
+        // print_r( $args ) ;
 
         $this->keysAllowed = ( new \ArrayObject( self::$allowedKeys ) )->getArrayCopy() ;
         $this->class       = self::$thisClass ;

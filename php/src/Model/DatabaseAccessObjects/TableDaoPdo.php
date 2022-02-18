@@ -212,9 +212,9 @@ class TableDaoPdo
      *  ?!?!?!?!?
      */
     private function updateNamed( $object , Array $diffValues )
-    {   echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        print_r( $object ) ;
-        print_r( $diffValues ) ;
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        // print_r( $object ) ;
+        // print_r( $diffValues ) ;
 
         if ( empty( $diffValues ) ) return 0 ;
 
@@ -246,6 +246,7 @@ class TableDaoPdo
     private function updatePosit( $object , Array $diffValues )
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $object ) ;
+        // print_r( $diffValues ) ;
 
         if ( empty( $diffValues ) ) return 0 ;
 
@@ -274,6 +275,7 @@ class TableDaoPdo
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $object ) ;
         // print_r( $diffValues ) ;
+        // exit ;
 
         switch ( count( $diffValues ) )
         {

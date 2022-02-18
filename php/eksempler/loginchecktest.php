@@ -1,10 +1,10 @@
-<?php   namespace stader\eksempler ;
+<?php   namespace Stader\Eksempler ;
 
-set_include_path( '/Volumes/Bjarne/Sites/info/mathiesen/zbc/stader/php' ) ;
+set_include_path( dirname( __DIR__ ) ) ;
 require_once( 'settings/phpValues.php' ) ;
 
-require_once( dirname( __file__ , 2 ) . '/model/class.classloader.php' ) ;
-use \stader\model\{UserTest} ;
+require_once( 'classloader.php' ) ;
+use \Stader\Control\User\{User} ;
 
 $login     = ( $argv[1] ) ?: '' ;
 $password  = ( $argv[2] ) ?: '' ;
@@ -13,7 +13,7 @@ $password  = ( $argv[2] ) ?: '' ;
 $loginCheck = true ;
 
 try {
-    $user = new UserTest( $setup::$connect , 'username' , $login ) ;
+    $user = new User( 'username' , $login ) ;
 
     $checkMethod = 'function' ;
     switch ( $checkMethod )

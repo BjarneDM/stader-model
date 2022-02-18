@@ -36,11 +36,6 @@ class UserLogin extends DataObjectDao
 
     use DataObjectConstruct ;
 
-    protected function setValuesDefault ( &$args ) : void 
-    {
-        unset( $args['password'] ) ;
-    }
-
     function fixValuesType () : void
     {
         $this->update( $this , [ 'ip_addr' , empty( $_SERVER['REMOTE_ADDR'] ) ?: '' ] ) ;
@@ -57,11 +52,13 @@ class UserLogin extends DataObjectDao
     }
 
     public function setLoginTime() : void
-    {
-        $this->valuesOld['lastlogintime'] = $this->values['lastlogintime'] ;
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+
+        $this->valuesOld = ( new \ArrayObject( $this->values ) )->getArrayCopy() ;
+
         $this->values['lastlogintime']    = new OurDateTime() ;
-        $this->valuesOld['loginfailures'] = $this->values['loginfailures'] ;
         $this->values['loginfailures']    = 0 ;
+
         $this->update( $this ) ;
     }
 
@@ -71,11 +68,13 @@ class UserLogin extends DataObjectDao
     }
 
     public function setLoginFailure() : void 
-    {
-        $this->valuesOld['lastloginfail'] = $this->values['lastloginfail'] ;
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+
+        $this->valuesOld = ( new \ArrayObject( $this->values ) )->getArrayCopy() ;
+
         $this->values['lastloginfail']    = new OurDateTime() ;
-        $this->valuesOld['loginfailures'] = $this->values['loginfailures'] ;
         $this->values['loginfailures']++ ;
+
         $this->update( $this ) ;
     }
 
@@ -99,10 +98,11 @@ class UserLogin extends DataObjectDao
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $toCheck ) ;
 
-        parent::check( $toCheck ) ;
-
         foreach ( array_keys( $toCheck ) as $key )
         {
+            if ( ! array_key_exists( $key , self::$allowedKeys ) )
+                unset( $toCheck[ $key ] ) ;
+
             switch ( $key )
             {
                 case 'passwd' :
@@ -116,6 +116,9 @@ class UserLogin extends DataObjectDao
                     break ;
             }
         }
+
+        parent::check( $toCheck ) ;
+
     }
 
     public function pwdVerify( string $pwd ) : bool

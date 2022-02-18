@@ -273,9 +273,8 @@ class TableCryptDaoPdo
      *  ?!?!?!?!?
      */
     private function updateNamed( $object ) : int
-    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        // print_r( $object ) ;
-        // print_r( $diffValues ) ;
+    {   echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        print_r( $object ) ;
 
         if ( empty( $diffValues ) ) return 0 ;
 
@@ -307,8 +306,8 @@ class TableCryptDaoPdo
     return $rowCount ; }
 
     private function updatePosit( $object ) : int
-    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        // print_r( $object ) ;
+    {   echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        print_r( $object ) ;
 
         $sql  = 'update ' . $this->table . ' ' ;
 

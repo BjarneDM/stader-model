@@ -88,17 +88,6 @@ class User extends DataObjectDao
 
     }
 
-    public static function userCheck ( Array $args ) : User|null
-    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        // print_r( $args ) ;
-
-        $toReturn   = null ;
-        $values     = []   ;
-        $nullValues = []   ;
-        foreach ( LoginLog::$allowedKeys as $key => $type )
-            { $nullValues[ $key ] = null ; }
-            unset( $key , $type ) ;
-
 /*
 
 create table if not exists userlogin
@@ -129,39 +118,75 @@ create table if not exists loginlog
 
  */
 
+    public static function userCheck ( Array $args ) : User|null
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        // print_r( $args ) ;
+
+        $loginCheck = 'success' ;
+        $values     = []   ;
+        $nullValues = []   ;
+        foreach ( LoginLog::$allowedKeys as $key => $type )
+            { $nullValues[ $key ] = null ; }
+            unset( $key , $type ) ;
+        $returnValue = null ;
+
         try {
-            // print_r( $args ) ;
-            $checkUser = new UserLogin( array_keys( $args ) , array_values( $args ) ) ;
-            // echo "checkUser : " ; print_r( $checkUser->getData() ) ;
-            if ( $checkUser->pwdVerify( $args['password']) )
+            $user = new UserLogin( array_keys( $args) , array_values( $args ) ) ;
+
+            if ( ! $user->pwdVerify( $args['password'] ) )
             {
-                $checkUser->setLoginTime() ;
-                $values = $checkUser->getData() ;
-                $values['action']  =  'success' ;
+                $loginCheck = 'password' ;
+                // echo "password tjek fejler" . \PHP_EOL ;
+            }
+
+        } catch ( \Exception $e ) {
+            // echo "username tjek fejler" . \PHP_EOL ;
+            $loginCheck = 'username' ;
+        }
+
+        switch ( $loginCheck ) 
+        {
+            case 'success' :
+                // echo 'du bliver nu logget ind ' . \PHP_EOL ;
+
+                $user->setLoginTime() ;
+                $values = $user->getData() ;
+                $values['action']  = $loginCheck   ;
                 $values['user_id'] = $values['id'] ;
                 unset( $values['id'] , $values['email'] , $values['passwd'] ) ;
-                $toReturn = new User( $checkUser->getData()['id'] ) ;
-            } else {
-                $checkUser->setLoginFailure() ;
-                $values = $checkUser->getData() ;
-                $values['passwd'] = $args['password'] ;
-                $values['action']  = 'failure' ;
+
+                $returnValue = new User( $user->getData()['id'] ) ;
+                break ;
+            case 'password' :
+                // echo "password tjek fejler" . \PHP_EOL ;
+                // echo 'fejl i login ' . \PHP_EOL ;
+
+                $user->setLoginFailure() ;
+                $values = ( new \ArrayObject( $user->getData() ) )->getArrayCopy() ;
+                $values['action']  = $loginCheck   ;
                 $values['user_id'] = $values['id'] ;
+                $values['passwd']  = $args['password'] ;
                 unset( $values['id'] , $values['email'] ) ;
-            }
-        } catch ( \Exception $e ) { 
-            $values = array_merge( $values , $args ) ;
-            $values['action']  = 'hack' ;
-            $values['passwd']  = $args['password'] ;
-            $values['ip_addr'] = isset( $_SERVER['REMOTE_ADDR'] ) ?: null ;
-            $values['lastloginfail'] = new OurDateTime() ;
-            unset( $values['password'] ) ;
+
+                break ;
+            case 'username' :
+                // echo "username tjek fejler" . \PHP_EOL ;
+                // echo 'fejl i login ' . \PHP_EOL ;
+
+                $values = ( new \ArrayObject( $args ) )->getArrayCopy() ;
+                $values['action']  = $loginCheck   ;
+                $values['passwd']  = $args['password'] ;
+                $values['ip_addr'] = isset( $_SERVER['REMOTE_ADDR'] ) ?: null ;
+                $values['lastloginfail'] = new OurDateTime() ;
+                unset( $values['password'] ) ;
+
+                break ;
         }
 
         $values = array_merge( $nullValues , $values ) ;
         new LoginLog( $values ) ;
 
-    return $toReturn ; }
+    return $returnValue ; }
 
     protected function read() : Array 
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
@@ -210,6 +235,19 @@ create table if not exists loginlog
         return $values ;
    }
 
+    protected function check( Array &$toCheck )
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        // print_r( $toCheck ) ;
+
+        foreach ( array_keys( $toCheck ) as $key )
+        {
+            if ( ! array_key_exists( $key , self::$allowedKeys ) )
+                unset( $toCheck[ $key ] ) ;
+        }
+
+        parent::check( $toCheck ) ;
+    }
+
     protected function update( Array $values ) : void
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $values ) ;
@@ -227,6 +265,16 @@ create table if not exists loginlog
     public function pwdVerify( $password )
     {
         return $this->userLogin->pwdVerify( $password ) ;
+    }
+
+    public function setLoginTime() : void
+    {   echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        $this->userLogin->setLoginTime() ;
+    }
+
+    public function setLoginFailure() : void 
+    {
+        $this->userLogin->setLoginFailure() ;
     }
 
     public function delete() : void

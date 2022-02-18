@@ -75,10 +75,10 @@ function theCheck( $login , $password )
 
     $user = User::userCheck( [ 'username' => $login , 'password' => $password ] ) ;
 
-    if ( is_null( $user ) ) { return 'login fejlede' ; }
+    if ( is_null( $user ) ) { return 'login fejlede' . \PHP_EOL ; }
     else
     {   print_r( $user->getData() ) ;
-        return 'succefuld login' ; }
+        return 'succefuld login' . \PHP_EOL ; }
 }
 
 function theCheck2( $login , $password )

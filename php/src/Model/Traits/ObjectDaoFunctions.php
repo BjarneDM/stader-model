@@ -20,7 +20,7 @@ trait ObjectDaoFunctions
 
     protected function update( $object ) : int
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        // echo $this->class. \PHP_EOL ;
+        // print_r( $object ) ; // exit ;
 
         $rowCount = self::$functions->update( 
             $object , 
