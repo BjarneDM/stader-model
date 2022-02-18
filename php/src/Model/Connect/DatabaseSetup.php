@@ -1,12 +1,12 @@
 <?php namespace Stader\Model\Connect ;
 
 use \Stader\Model\Connect\{DataConnectPDO,DataConnectXML} ;
+use \Stader\Model\Traits\Settings ;
 
 class DatabaseSetup
 {
     /* private static $connect  = new IDbDriver() ; */
     protected static $connect ;
-    protected static $iniSettings ;
     private   static $dbType = 'data' ;
 
     /*
@@ -14,9 +14,10 @@ class DatabaseSetup
     function __construct()
     {   // echo 'class Setup __construct' . \PHP_EOL ;
 
+        $this->getSettings() ;
+
         if ( ! self::$connect ) 
         {
-            self::$iniSettings = parse_ini_file( dirname( __file__ , 4 ) . '/settings/connect.ini' , true ) ;
             $dbMethod = self::$iniSettings[self::$dbType]['method'] ;
             switch ( $dbMethod )
             {
@@ -30,6 +31,8 @@ class DatabaseSetup
 
         //  $this->checkConnection() ;
     }
+
+    use Settings ;
 
     public function getDBH()
         { return self::$connect->getConn() ; }

@@ -8,6 +8,8 @@ trait ObjectDaoConstruct
     function __construct ()
     {   // echo 'abstract class ObjectDao extends Setup __construct' . \PHP_EOL ;
 
+        $this->getSettings() ;
+
         switch ( 'mysql' )
         {
             case "mysql"        : self::$functions = new TableDaoPdo( 'data' , $this->class ) ; break ;

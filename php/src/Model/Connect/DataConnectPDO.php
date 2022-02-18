@@ -1,12 +1,13 @@
 <?php namespace Stader\Model\Connect ;
 
 use \Stader\Model\Interfaces\DbDriver ;
+use \Stader\Model\Traits\Settings ;
 
 class DataConnectPDO extends DbDriver
 {
-    protected static $conn = null ;
-    protected static $type = null ;
-    private   static $dbType = 'data' ;
+    protected static $conn        = null ;
+    protected static $type        = null ;
+    private   static $dbType      = 'data' ;
  
     /**
     * This method returns the connection object.
@@ -19,18 +20,18 @@ class DataConnectPDO extends DbDriver
     {   // echo 'class ConnectPDO extends DbDriver __construct' . \PHP_EOL ;
         // print_r( ['before',self::$conn,self::$type] ) ;
 
+        if ( ! self::$iniSettings ) $this->getSettings() ;
+
         if ( ! self::$conn ) 
         {
-            $iniSettings =  parse_ini_file ( dirname( __file__ , 4 ) . "/settings/connect.ini" , true ) ;
-//             print_r( $iniSettings ) ;
 
-            self::$type = $iniSettings[self::$dbType]['method'] ;
+            self::$type = self::$iniSettings[self::$dbType]['method'] ;
 
-            $connStr  = $iniSettings[self::$dbType]['pdo'] ;
-            $connStr .= ':host=' . $iniSettings[self::$dbType]['host'] ;
-            if ( $iniSettings[self::$dbType]['host'] !== 'localhost')
-                $connStr .= ';port=' . $iniSettings[self::$dbType]['port'] ;
-            $connStr .= ';dbname=' . $iniSettings[self::$dbType]['dbname'] ;
+            $connStr  = self::$iniSettings[self::$dbType]['pdo'] ;
+            $connStr .= ':host=' . self::$iniSettings[self::$dbType]['host'] ;
+            if ( self::$iniSettings[self::$dbType]['host'] !== 'localhost')
+                $connStr .= ';port=' . self::$iniSettings[self::$dbType]['port'] ;
+            $connStr .= ';dbname=' . self::$iniSettings[self::$dbType]['dbname'] ;
             if ( self::$type === 'mysql')
                 $connStr .= ';charset=utf8mb4' ;
 
@@ -45,7 +46,7 @@ class DataConnectPDO extends DbDriver
 
             try
             {
-                self::$conn = new \PDO( $connStr , $iniSettings[self::$dbType]['user'] , $iniSettings[self::$dbType]['pass'] ) ;
+                self::$conn = new \PDO( $connStr , self::$iniSettings[self::$dbType]['user'] , self::$iniSettings[self::$dbType]['pass'] ) ;
                 self::$conn->setAttribute
                 (
                     \PDO::ATTR_ERRMODE,
@@ -53,14 +54,15 @@ class DataConnectPDO extends DbDriver
                 ) ;
             }
             catch( \PDOException $e )
-            {
-                showHeader('Error') ;
-                showError("Sorry, an error has occurred. Please
-                try your request later\n" . $e->getMessage()) ;
+            {   echo $e->getMessage() . \PHP_EOL ;
+                // showHeader('Error') ;
+                // showError("Sorry, an error has occurred. Please
+                // try your request later\n" . $e->getMessage()) ;
             }
         }   // print_r( ['after',self::$conn,self::$type] ) ;
     }
 
+    use Settings ;
 
     public function getConn() { return self::$conn ; }
     

@@ -1,7 +1,7 @@
 <?php namespace Stader\Model\Abstract ;
 
 use \Stader\Model\DatabaseAccessObjects\{TableDaoPdo} ;
-use \Stader\Model\Traits\{ObjectDaoConstruct,ObjectDaoFunctions} ;
+use \Stader\Model\Traits\{ObjectDaoConstruct,ObjectDaoFunctions,Settings} ;
 
 abstract class DataObjectDao
 {
@@ -12,6 +12,7 @@ abstract class DataObjectDao
     protected         $class       = ''   ;
     
     use ObjectDaoConstruct ;
+    use Settings ;
 
     protected function setupData ( $args )
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;

@@ -1,7 +1,7 @@
 <?php namespace Stader\Model\Abstract ;
 
 use \Stader\Model\DatabaseAccessObjects\TableDaoPdo ;
-use \Stader\Model\Traits\{ObjectDaoConstruct,ObjectsDaoIterator} ;
+use \Stader\Model\Traits\{ObjectDaoConstruct,ObjectsDaoIterator,Settings} ;
 
 abstract class DataObjectsDao
          implements \Iterator
@@ -13,6 +13,7 @@ abstract class DataObjectsDao
     private           $position    = 0    ;
     
     use ObjectDaoConstruct ;
+    use Settings ;
 
     protected function setupData ( $args )
     {
