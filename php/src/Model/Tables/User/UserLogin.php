@@ -14,6 +14,7 @@ create table if not exists userlogin
     email           varchar(255) not null ,
         constraint  unique (email) ,
     passwd          varchar(255) not null ,
+    ip_addr         varcher(255) ,
     lastlogintime   datetime
         default     null ,
     lastloginfail   datetime
@@ -35,8 +36,14 @@ class UserLogin extends DataObjectDao
 
     use DataObjectConstruct ;
 
+    protected function setValuesDefault ( &$args ) : void 
+    {
+        unset( $args['password'] ) ;
+    }
+
     function fixValuesType () : void
     {
+        $this->update( $this , [ 'ip_addr' , empty( $_SERVER['REMOTE_ADDR'] ) ?: '' ] ) ;
         $this->values['id']             = (int) $this->values['id'] ;
         $this->values['lastlogintime']  = @is_null( $this->values['lastlogintime']   ) 
                                           ? null

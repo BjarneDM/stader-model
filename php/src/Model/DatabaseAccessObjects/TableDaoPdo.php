@@ -212,9 +212,9 @@ class TableDaoPdo
      *  ?!?!?!?!?
      */
     private function updateNamed( $object , Array $diffValues )
-    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        // print_r( $object ) ;
-        // print_r( $diffValues ) ;
+    {   echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        print_r( $object ) ;
+        print_r( $diffValues ) ;
 
         if ( empty( $diffValues ) ) return 0 ;
 
@@ -280,9 +280,9 @@ class TableDaoPdo
             case 0  :
                 return 0 ;
                 break ;
-            case 1  :
-                $rowCount = $this->updateNamed( $object , $diffValues ) ;
-                break ;
+            // case 1  :
+            //     $rowCount = $this->updateNamed( $object , $diffValues ) ;
+            //     break ;
             default :
                 $rowCount = $this->updatePosit( $object , $diffValues ) ;
                 break ;

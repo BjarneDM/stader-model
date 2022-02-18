@@ -21,12 +21,31 @@ drop table if exists loginlog ;
 create table if not exists loginlog
 (
     id              int auto_increment primary key ,
-    user_id         int not null ,
+    user_id         int default null ,
+        index(user_id) ,
+    action          varchar(255) not null ,
+        index(action) ,
+    username        varchar(255) default null ,
+    passwd          varchar(255) default null ,
+    email           varchar(255) default null ,
+    ip_addr         varchar(255) default null ,
+    lastlogintime   datetime
+        default     null ,
+    lastloginfail   datetime
+        default     null ,
+    loginfailures   int default 0 
+) ;
+
+drop table if exists loglogincrypt ;
+create table if not exists loglogincrypt
+(
+    id              int auto_increment primary key ,
+    user_id         int default null ,
         index (user_id) ,
-    event           varchar(255) ,
-    log_timestamp   datetime
-        default current_timestamp ,
-        index (log_timestamp)
+    salt            varchar(255) ,
+    algo            varchar(255) ,
+    tag             varchar(255) ,
+    data            text
 ) ;
 
 drop table if exists beredskablog ;

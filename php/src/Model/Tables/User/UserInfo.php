@@ -18,7 +18,7 @@ create table if not exists userinfo
 
 class UserInfo extends DataObjectDao
 {
-    public static $dbType      = 'encrypted' ;
+    public static $dbType      = 'cryptdata' ;
     public static $allowedKeys = 
         [ 'name'         => 'varchar' , 
           'surname'      => 'varchar' , 

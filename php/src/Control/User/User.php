@@ -1,6 +1,7 @@
 <?php namespace Stader\Control\User ;
 
-use \Stader\Model\Tables\User\{UserLogin,UsersLogin,UserInfo} ;
+use \Stader\Model\Tables\User\{UserLogin,UsersLogin,UserInfo,LoginLog} ;
+use \Stader\Model\OurDateTime ;
 use \Stader\Control\Abstract\DataObjectDao ;
 
 /*
@@ -91,22 +92,76 @@ class User extends DataObjectDao
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $args ) ;
 
+        $toReturn   = null ;
+        $values     = []   ;
+        $nullValues = []   ;
+        foreach ( LoginLog::$allowedKeys as $key => $type )
+            { $nullValues[ $key ] = null ; }
+            unset( $key , $type ) ;
+
+/*
+
+create table if not exists userlogin
+(
+    id              int auto_increment primary key ,
+    username        varchar(255) not null ,
+    email           varchar(255) not null ,
+    passwd          varchar(255) not null ,
+    ip_addr         varchar(255) ,
+    lastlogintime   datetime ,
+    lastloginfail   datetime ,
+    loginfailures   int default 0 
+) ;
+
+create table if not exists loginlog
+(
+    id              int auto_increment primary key ,
+    user_id         int default null ,
+    action          varchar(255) not null ,
+    username        varchar(255) default null ,
+    email           varchar(255) default null ,
+    passwd          varchar(255) default null ,
+    ip_addr         varchar(255) ,
+    lastlogintime   datetime default null ,
+    lastloginfail   datetime default null ,
+    loginfailures   int default 0 
+) ;
+
+ */
+
         try {
-            $password = $args['password'] ;
-            unset( $args['password'] ) ;
             // print_r( $args ) ;
             $checkUser = new UserLogin( array_keys( $args ) , array_values( $args ) ) ;
             // echo "checkUser : " ; print_r( $checkUser->getData() ) ;
-            if ( $checkUser->pwdVerify( $password ) )
+            if ( $checkUser->pwdVerify( $args['password']) )
             {
                 $checkUser->setLoginTime() ;
-                return new User( $checkUser->getData()['id'] ) ;
+                $values = $checkUser->getData() ;
+                $values['action']  =  'success' ;
+                $values['user_id'] = $values['id'] ;
+                unset( $values['id'] , $values['email'] , $values['passwd'] ) ;
+                $toReturn = new User( $checkUser->getData()['id'] ) ;
             } else {
                 $checkUser->setLoginFailure() ;
+                $values = $checkUser->getData() ;
+                $values['passwd'] = $args['password'] ;
+                $values['action']  = 'failure' ;
+                $values['user_id'] = $values['id'] ;
+                unset( $values['id'] , $values['email'] ) ;
             }
-        } catch ( \Exception $e ) { return null ; }
+        } catch ( \Exception $e ) { 
+            $values = array_merge( $values , $args ) ;
+            $values['action']  = 'hack' ;
+            $values['passwd']  = $args['password'] ;
+            $values['ip_addr'] = isset( $_SERVER['REMOTE_ADDR'] ) ?: null ;
+            $values['lastloginfail'] = new OurDateTime() ;
+            unset( $values['password'] ) ;
+        }
 
-    return null ; }
+        $values = array_merge( $nullValues , $values ) ;
+        new LoginLog( $values ) ;
+
+    return $toReturn ; }
 
     protected function read() : Array 
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;

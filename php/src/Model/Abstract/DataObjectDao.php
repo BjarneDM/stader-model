@@ -18,10 +18,11 @@ abstract class DataObjectDao
         switch ( $this->database )
         {
             case 'data' :
-            case 'encrypted' :
+            case 'cryptdata' :
                 $this->setupData( $args ) ;
                 break ;
             case 'logs' :
+            case 'cryptlogs' :
                 $this->setupLogs( $args ) ;
                 break ;
         }
@@ -117,6 +118,8 @@ abstract class DataObjectDao
                         /*
                          *  count( $args[0] ) === count( $this->keysAllowed ) : ny Log, der skal oprettes
                          */
+print_r( $args[0] ) ;
+print_r( $this->keysAllowed ) ;
                         switch ( count( $args[0] ) )
                         {
                             case count( $this->keysAllowed ) :

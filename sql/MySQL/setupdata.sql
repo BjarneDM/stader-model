@@ -47,6 +47,7 @@ create table if not exists userlogin
     email           varchar(255) not null ,
         constraint  unique (email) ,
     passwd          varchar(255) not null ,
+    ip_addr         varchar(255) default null ,
     lastlogintime   datetime
         default     null ,
     lastloginfail   datetime

@@ -14,7 +14,8 @@ trait ObjectDaoConstruct
 
         switch ( self::$iniSettings[$this->database]['method'] )
         {
-            case "encrypted"    : self::$functions = new TableCryptDaoPdo( $this->database , $this->class ) ; break ;
+            case "cryptdata"    : self::$functions = new TableCryptDaoPdo( $this->database , $this->class ) ; break ;
+            case "cryptlogs"    : self::$functions = new TableCryptDaoPdo( $this->database , $this->class ) ; break ;
             case "mysql"        : self::$functions = new TableDaoPdo( $this->database , $this->class ) ; break ;
             case "pgsql"        : self::$functions = new TableDaoPdo( $this->database , $this->class ) ; break ;
             case "sqlite"       : self::$functions = new TableDaoPdo( $this->database , $this->class ) ; break ;

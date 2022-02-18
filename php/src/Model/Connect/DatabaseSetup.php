@@ -18,7 +18,8 @@ class DatabaseSetup
             $dbMethod = self::$iniSettings[$dbType]['method'] ;
             switch ( $dbMethod )
             {
-                case "encrypted" : $this->connect = new ConnectPDO( $dbType ) ; break ;
+                case "cryptdata" : $this->connect = new ConnectPDO( $dbType ) ; break ;
+                case "cryptlogs" : $this->connect = new ConnectPDO( $dbType ) ; break ;
                 case "mysql"     : $this->connect = new ConnectPDO( $dbType ) ; break ;
                 case "pgsql"     : $this->connect = new ConnectPDO( $dbType ) ; break ;
                 case "sqlite"    : $this->connect = new ConnectPDO( $dbType ) ; break ;
