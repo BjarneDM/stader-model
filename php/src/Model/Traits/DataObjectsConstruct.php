@@ -8,6 +8,7 @@
 
 trait DataObjectsConstruct
 {
+    public static $dbType ;
     public static $allowedKeys ;
     public static $thisClass   ;
 
@@ -18,8 +19,11 @@ trait DataObjectsConstruct
         if ( ! self::$allowedKeys ) self::$allowedKeys = ( new \ArrayObject( self::$baseClass::$allowedKeys ) )->getArrayCopy() ;
         $this->keysAllowed = ( new \ArrayObject( self::$baseClass::$allowedKeys ) )->getArrayCopy() ;
 
-        if ( ! self::$thisClass   ) self::$thisClass   = self::$baseClass::$thisClass ;
-        $this->class       = self::$baseClass::$thisClass ;
+        if ( ! self::$thisClass ) self::$thisClass   = self::$baseClass::$thisClass ;
+        $this->class = self::$baseClass::$thisClass ;
+
+        if ( ! self::$dbType ) self::$dbType   = self::$baseClass::$dbType ;
+        $this->database = self::$baseClass::$dbType ;
 
         parent::__construct() ;
         $this->setupData( $args ) ;

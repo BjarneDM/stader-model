@@ -17,6 +17,7 @@ create table if not exists ugroup
 
 class UGroup extends DataObjectDao
 {
+    public static $dbType      = 'data' ;
     public static $allowedKeys = 
         [ 'name'        => 'varchar' , 
           'description' => 'varchar'

@@ -6,12 +6,11 @@ use \Stader\Model\Traits\{ObjectDaoConstruct,ObjectsDaoIterator,Settings} ;
 abstract class DataObjectsDao
          implements \Iterator
 {
-    protected         $keysAllowed = []   ;
-    private   static  $functions   = null ;
-    protected         $class       = ''   ;
-    protected         $values      = []   ;
-    private           $position    = 0    ;
-    
+    protected $keysAllowed = []   ;
+    protected $class       = ''   ;
+    protected $values      = []   ;
+    private   $position    = 0    ;
+
     use ObjectDaoConstruct ;
     use Settings ;
 

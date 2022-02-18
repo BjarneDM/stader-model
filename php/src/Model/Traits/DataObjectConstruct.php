@@ -3,14 +3,15 @@
 trait DataObjectConstruct
 {
     function __construct ( ...$args )
-    {   // echo 'class UGroup extends ObjectDao __construct' . \PHP_EOL ;
-        // var_dump( $args ) ;
+    {   // echo 'class UGroup extends DataObjectDao __construct' . \PHP_EOL ;
+        // print_r( $this ) ;
 
         $this->keysAllowed = ( new \ArrayObject( self::$allowedKeys ) )->getArrayCopy() ;
-        $this->class = self::$thisClass ;
+        $this->class       = self::$thisClass ;
+        $this->database    = self::$dbType ;
         $this->setValuesDefault ( $args ) ;
         parent::__construct() ;
-        $this->setupData( $args ) ;
+        $this->setupObject( $args ) ;
         $this->fixValuesType () ;
 
     }

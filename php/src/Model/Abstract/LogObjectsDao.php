@@ -1,20 +1,18 @@
 <?php namespace Stader\Model\Abstract ;
 
-use \Stader\Model\Connect\LogSetup ;
 use \Stader\Model\DatabaseAccessObjects\TableDaoPdo ;
-use \Stader\Model\Traits\{ObjectDaoConstruct,ObjectsDaoIterator} ;
+use \Stader\Model\Traits\{ObjectDaoConstruct,ObjectsDaoIterator,Settings} ;
 
 abstract class LogObjectsDao
-         extends LogSetup
          implements \Iterator
 {
-    protected         $keysAllowed = []   ;
-    private   static  $functions   = null ;
-    protected         $values      = []   ;
-    protected         $class       = ''   ;
-    private           $position    = 0    ;
+    protected $keysAllowed = []   ;
+    protected $class       = ''   ;
+    protected $values      = []   ;
+    private   $position    = 0    ;
 
     use ObjectDaoConstruct ;
+    use Settings ;
 
     protected function setupData ( $args )
     {
@@ -38,7 +36,7 @@ abstract class LogObjectsDao
             case 'array' :
                 if ( count( $args[0] ) !== count( $args[1] ) )
                     throw new \Exception( 'count() for $args[0] & $args[1] er forskellige' ) ;
-                $this->values  = array_combine( $args[0] , $args[1] ) ;
+                $this->values = array_combine( $args[0] , $args[1] ) ;
                 $this->check( $this->values ) ;
                 break ;
             default :
