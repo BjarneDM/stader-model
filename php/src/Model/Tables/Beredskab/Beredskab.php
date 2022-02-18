@@ -27,6 +27,7 @@ create table if not exists beredskab
 
 class Beredskab extends DataObjectDao
 {
+    public static $dbType      = 'data' ;
     public static $allowedKeys = 
         [ 'message'       => 'text'    , 
           'header'        => 'text'    , 

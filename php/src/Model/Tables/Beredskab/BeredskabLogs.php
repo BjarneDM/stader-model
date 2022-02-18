@@ -1,6 +1,6 @@
 <?php namespace Stader\Model\Tables\Beredskab ;
 
-use \Stader\Model\Abstract\LogObjectsDao ;
+use \Stader\Model\Abstract\DataObjectsDao ;
 use \Stader\Model\Traits\DataObjectsConstruct ;
 
 /*
@@ -17,7 +17,7 @@ create table if not exists beredskab_log
 
  */
 
-class BeredskabLogs extends LogObjectsDao
+class BeredskabLogs extends DataObjectsDao
 {
     private static $baseClass = '\\Stader\\Model\\Tables\\Beredskab\\BeredskabLog' ;
 

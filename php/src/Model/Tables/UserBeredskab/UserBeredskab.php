@@ -22,6 +22,7 @@ create table if not exists user_beredskab
 
 class UserBeredskab extends DataObjectDao
 {
+    public static $dbType      = 'data' ;
     public static $allowedKeys = 
         [ 'user_id'      => 'int' ,
           'beredskab_id' => 'int'  
