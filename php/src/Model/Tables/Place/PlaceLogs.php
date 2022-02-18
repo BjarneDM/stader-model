@@ -1,6 +1,6 @@
 <?php namespace Stader\Model\Tables\Place ;
 
-use \Stader\Model\Abstract\LogObjectsDao ;
+use \Stader\Model\Abstract\DataObjectsDao ;
 use \Stader\Model\Traits\DataObjectsConstruct ;
 
 /*
@@ -17,7 +17,7 @@ create table if not exists place_log
 
  */
 
-class PlaceLogs extends LogObjectsDao
+class PlaceLogs extends DataObjectsDao
 {
     private static $baseClass = '\\Stader\\Model\\Tables\\Place\\PlaceLog' ;
 

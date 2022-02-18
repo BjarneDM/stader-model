@@ -30,6 +30,7 @@ create table if not exists place
 
 class Place extends DataObjectDao
 {
+    public static $dbType      = 'data' ;
     public static $allowedKeys = 
         [ 'place_nr'       => 'varchar' , 
           'description'    => 'text'    , 

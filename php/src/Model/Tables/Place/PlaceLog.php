@@ -1,6 +1,6 @@
 <?php namespace Stader\Model\Tables\Place ;
 
-use \Stader\Model\Abstract\LogObjectDao ;
+use \Stader\Model\Abstract\DataObjectDao ;
 use \Stader\Model\OurDateTime ;
 use \Stader\Model\Traits\{DataObjectConstruct,LogFunctions} ;
 
@@ -22,8 +22,9 @@ create table if not exists placelog
 
  */
 
-class PlaceLog extends LogObjectDao
+class PlaceLog extends DataObjectDao
 {
+    public static $dbType      = 'logs' ;
     public static $allowedKeys = 
         [ 'place_id'     => 'int'     , 
           'description'  => 'varchar' , 

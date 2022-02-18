@@ -22,8 +22,11 @@ trait ObjectDaoFunctions
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // echo $this->class. \PHP_EOL ;
 
+        $rowCount = self::$functions->update( 
+            $object , 
+            array_diff( $this->values , $this->valuesOld ) ) ;
         $this->notify( 'update' ) ;
-    return self::$functions->update( $object , array_diff( $this->values , $this->valuesOld ) ) ; }
+    return $rowCount ; }
 
     protected function deleteThis( $object ) : int
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
