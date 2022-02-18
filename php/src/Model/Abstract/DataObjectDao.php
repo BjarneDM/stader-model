@@ -1,10 +1,9 @@
 <?php namespace Stader\Model\Abstract ;
 
-use \Stader\Model\Connect\DataSetup ;
 use \Stader\Model\DatabaseAccessObjects\{TableDaoPdo} ;
 use \Stader\Model\Traits\{ObjectDaoConstruct,ObjectDaoFunctions} ;
 
-abstract class DataObjectDao extends DataSetup
+abstract class DataObjectDao
 {
     protected         $keysAllowed = []   ;
     private   static  $functions   = null ;

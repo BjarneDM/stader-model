@@ -8,14 +8,12 @@ trait ObjectDaoConstruct
     function __construct ()
     {   // echo 'abstract class ObjectDao extends Setup __construct' . \PHP_EOL ;
 
-        parent::__construct() ;
-
-        switch ( self::$connect->getType() )
+        switch ( 'mysql' )
         {
-            case "mysql"        : self::$functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
-            case "pgsql"        : self::$functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
-            case "sqlite"       : self::$functions = new TableDaoPdo( self::$connect , $this->class ) ; break ;
-            case "xml"          : self::$functions = new TableDaoXml( self::$connect , $this->class ) ; break ;
+            case "mysql"        : self::$functions = new TableDaoPdo( 'data' , $this->class ) ; break ;
+            case "pgsql"        : self::$functions = new TableDaoPdo( 'data' , $this->class ) ; break ;
+            case "sqlite"       : self::$functions = new TableDaoPdo( 'data' , $this->class ) ; break ;
+            case "xml"          : self::$functions = new TableDaoXml( 'data' , $this->class ) ; break ;
             default: throw new \Exception() ;
             // var_dump( self::$functions ) ;
         }

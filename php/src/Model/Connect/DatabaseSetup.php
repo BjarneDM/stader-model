@@ -2,7 +2,7 @@
 
 use \Stader\Model\Connect\{DataConnectPDO,DataConnectXML} ;
 
-class DataSetup
+class DatabaseSetup
 {
     /* private static $connect  = new IDbDriver() ; */
     protected static $connect ;
@@ -25,10 +25,10 @@ class DataSetup
                 case "sqlite"   : self::$connect = new DataConnectPDO() ; break ;
                 case "xml"      : self::$connect = new DataConnectXML() ; break ;
                 default: throw new \Exception() ;
-            } // echo $this::$connect->getType() . PHP_EOL ;
-        }   // print_r( ['after',self::$connect->getConn()] ) ;
+            }   //  echo $this::$connect->getType() . PHP_EOL ;
+        }   //  print_r( ['after',self::$connect->getConn()] ) ;
 
-        // $this->checkConnection() ;
+        //  $this->checkConnection() ;
     }
 
     public function getDBH()

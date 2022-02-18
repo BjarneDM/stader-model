@@ -1,19 +1,24 @@
 <?php namespace Stader\Model\DatabaseAccessObjects ;
 
 use \Stader\Model\Interfaces\ICrudDao ;
+use \Stader\Model\Connect\DatabaseSetup ;
 
-class TableDaoPdo implements ICrudDao
+class TableDaoPdo 
+    extends DatabaseSetup
+    implements ICrudDao
 {
     private $dbh    = null ;
     private $table  = null ;
 
-    public function __construct ( $connect , $class )
+    public function __construct ( $database , $class )
     {   // echo 'class TableDaoPdo implements ICrudDao __construct' . \PHP_EOL ;
         // var_dump( $connect ) ;
         // var_dump( $class ) ;
         // echo 'connection type : ' . $connect->getType()  . \PHP_EOL ;
 
-        $this->dbh   = $connect->getConn() ;
+        parent::__construct() ;
+
+        $this->dbh   = self::$connect->getConn() ;
         $this->table = explode( '\\' , $class ) ;
         $this->table = strtolower( end( $this->table ) ) ;
 
