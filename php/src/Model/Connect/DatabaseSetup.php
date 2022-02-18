@@ -6,28 +6,25 @@ use \Stader\Model\Traits\Settings ;
 class DatabaseSetup
 {
     /* private static $connect  = new IDbDriver() ; */
-    protected static $connect ;
-    private   static $dbType = 'data' ;
+    protected $connect ;
 
-    /*
-     */
-    function __construct()
+    function __construct( $dbType )
     {   // echo 'class Setup __construct' . \PHP_EOL ;
 
         $this->getSettings() ;
 
-        if ( ! self::$connect ) 
+        if ( ! $this->connect ) 
         {
-            $dbMethod = self::$iniSettings[self::$dbType]['method'] ;
+            $dbMethod = self::$iniSettings[$dbType]['method'] ;
             switch ( $dbMethod )
             {
-                case "mysql"    : self::$connect = new ConnectPDO( self::$dbType ) ; break ;
-                case "pgsql"    : self::$connect = new ConnectPDO( self::$dbType ) ; break ;
-                case "sqlite"   : self::$connect = new ConnectPDO( self::$dbType ) ; break ;
-                case "xml"      : self::$connect = new ConnectXML( self::$dbType ) ; break ;
+                case "mysql"    : $this->connect = new ConnectPDO( $dbType ) ; break ;
+                case "pgsql"    : $this->connect = new ConnectPDO( $dbType ) ; break ;
+                case "sqlite"   : $this->connect = new ConnectPDO( $dbType ) ; break ;
+                case "xml"      : $this->connect = new ConnectXML( $dbType ) ; break ;
                 default: throw new \Exception() ;
-            }   //  echo self::$connect->getType() . PHP_EOL ;
-        }   //  print_r( ['after',self::$connect->getConn()] ) ;
+            }   //  echo $this->connect->getType() . PHP_EOL ;
+        }   //  print_r( ['after',$this->connect->getConn()] ) ;
 
         //  $this->checkConnection() ;
     }
@@ -35,18 +32,12 @@ class DatabaseSetup
     use Settings ;
 
     public function getDBH()
-        { return self::$connect->getConn() ; }
+        { return $this->connect->getConn() ; }
 
-    /*
-     *  der må !!!IKKE!!! være en __destruct i denne class
-     *  det fucker de statiske variable fuldstændigt op
-     */
-/*
     function __destruct()
     {
-        self::$connect = null ;
+        $this->connect = null ;
     }
- */
 
     private function checkConnection()
     {

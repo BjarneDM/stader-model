@@ -12,13 +12,12 @@ class TableDaoPdo
 
     public function __construct ( $database , $class )
     {   // echo 'class TableDaoPdo implements ICrudDao __construct' . \PHP_EOL ;
-        // var_dump( $connect ) ;
+        // var_dump( $database ) ;
         // var_dump( $class ) ;
-        // echo 'connection type : ' . $connect->getType()  . \PHP_EOL ;
 
-        parent::__construct() ;
+        parent::__construct( $database ) ;
 
-        $this->dbh   = self::$connect->getConn() ;
+        $this->dbh   = $this->connect->getConn() ;
         $this->table = explode( '\\' , $class ) ;
         $this->table = strtolower( end( $this->table ) ) ;
 
