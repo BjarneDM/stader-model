@@ -24,6 +24,7 @@ create table if not exists users_roles
 
 class UserRole extends DataObjectDao
 {
+    public static $dbType      = 'data' ;
     public static $allowedKeys = 
         [ 'user_id' => 'int' , 
           'role_id' => 'int' 

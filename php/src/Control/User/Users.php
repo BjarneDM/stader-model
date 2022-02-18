@@ -66,6 +66,10 @@ class Users extends DataObjectsDao
         $this->usersLogin->deleteAll() ;
     }
 
+    public function getIDs() : array 
+    {
+        return $this->usersLogin->getIDs() ;
+    }
 }
 
 ?>

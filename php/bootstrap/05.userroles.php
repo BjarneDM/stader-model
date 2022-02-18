@@ -83,6 +83,9 @@ foreach ( $specUsers as $level => $users )
 /*
  *  Men dette her fejler på en-eller-anden måde
  *  kun den 1ste User bliver behandlet
+ *  der skal kigges på DB-forbindelserne ...
+ *
+ *  selv m/ separate PDOconn /tabel fungerer det stadig ikke 
  */
 // foreach ( ( new Users() ) as $user )
 // {
@@ -100,9 +103,8 @@ foreach ( $specUsers as $level => $users )
 // }   unset( $user ) ;
 
 /*
- *  så min kodning kan !!!IKKE!!! lide at have \Iteratorer indeni hinanden
+ *  så min kodning kan !!!IKKE!!! lide at have nestede \Iteratorer 
  *  dette work-around fungerer ; men er ikke bruger-venligt
- *  der skal kigges på DB-forbindelserne ...
  */
 $ids = [] ;
 foreach ( ( new Users() ) as $user )
@@ -121,6 +123,22 @@ foreach ( $ids as $id )
     echo ( new User($id) )->getData()['username'] . ' : [ ' . implode( ' , ' ,  $rollerne )  . ' ]' . \PHP_EOL ;
 }   unset( $id ) ;
 
+/*
+ *  Så der er blevet lavet en funktion, der returnerer alle IDs
+ *  som der så kan itereres over
+ *  som en bedre work-around end det forrige eksempel
+ */
+foreach ( ( new Users() )->getIDs() as $id )
+{
+    // print_r( ( new User($id) )->getData() ) ;
+    $roller = new UsersRoles( 'user_id' , $id ) ;
+    $rollerne = [] ;
+    foreach ( $roller as $rolle )
+    {
+        $rollerne[] = ( new URole( $rolle->getData()['role_id'] ) )->getData()['role'] ;
+    }   unset( $rolle ) ;
+    echo ( new User($id) )->getData()['username'] . ' : [ ' . implode( ' , ' ,  $rollerne )  . ' ]' . \PHP_EOL ;
+}   unset( $id ) ;
 
 
 

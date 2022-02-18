@@ -62,6 +62,18 @@ trait ObjectsDaoIterator
         self::$functions->deleteAll( $this ) ;
     }
     
+    public function getIDs() : array 
+    {
+        $IDs = [] ;
+        $this->rewind() ;
+        while ( $this->valid() )
+        {
+            $IDs[] = $this->key() ;
+            $this->next() ;
+        }
+    return $IDs ; }
+
+
 /*
     public function getAll() : array 
     {
