@@ -35,6 +35,7 @@ create table if not exists ticket
 
 class Ticket extends DataObjectDao
 {
+    public static $dbType      = 'data' ;
     public static $allowedKeys = 
         [ 'header'            => 'varchar' , 
           'description'       => 'text'    , 

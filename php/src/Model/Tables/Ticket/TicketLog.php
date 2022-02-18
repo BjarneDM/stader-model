@@ -1,6 +1,6 @@
 <?php namespace Stader\Model\Tables\Ticket ;
 
-use \Stader\Model\Abstract\LogObjectDao ;
+use \Stader\Model\Abstract\DataObjectDao ;
 use \Stader\Model\OurDateTime ;
 use \Stader\Model\Traits\{DataObjectConstruct,LogFunctions} ;
 
@@ -22,8 +22,9 @@ create table if not exists ticketlog
 
  */
 
-class TicketLog extends LogObjectDao
+class TicketLog extends DataObjectDao
 {
+    public static $dbType      = 'logs' ;
     public static $allowedKeys = 
         [ 'ticket_id' => 'int'     , 
           'header'    => 'varchar' , 
