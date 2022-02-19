@@ -1,6 +1,6 @@
-<?php namespace stader\eksempler ;
+<?php namespace Stader\Eksempler ;
 
-   $include_paths[] =  '/Volumes/Bjarne/Sites/info/mathiesen/zbc/stader/php' ;
+   $include_paths[] = dirname( __DIR__ ) ;
 // $include_paths[] =  '/Volumes/Bjarne/Sites/info/mathiesen/zbc/cdn/php' ;
 // $include_paths[] =  '.' ;
 // $include_paths[] =  '/Volumes/Bjarne/Sites/info/mathiesen/cdn/_/php' ;
@@ -9,14 +9,14 @@ set_include_path( implode( ':' , $include_paths ) ) ;
 // echo 'IncludePaths : ' . \PHP_EOL ;
 // print_r( explode( ':' , get_include_path() ) ) ;
 
-require_once( dirname( __file__ , 2 ) . '/model/class.classloader.php' ) ;
+require_once( 'classloader.php' ) ;
 require_once( dirname( __file__ , 2 ) . '/control/class.classloader.php' ) ;
 
-use \stader\model\{Ticket,Tickets,TicketLog,TicketLogs} ;
+use \Stader\Model\Tables\Ticket\{Ticket,Tickets,TicketLog,TicketLogs} ;
 
 $format = 'csv' ;
 $problemer = new Tickets() ;
-foreach ( $problemer->getTickets() as $problem )
+foreach ( $problemer as $problem )
 {
     echo str_repeat( '-', 50 ) . \PHP_EOL ;
     print_r( $problem->getData() ) ;
@@ -28,9 +28,9 @@ foreach ( $problemer->getTickets() as $problem )
     if ( ! $fileHandle = fopen( $fileName , "w" )  ) 
         die( "!!! kunne ikke åbne {$fileName} for skrivning !!!" . \PHP_EOL ) ;
 
-    foreach ( $denneLogs->getTicketLogs() as $problemLog )
+    foreach ( $denneLogs as $problemLog )
     {
-        $thisLog = new \stader\control\TicketLog( $problemLog ) ;
+        $thisLog = new TicketLog( $problemLog ) ;
 
         if ( empty( $headers ) ) 
         {

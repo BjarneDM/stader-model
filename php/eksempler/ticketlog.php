@@ -1,6 +1,6 @@
-<?php namespace stader\eksempler ;
+<?php namespace Stader\Eksempler ;
 
-   $include_paths[] =  '/Volumes/Bjarne/Sites/info/mathiesen/zbc/stader/php' ;
+   $include_paths[] = dirname( __DIR__ ) ;
 // $include_paths[] =  '/Volumes/Bjarne/Sites/info/mathiesen/zbc/cdn/php' ;
 // $include_paths[] =  '.' ;
 // $include_paths[] =  '/Volumes/Bjarne/Sites/info/mathiesen/cdn/_/php' ;
@@ -9,9 +9,11 @@
 // echo 'IncludePaths : ' . \PHP_EOL ;
 // print_r( explode( ':' , get_include_path() ) ) ;
 
-require_once( dirname( __file__ , 2 ) . '/model/class.classloader.php' ) ;
+require_once( 'classloader.php' ) ;
 
-use \stader\model\{Place,Area,Ticket,Tickets,TicketLog,TicketLogs} ;
+use \Stader\Model\Tables\Place\{Place} ;
+use \Stader\Model\Tables\Area\{Area} ;
+use \Stader\Model\Tables\Ticket\{Ticket,Tickets,TicketLog,TicketLogs} ;
 
 list( $areaName , $placeNr ) = preg_split( '//', $argv[1] , 2 , PREG_SPLIT_NO_EMPTY ) ;
 $areaID = ( new Area( 'name' , $areaName ) )->getData()['area_id'] ;
@@ -21,7 +23,7 @@ print_r( $place->getData() ) ;
 $placeTickets = new Tickets( 'assigned_place_id' , (string) $place->getData()['place_id'] ) ;
 // print_r( $placeTickets->getAll() ) ;
 
-foreach ( $placeTickets->getAll() as $thisTicket )
+foreach ( $placeTickets as $thisTicket )
 {
     print_r( $thisTicket->getData() ) ;
 
@@ -29,7 +31,7 @@ foreach ( $placeTickets->getAll() as $thisTicket )
 //     print_r( $thisTicketLogs->getAll() ) ;
 
     list( $opretHeader , $opdaterHeader , $slettetHeader ) = [ false , false , false ] ;
-    foreach ( $thisTicketLogs->getAll() as $thisLog ) 
+    foreach ( $thisTicketLogs as $thisLog ) 
     {
         print_r( $thisLog->getData() ) ;
 

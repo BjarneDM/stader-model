@@ -1,4 +1,4 @@
-<?php namespace stader\eksempler ;
+<?php namespace Stader\Eksempler ;
 
 /*
 
@@ -22,7 +22,7 @@ create table if not exists place
 
  */
 
-   $include_paths[] =  '/Volumes/Bjarne/Sites/info/mathiesen/zbc/stader/php' ;
+   $include_paths[] = dirname( __DIR__ ) ;
 // $include_paths[] =  '/Volumes/Bjarne/Sites/info/mathiesen/zbc/cdn/php' ;
 // $include_paths[] =  '.' ;
 // $include_paths[] =  '/Volumes/Bjarne/Sites/info/mathiesen/cdn/_/php' ;
@@ -31,20 +31,20 @@ set_include_path( implode( ':' , $include_paths ) ) ;
 // echo 'IncludePaths : ' . \PHP_EOL ;
 // print_r( explode( ':' , get_include_path() ) ) ;
 
-require_once( dirname( __file__ , 2 ) . '/model/class.classloader.php' ) ;
-require_once( dirname( __file__ , 2 ) . '/control/class.classloader.php' ) ;
+require_once( 'classloader.php' ) ;
 
-use \stader\model\{Area,Areas,Places} ;
+use \Stader\Model\Tables\Area\{Area,Areas} ;
+use \Stader\Model\Tables\Place\{Place,Places} ;
 
 echo '<pre>' . \PHP_EOL ;
 
 $areas = new Areas() ;
-foreach ( $areas->getAreas() as $area )
+foreach ( $areas as $area )
 {
     $places = new Places( 'area_id' , (int) $area->getData()['area_id'] ) ;
-    foreach ( $places->getPlaces() as $place )
+    foreach ( $places as $place )
     {
-        $fullPlace = new \stader\control\Place( array_merge( $area->getData() , $place->getData() ) ) ;
+        $fullPlace = new Place( array_merge( $area->getData() , $place->getData() ) ) ;
 //         print_r( $fullPlace->getData() ) ;
         print_r( [ 'full_place' => $fullPlace->getData()['full_place'] ] ) ;
     }

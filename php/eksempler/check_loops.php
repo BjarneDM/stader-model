@@ -1,6 +1,6 @@
-<?php namespace stader\eksempler ;
+<?php namespace Stader\Eksempler ;
 
-   $include_paths[] =  '/Volumes/Bjarne/Sites/info/mathiesen/zbc/stader/php' ;
+   $include_paths[] = dirname( __DIR__ ) ;
 // $include_paths[] =  '/Volumes/Bjarne/Sites/info/mathiesen/zbc/cdn/php' ;
 // $include_paths[] =  '.' ;
 // $include_paths[] =  '/Volumes/Bjarne/Sites/info/mathiesen/cdn/_/php' ;
@@ -8,18 +8,18 @@ set_include_path( implode( ':' , $include_paths ) ) ;
 
 require_once( 'settings/phpValues.php' ) ;
 
-echo str_repeat('-', 50) . \PHP_EOL . '$alleBrugere = new Users( $setup::$connect ) ;' . \PHP_EOL ;
+echo str_repeat('-', 50) . \PHP_EOL . '$alleBrugere = new Users() ;' . \PHP_EOL ;
 
-require_once( dirname( __file__ , 2 ) . '/model/class.classloader.php' ) ;
+require_once( 'classloader.php' ) ;
 
-use \stader\model\{User,Users} ;
+use \Stader\Control\Tables\User\{User,Users} ;
 
 
-$allUsers = new Users( $setup::$connect ) ;
+$allUsers = new Users() ;
 // print_r( $allUsers ) ;
-// $alleBrugere = new Users( $setup::$connect , 'postnr' , '4220' ) ;
-// $alleBrugere = new Users( $setup::$connect , ['navn_for'] , ['Bjarne'] ) ;
-// $alleBrugere = new Users( $setup::$connect , ['postnr','navn_for'] , ['4220','Bjarne'] ) ;
+// $alleBrugere = new Users(, 'postnr' , '4220' ) ;
+// $alleBrugere = new Users(, ['navn_for'] , ['Bjarne'] ) ;
+// $alleBrugere = new Users(, ['postnr','navn_for'] , ['4220','Bjarne'] ) ;
 
 echo 'totalt antal brugere ' . $allUsers->count() . \PHP_EOL ;
 
@@ -33,20 +33,17 @@ foreach ( $allUsers->getUsers() as $user )
     print_r( $user->getData() ) ;
 
 
-echo str_repeat('-', 50) . \PHP_EOL . '$alleBrugere = new Groups( $setup::$connect ) ;' . \PHP_EOL ;
-
-require_once( 'model/class.setup.php' ) ;
-require_once( 'model/group/class.group.php' ) ;
-require_once( 'model/group/class.groups.php' ) ;
-
-use \stader\model\{Group,Groups} ;
+echo str_repeat('-', 50) . \PHP_EOL . '$alleBrugere = new Groups() ;' . \PHP_EOL ;
 
 
-$allGroups = new Groups( $setup::$connect ) ;
+use \Stader\Model\Tables\Group\{UGroup,UGroups} ;
+
+
+$allGroups = new UGroups() ;
 // print_r( $allGroups ) ;
-// $alleBrugere = new Groups( $setup::$connect , 'postnr' , '4220' ) ;
-// $alleBrugere = new Groups( $setup::$connect , ['navn_for'] , ['Bjarne'] ) ;
-// $alleBrugere = new Groups( $setup::$connect , ['postnr','navn_for'] , ['4220','Bjarne'] ) ;
+// $alleBrugere = new Groups(, 'postnr' , '4220' ) ;
+// $alleBrugere = new Groups(, ['navn_for'] , ['Bjarne'] ) ;
+// $alleBrugere = new Groups(, ['postnr','navn_for'] , ['4220','Bjarne'] ) ;
 
 echo 'totalt antal brugere ' . $allGroups->count() . \PHP_EOL ;
 
@@ -60,20 +57,16 @@ foreach ( $allGroups->getGroups() as $group )
     print_r( $group->getData() ) ;
 
 
-echo str_repeat('-', 50) . \PHP_EOL . '$alleBrugere = new Places( $setup::$connect ) ;' . \PHP_EOL ;
+echo str_repeat('-', 50) . \PHP_EOL . '$alleBrugere = new Places() ;' . \PHP_EOL ;
 
-require_once( 'model/class.setup.php' ) ;
-require_once( 'model/place/class.place.php' ) ;
-require_once( 'model/place/class.places.php' ) ;
-
-use \stader\model\{Placwe,Places} ;
+use \Stader\Model\Tables\Place\{Place,Places} ;
 
 
-$allPlaces = new Places( $setup::$connect ) ;
+$allPlaces = new Places() ;
 // print_r( $allPlaces ) ;
-// $alleBrugere = new Places( $setup::$connect , 'postnr' , '4220' ) ;
-// $alleBrugere = new Places( $setup::$connect , ['navn_for'] , ['Bjarne'] ) ;
-// $alleBrugere = new Places( $setup::$connect , ['postnr','navn_for'] , ['4220','Bjarne'] ) ;
+// $alleBrugere = new Places(, 'postnr' , '4220' ) ;
+// $alleBrugere = new Places(, ['navn_for'] , ['Bjarne'] ) ;
+// $alleBrugere = new Places(, ['postnr','navn_for'] , ['4220','Bjarne'] ) ;
 
 echo 'totalt antal brugere ' . $allPlaces->count() . \PHP_EOL ;
 
@@ -81,26 +74,22 @@ do { print_r( $allPlaces->current()->getData() ) ;
 } while ( $allPlaces->next() !== false ) ;
 
 for ( $i = 0 ; $i < $allPlaces->count() ; $i++ ) 
-    print_r( $allPlaces->getPlacwe( $i )->getData() ) ;
+    print_r( $allPlaces->getPlace( $i )->getData() ) ;
 
 foreach ( $allPlaces->getPlaces() as $place )
     print_r( $place->getData() ) ;
 
 
-echo str_repeat('-', 50) . \PHP_EOL . '$alleBrugere = new Tickets( $setup::$connect ) ;' . \PHP_EOL ;
+echo str_repeat('-', 50) . \PHP_EOL . '$alleBrugere = new Tickets() ;' . \PHP_EOL ;
 
-require_once( 'model/class.setup.php' ) ;
-require_once( 'model/ticket/class.ticket.php' ) ;
-require_once( 'model/ticket/class.tickets.php' ) ;
-
-use \stader\model\{Ticket,Tickets} ;
+use \Stader\Model\Tables\Ticket\{Ticket,Tickets} ;
 
 
-$allTickets = new Tickets( $setup::$connect ) ;
+$allTickets = new Tickets() ;
 // print_r( $allTickets ) ;
-// $alleBrugere = new Tickets( $setup::$connect , 'postnr' , '4220' ) ;
-// $alleBrugere = new Tickets( $setup::$connect , ['navn_for'] , ['Bjarne'] ) ;
-// $alleBrugere = new Tickets( $setup::$connect , ['postnr','navn_for'] , ['4220','Bjarne'] ) ;
+// $alleBrugere = new Tickets(, 'postnr' , '4220' ) ;
+// $alleBrugere = new Tickets(, ['navn_for'] , ['Bjarne'] ) ;
+// $alleBrugere = new Tickets(, ['postnr','navn_for'] , ['4220','Bjarne'] ) ;
 
 echo 'totalt antal brugere ' . $allTickets->count() . \PHP_EOL ;
 

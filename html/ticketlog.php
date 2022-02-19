@@ -1,7 +1,7 @@
-<?php namespace stader\html ;
+<?php namespace Stader\HTML ;
 require_once( dirname( __file__ , 2 ) . '/php/settings/phpValues.php') ;
 
-   $include_paths[] =  '/Volumes/Bjarne/Sites/info/mathiesen/zbc/stader/php' ;
+   $include_paths[] = dirname( __DIR__ ) ;
 // $include_paths[] =  '/Volumes/Bjarne/Sites/info/mathiesen/zbc/cdn/php' ;
 // $include_paths[] =  '.' ;
 // $include_paths[] =  '/Volumes/Bjarne/Sites/info/mathiesen/cdn/_/php' ;
@@ -13,11 +13,11 @@ set_include_path( implode( ':' , $include_paths ) ) ;
 require_once( dirname( __file__ , 2 ) . '/php/model/class.classloader.php' ) ;
 require_once( dirname( __file__ , 2 ) . '/php/control/class.classloader.php' ) ;
 
-use \stader\model\{Tickets,TicketLog,TicketLogs} ;
+use \Stader\Model\Tables\Ticket\{Tickets,TicketLog,TicketLogs} ;
 
 $format = 'csv' ;
 $problemer = new Tickets() ;
-foreach ( $problemer->getAll() as $problem )
+foreach ( $problemer as $problem )
 {
 //     echo str_repeat( '-', 50 ) . \PHP_EOL ;
 //     error_log( print_r( $problem->getData() , true ) ) ;
@@ -33,9 +33,9 @@ foreach ( $problemer->getAll() as $problem )
     if ( ! $fileHandle = fopen( "php://output" , "w" )  ) 
         die( "!!! kunne ikke åbne {$fileName} for skrivning !!!" . \PHP_EOL ) ;
 
-    foreach ( $denneLogs->getAll() as $problemLog )
+    foreach ( $denneLogs as $problemLog )
     {
-        $thisLog = new \stader\control\TicketLog( $problemLog ) ;
+        $thisLog = new TicketLog( $problemLog ) ;
 
         if ( empty( $headers ) ) 
         {

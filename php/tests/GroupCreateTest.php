@@ -19,9 +19,9 @@ create table groups
 
  */
 
-require_once( dirname( __file__ , 2 ) . '/model/class.classloader.php' ) ;
+require_once( 'classloader.php' ) ;
 
-use \stader\model\{Group} ;
+use \Stader\Model\Tables\\{Group} ;
 
 class GroupCreateTest extends TestCase
 {

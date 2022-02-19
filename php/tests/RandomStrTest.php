@@ -7,9 +7,9 @@ use PHPUnit\Framework\TestCase;
 
 set_include_path( '/Volumes/Bjarne/Sites/info/mathiesen/zbc/stader/php' ) ;
 
-require_once( dirname( __file__ , 2 ) . '/model/class.classloader.php' ) ;
+require_once( 'classloader.php' ) ;
 
-use \stader\model\{RandomStr} ;
+use \Stader\Model\Tables\\{RandomStr} ;
 
 class RandomStrTest extends TestCase
 {

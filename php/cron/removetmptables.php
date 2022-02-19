@@ -11,9 +11,9 @@
  *  setup
  */
 
-require_once( dirname( __file__ , 2 ) . '/model/class.classloader.php' ) ;
+require_once( 'classloader.php' ) ;
 
-use \stader\model\{Setup} ;
+use \Stader\Model\Tables\\{Setup} ;
 
 // $setup = new Setup() ;
 // $dbh = $setup->getDBH() ;

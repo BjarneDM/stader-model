@@ -13,7 +13,7 @@ if (    in_array( $argv[1] , [ '-h' , '--help' ] )
 HELP;
 exit() ; }
 
-   $include_paths[] =  '/Volumes/Bjarne/Sites/info/mathiesen/zbc/stader/php' ;
+   $include_paths[] = dirname( __DIR__ ) . '/php' ;
 // $include_paths[] =  '/Volumes/Bjarne/Sites/info/mathiesen/zbc/cdn/php' ;
 // $include_paths[] =  '.' ;
 // $include_paths[] =  '/Volumes/Bjarne/Sites/info/mathiesen/cdn/_/php' ;
@@ -22,7 +22,7 @@ set_include_path( implode( ':' , $include_paths ) ) ;
 // echo 'IncludePaths : ' . \PHP_EOL ;
 // print_r( explode( ':' , get_include_path() ) ) ;
 
-require_once(  dirname( __dir__ ) . '/php/classloader.php' ) ;
+require_once(  'classloader.php' ) ;
 use \Stader\Model\Connect\Setup ;
 
 $format = ( in_array( $argv[1] , [ 'json' , 'csv' ] ) ) ?: 'json' ;
