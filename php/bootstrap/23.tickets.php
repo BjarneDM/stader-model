@@ -28,7 +28,7 @@ create table tickets
  */
 
 require_once( dirname( __dir__ ) . '/classloader.php' ) ;
-use \Stader\Control\User\{User,Users} ;
+use \Stader\Control\Objects\User\{User,Users} ;
 use \Stader\Model\Tables\Ticket\{Ticket,Tickets} ;
 use \Stader\Model\Tables\Area\{Area} ;
 use \Stader\Model\Tables\Place\{Place} ;

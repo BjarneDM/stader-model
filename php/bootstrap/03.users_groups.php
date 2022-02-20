@@ -53,7 +53,7 @@ $users =
 
 require_once( dirname( __dir__ ) . '/classloader.php' ) ;
 use \Stader\Model\Tables\Group\{UGroup,UGroups} ;
-use \Stader\Control\User\{User,Users} ;
+use \Stader\Control\Objects\User\{User,Users} ;
 use \Stader\Model\Tables\UserGroup\{UserGroup,UsersGroups} ;
 
 /*

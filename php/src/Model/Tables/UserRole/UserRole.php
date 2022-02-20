@@ -1,7 +1,7 @@
 <?php namespace Stader\Model\Tables\UserRole ;
 
 use \Stader\Model\Abstract\DataObjectDao ;
-use \Stader\Control\User\{User} ;
+use \Stader\Control\Objects\User\{User} ;
 use \Stader\Model\Tables\Role\{URole} ;
 use \Stader\Model\Traits\DataObjectConstruct ;
 
