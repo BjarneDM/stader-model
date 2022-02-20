@@ -7,10 +7,8 @@ abstract class DataObjectsDao
     protected   $class       = ''   ;
     protected   $position    = 0    ;
     
-    function __construct ( Array $allowedKeys )
+    function __construct ()
     {   // echo 'abstract class ObjectsDao extends Setup __construct' . \PHP_EOL ;
-
-        $this->keysAllowed = $allowedKeys ;
 
     }
 

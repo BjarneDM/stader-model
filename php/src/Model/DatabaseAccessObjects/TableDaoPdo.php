@@ -7,8 +7,9 @@ class TableDaoPdo
     extends DatabaseSetup
     implements ICrudDao
 {
-    private $dbh    = null ;
-    private $table  = null ;
+    private $dbh     = null ;
+    private $table   = null ;
+    private $database = null ;
 
     public function __construct ( $database , $class )
     {   // echo 'class TableDaoPdo implements ICrudDao __construct' . \PHP_EOL ;
@@ -17,13 +18,14 @@ class TableDaoPdo
 
         parent::__construct( $database ) ;
 
-        $this->dbh   = $this->connect->getConn() ;
-        $this->table = explode( '\\' , $class ) ;
-        $this->table = strtolower( end( $this->table ) ) ;
+        $this->database = $database ;
+        $this->dbh      = $this->connect->getConn() ;
+        $this->table    = explode( '\\' , $class ) ;
+        $this->table    = strtolower( end( $this->table ) ) ;
 
     }
 
-    private function getPdoParamType ( $valType )
+    private function getPdoParamType ( $valType ) 
     {
         $dataType = null ;
         switch ( $valType )
@@ -51,7 +53,7 @@ class TableDaoPdo
 
     /*
      */
-    public function create( $object )
+    public function create( $object ) : int
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $object ) ;
         // print_r( $object::$allowedKeys ) ;
@@ -83,7 +85,7 @@ class TableDaoPdo
      *      $testArea->read( ['navn_for'] , ['Anonymous'] ) ;
      *      $testArea->read( ['navn_for','alias'] , ['Bjarne','BjarneDMat'] ) ;
      */
-    private function readDataNamed( $object )
+    private function readDataNamed( $object ) : \PDOStatement
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $object ) ;
         // print_r( $object::$allowedKeys ) ;
@@ -124,7 +126,7 @@ class TableDaoPdo
 
     return $stmt ; }
 
-    private function readDataPosit( $object )
+    private function readDataPosit( $object ) : \PDOStatement
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $object ) ;
 
@@ -159,7 +161,7 @@ class TableDaoPdo
 
     return $stmt ; }
 
-    private function readData( $object )
+    private function readData( $object ) : \PDOStatement
     {
         switch ( count( $object->getData() ) )
         {
@@ -173,7 +175,7 @@ class TableDaoPdo
         }
     }
 
-    public function readOne( $object )
+    public function readOne( $object ) : array
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $object ) ;
 
@@ -187,7 +189,7 @@ class TableDaoPdo
             throw new \Exception('PDO : rowCount != 1') ; }
     }
 
-    public function readAll( $object )
+    public function readAll( $object ) : array
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $object ) ;
 
@@ -206,12 +208,32 @@ class TableDaoPdo
         }
     return $ids ; }
 
+    public function readNULL( $object ) : array
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        // print_r( $object ) ;
+
+        $sql  = "select column_name " ;
+        $sql .= "from information_schema.columns " ;
+        $sql .= "where table_schema = '" . self::$iniSettings[$this->database]['dbname'] . "' " ;
+        $sql .= "and table_name = '{$this->table}' " ;
+
+        $stmt = $this->dbh->prepare( $sql ) ;
+        $stmt->execute() ;
+        foreach ( $stmt->fetchAll( \PDO::FETCH_COLUMN ) as $column )
+            $values[ $column ] = NULL ;
+
+    return $values ; }
+
+
+/*  !!! START !!!
+ *  update funktioner
+ */
     /*  Af en eller anden mærkelig grund fungere dette ikke ?!?
      *      named        parametre fungerer for count( $object->getData() < 2
      *  men positionelle parametre fungerer altid
      *  ?!?!?!?!?
      */
-    private function updateNamed( $object , Array $diffValues )
+    private function updateNamed( $object , Array $diffValues ) : int
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $object ) ;
         // print_r( $diffValues ) ;
@@ -243,7 +265,7 @@ class TableDaoPdo
 
     return $rowCount ; }
 
-    private function updatePosit( $object , Array $diffValues )
+    private function updatePosit( $object , Array $diffValues ) : int
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $object ) ;
         // print_r( $diffValues ) ;
@@ -271,7 +293,7 @@ class TableDaoPdo
 
     return $rowCount ; }
 
-    public function update(  $object , Array $diffValues )
+    public function update(  $object , Array $diffValues ) : int
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $object ) ;
         // print_r( $diffValues ) ;
@@ -282,9 +304,9 @@ class TableDaoPdo
             case 0  :
                 return 0 ;
                 break ;
-            // case 1  :
-            //     $rowCount = $this->updateNamed( $object , $diffValues ) ;
-            //     break ;
+            case 1  :
+                $rowCount = $this->updateNamed( $object , $diffValues ) ;
+                break ;
             default :
                 $rowCount = $this->updatePosit( $object , $diffValues ) ;
                 break ;
@@ -296,7 +318,7 @@ class TableDaoPdo
  *  update funktioner
  *  !!! SLUT !!! */
 
-    public function delete( $object )
+    public function delete( $object ) : int
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( [ $id ] ) ;
 

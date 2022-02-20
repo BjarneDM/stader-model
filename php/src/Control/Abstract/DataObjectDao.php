@@ -7,6 +7,7 @@ abstract class DataObjectDao
     protected   $values      = []   ;
     protected   $valuesOld   = []   ;
     protected   $class       = ''   ;
+    public static $thisClass = ''   ;
     
     function __construct ( Array $allowedKeys )
     {   // echo 'abstract class ObjectDao extends Setup __construct' . \PHP_EOL ;

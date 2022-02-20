@@ -26,7 +26,7 @@ create table users
  */
 
 require_once( dirname( __dir__ ) . '/classloader.php' ) ;
-use \Stader\Control\User\{User,Users} ;
+use \Stader\Control\Objects\User\{User,Users} ;
 use \Stader\Model\RandomStr ;
 
 /*

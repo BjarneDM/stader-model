@@ -1,4 +1,4 @@
-<?php namespace Stader\Control\User ;
+<?php namespace Stader\Control\Objects\AreaPlace ;
 
 use \Stader\Control\Abstract\DataObjectsDao ;
 use \Stader\Model\Tables\User\{UserLogin,UsersLogin} ;
@@ -6,14 +6,9 @@ use \Stader\Model\Tables\User\{UserLogin,UsersLogin} ;
 class Users extends DataObjectsDao
 {
     public static $allowedKeys = 
-        [ 'name'     => 'varchar' , 
-          'surname'  => 'varchar' , 
-          'phone'    => 'varchar' , 
-          'username' => 'varchar' , 
-          'passwd'   => 'varchar' , 
-          'email'    => 'varchar' 
+        [ 'areaplace' => 'varchar' 
         ] ;
-    protected   $class  = '\\Stader\\Control\\User\\User' ;
+    protected   $class  = '\\Stader\\Control\\AreaPlace\\AreaPlace' ;
     private UserLogin  $userLogin  ;
     private UsersLogin $usersLogin ;
 

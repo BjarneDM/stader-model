@@ -47,6 +47,9 @@ abstract class DataObjectDao
             case 1 :
                 switch ( strtolower( gettype( $args[0] ) ) )
                 {
+                    case 'null' :
+                        $this->values = $this->readNull( $this ) ;
+                        break ;
                     case 'integer' :
                         $this->values['id'] = $args[0] ;
                         $this->values       = $this->read( $this ) ;

@@ -1,8 +1,7 @@
-<?php namespace Stader\Model\Traits ;
+<?php namespace Stader\Control\Traits ;
 
 trait DataObjectsConstruct
 {
-    public static $dbType ;
     public static $allowedKeys ;
     public static $thisClass   ;
 
@@ -15,9 +14,6 @@ trait DataObjectsConstruct
 
         if ( ! self::$thisClass ) self::$thisClass   = self::$baseClass::$thisClass ;
         $this->class = self::$baseClass::$thisClass ;
-
-        if ( ! self::$dbType ) self::$dbType   = self::$baseClass::$dbType ;
-        $this->database = self::$baseClass::$dbType ;
 
         parent::__construct() ;
         $this->setupData( $args ) ;

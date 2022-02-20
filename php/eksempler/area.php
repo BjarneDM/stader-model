@@ -22,10 +22,11 @@ foreach ( [ 64 , 96 ] as $i )
     }
 }
 
-// $alleOmråder = new Areas() ;
-// print_r( $alleOmråder->getOne(0)->delete() ) ;
+$alleOmråder = new Areas() ;
 
 $testOmråde = new Area( [ 'name' => 'M' , 'description' => 'Mike\'s Område' ] ) ;
+echo "antal områder : " . $alleOmråder->count() . \PHP_EOL ;
+print_r( $testOmråde->getData() ) ;
 print_r( $testOmråde->delete() ) ;
 
 exit() ;

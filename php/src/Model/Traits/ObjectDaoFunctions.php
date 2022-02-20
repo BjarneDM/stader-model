@@ -18,6 +18,16 @@ trait ObjectDaoFunctions
         $this->notify( 'read' ) ;
     return self::$functions->readOne( $object ) ; }
 
+    protected function readNULL( $object ) : Array
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        // print_r( $args ) ;
+
+        $this->notify( 'read' ) ;
+//         $values = self::$functions->readNULL( $object ) ;
+//         print_r(  $values ) ;
+//     return $values ; }
+    return self::$functions->readNULL( $object ) ; }
+
     protected function update( $object ) : int
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $object ) ; // exit ;

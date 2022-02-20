@@ -1,4 +1,4 @@
-<?php namespace Stader\Control\User ;
+<?php namespace Stader\Control\Objects\User ;
 
 use \Stader\Model\Tables\User\{UserLogin,UsersLogin,UserInfo,LoginLog} ;
 use \Stader\Model\OurDateTime ;
@@ -73,7 +73,7 @@ class User extends DataObjectDao
           'passwd'   => 'varchar' , 
           'email'    => 'varchar' 
         ] ;
-    protected   $class  = '\\Stader\\Control\\User\\User' ;
+    public static $thisClass  = '\\Stader\\Control\\Objects\\User\\User' ;
 
     protected UserInfo  $userInfo  ;
     protected UserLogin $userLogin ;
