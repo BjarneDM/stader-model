@@ -64,8 +64,11 @@ class AreaPlace extends DataObjectDao
 
     protected function read () : Array
     {
-        $this->area  = new Area( $this->areaName ) ;
-        $this->place = new Place( 'area_id' , $this->area->getData()['id'] ) ;
+        $this->area  = new Area( 'name' , $this->areaName ) ;
+        $this->place = new Place( 
+            [ 'area_id'                    , 'place_nr'     ] , 
+            [ $this->area->getData()['id'] , $this->placeNr ] 
+        ) ;
         $this->owner = new PlaceOwner( $this->place->getData()['place_owner_id'] ) ;
 
         $values['area']  = $this->area->getData() ;

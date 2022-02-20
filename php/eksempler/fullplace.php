@@ -37,6 +37,15 @@ use \Stader\Model\Tables\Area\{Area,Areas} ;
 use \Stader\Model\Tables\Place\{Place,Places} ;
 use \Stader\Model\Tables\PlaceOwner\{PlaceOwner,PlaceOwners} ;
 
+use \Stader\Control\Objects\AreaPlace\{AreaPlace,AreaPlaces} ;
+
+$testPlace = new AreaPlace( 'A1' ) ;
+print_r( $testPlace->getData() ) ;
+print_r( ( new AreaPlace( 'B2' ) )->getData() ) ;
+
+exit ;
+
+
 echo '<pre>' . \PHP_EOL ;
 
 /*
