@@ -37,14 +37,11 @@ use \Stader\Model\Tables\Area\{Area,Areas} ;
 use \Stader\Model\Tables\Place\{Place,Places} ;
 use \Stader\Model\Tables\PlaceOwner\{PlaceOwner,PlaceOwners} ;
 
-use \Stader\Control\Objects\AreaPlace\{AreaPlace,AreaPlaces} ;
+use \Stader\Control\Objects\AreaPlace\{AreaPlace,AreasPlaces} ;
 
-$testPlace = new AreaPlace( 'A1' ) ;
-print_r( $testPlace->getData() ) ;
-print_r( ( new AreaPlace( 'B2' ) )->getData() ) ;
-
-exit ;
-
+// $testPlace = new AreaPlace( 'A1' ) ;
+// print_r( $testPlace->getData() ) ;
+// print_r( ( new AreaPlace( 'B2' ) )->getData() ) ;
 
 echo '<pre>' . \PHP_EOL ;
 
@@ -66,15 +63,14 @@ foreach ( ( new Areas() ) as $area )
  */
 foreach ( ( new Areas() )->getIDs() as $areaID )
 {
-            $area                 = new Area( $areaID ) ;
-            $values['area']       = $area->getData()  ;
-    foreach ( ( new Places( 'area_id' , $area->getData()['id'] ) ) as $place )
+    $area = new Area( $areaID ) ;
+    foreach ( ( new Places( 'area_id' ,$area->getData()['id'] ) ) as $place )
     {
-            $values['place']      = $place->getData() ;
-            $values['placename']  = $area->getData()['name'] . $place->getData()['place_nr'] ;
-            $owner                = new PlaceOwner( $place->getData()['place_owner_id'] ) ;
-            $values['placeowner'] = $owner->getData() ;
-            print_r( [ 'full_place' => $values ] ) ;
+        print_r( 
+            ( new AreaPlace( 
+                $area->getData()['name'] . 
+                $place->getData()['place_nr'] ) 
+            )->getData() ) ;
     }
 }
 

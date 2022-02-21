@@ -10,9 +10,8 @@ use \Stader\Control\Abstract\DataObjectDao ;
 class AreaPlace extends DataObjectDao
 {
     public static $allowedKeys = 
-        [ 'areaplace' => 'varchar' 
-        ] ;
-    protected   $class  = '\\Stader\\Control\\AreaPlace\\AreaPlace' ;
+        [ 'areaplace' => 'varchar' ] ;
+    protected   $class  = '\\Stader\\Control\\Object\\AreaPlace\\AreaPlace' ;
 
     protected Area       $area  ;
     protected Place      $place ;
