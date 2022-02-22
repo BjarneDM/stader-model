@@ -3,26 +3,30 @@
 use \Stader\Model\DatabaseAccessObjects\{TableDaoPdo,TableCryptDaoPdo} ;
 
 trait ObjectDaoConstruct
-{
-    protected $database  = '' ;
-    private   $functions = null ;
+{   
+    private static $functions = null ;
 
-    function __construct ()
-    {   // echo 'abstract class ObjectDao extends Setup __construct' . \PHP_EOL ;
+    function __construct ( $dbType , $class , $allowedKeys  )
+    {   echo "trait ObjectDaoConstruct"  . \PHP_EOL ;
+        echo 'abstract class DataObjectDao extends Setup __construct' . \PHP_EOL ;
+        // print_r( [ 'dbType' => $dbType , 'class' => $class , 'allowedKeys' => $allowedKeys ] ) ;
 
         $this->getSettings() ;
 
-        switch ( self::$iniSettings[$this->database]['method'] )
-        {
-            case "cryptdata"    : $this->functions = new TableCryptDaoPdo( $this->database , $this->class ) ; break ;
-            case "mysql"        : $this->functions = new TableDaoPdo( $this->database , $this->class ) ; break ;
-            case "pgsql"        : $this->functions = new TableDaoPdo( $this->database , $this->class ) ; break ;
-            case "sqlite"       : $this->functions = new TableDaoPdo( $this->database , $this->class ) ; break ;
-            case "xml"          : $this->functions = new TableDaoXml( $this->database , $this->class ) ; break ;
-            default: throw new \Exception() ;
-            // var_dump( $this->functions ) ;
+        if ( ! self::$functions )
+        {   echo "switch ( ". self::$iniSettings[$dbType]['method'] ." )" . \PHP_EOL ;
+            print_r( [ 'dbType' => $dbType , 'class' => $class , 'allowedKeys' => $allowedKeys ] ) ;
+            switch ( self::$iniSettings[$dbType]['method'] )
+            {   
+                case "cryptdata"    : self::$functions = new TableCryptDaoPdo( $dbType , $class , $allowedKeys ) ; break ;
+                case "mysql"        : self::$functions = new TableDaoPdo     ( $dbType , $class , $allowedKeys ) ; break ;
+                case "pgsql"        : self::$functions = new TableDaoPdo     ( $dbType , $class , $allowedKeys ) ; break ;
+                case "sqlite"       : self::$functions = new TableDaoPdo     ( $dbType , $class , $allowedKeys ) ; break ;
+                case "xml"          : self::$functions = new TableDaoXml     ( $dbType , $class , $allowedKeys ) ; break ;
+                default: throw new \Exception() ;
+                // var_dump( $this->functions ) ;
+            }
         }
-
     }
 
 }

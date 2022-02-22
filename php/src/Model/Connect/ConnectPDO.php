@@ -17,19 +17,28 @@ class ConnectPDO extends DbDriver
     */
     function __construct( $dbType )
     {   // echo 'class ConnectPDO extends DbDriver __construct' . \PHP_EOL ;
+        // echo $dbType  . \PHP_EOL ;
         // print_r( ['before',$this->conn,$this->type] ) ;
 
         if ( ! self::$iniSettings ) $this->getSettings() ;
 
-        $this->type = self::$iniSettings[$dbType]['method'] ;
-
-        $connStr  = self::$iniSettings[$dbType]['pdo'] ;
-        $connStr .= ':host=' . self::$iniSettings[$dbType]['host'] ;
-        if ( self::$iniSettings[$dbType]['host'] !== 'localhost')
-            $connStr .= ';port=' . self::$iniSettings[$dbType]['port'] ;
-        $connStr .= ';dbname=' . self::$iniSettings[$dbType]['dbname'] ;
-        if ($this->type === 'mysql')
-            $connStr .= ';charset=utf8mb4' ;
+        switch ( self::$iniSettings[$dbType]['method'] )
+        {
+            case 'mysql'  :
+                $connStr  = self::$iniSettings[$dbType]['pdo'] ;
+                $connStr .= ':host=' . self::$iniSettings[$dbType]['host'] ;
+                if ( self::$iniSettings[$dbType]['host'] !== 'localhost')
+                    $connStr .= ';port=' . self::$iniSettings[$dbType]['port'] ;
+                $connStr .= ';dbname=' . self::$iniSettings[$dbType]['dbname'] ;
+                $connStr .= ';charset=utf8mb4' ;
+ 
+                break ;
+ 
+            case 'pgsql'  :
+            case 'sqlite' :
+                new \Exception( "PDOdriver " . $dbType . " er ikke implementeret" ) ;
+                break ;
+        }
 
         /*
         print_r( 

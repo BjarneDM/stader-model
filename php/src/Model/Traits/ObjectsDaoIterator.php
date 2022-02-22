@@ -22,44 +22,47 @@ trait ObjectsDaoIterator
 
 // https://www.php.net/manual/en/class.iterator.php
 
-    private function getOne( int $index ) { return new $this->class( $index ) ; }
+    private function getOne( $object , int $index )
+    {   // print_r( $object ) ;
+        return new $object::$class( $index ) ; 
+    }
 
     public function rewind() : void 
     {
-        $this->functions->rewind( $this ) ;
+        self::$functions->rewind( $this ) ;
         $this->position = 0 ;
     }
 
     public function count() : int
     {
-        return $this->functions->count( $this ) ;
+        return self::$functions->count( $this ) ;
     }
 
     public function next() : void 
     {
-        $this->row = $this->functions->next( $this ) ;
+        $this->row = self::$functions->next( $this ) ;
         ++$this->position ; 
     }
 
     public function valid() : bool
     {
-        return $this->functions->valid( $this ) ;
+        return self::$functions->valid( $this ) ;
     }
 
     public function current() : object
     {   // echo $this->class . \PHP_EOL ;
-        $id = $this->functions->current( $this ) ;
-        return $this->getOne( $id ) ;
+        $id = self::$functions->current( $this ) ;
+        return $this->getOne( $this , $id ) ;
     }
 
     public function key() : int | false
     {
-        return $this->functions->key( $this ) ;
+        return self::$functions->key( $this ) ;
     }
 
     public function deleteAll() : void
     {
-        $this->functions->deleteAll( $this ) ;
+        self::$functions->deleteAll( $this ) ;
     }
     
     public function getIDs() : array 

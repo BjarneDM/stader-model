@@ -7,12 +7,9 @@ trait DataObjectConstruct
         // echo self::$thisClass . \PHP_EOL ;
         // print_r( $args ) ;
 
-        $this->keysAllowed = ( new \ArrayObject( self::$allowedKeys ) )->getArrayCopy() ;
-        $this->class       = self::$thisClass ;
-        $this->database    = self::$dbType ;
         $this->setValuesDefault ( $args ) ;
-        parent::__construct() ;
-        $this->setupObject( $args ) ;
+        parent::__construct( self::$dbType , self::$class ,self::$allowedKeys  ) ;
+        $this->setupObject( self::$class , $args ) ;
         $this->fixValuesType () ;
 
     }

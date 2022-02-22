@@ -5,30 +5,28 @@ use \Stader\Model\Traits\{ObjectDaoConstruct,ObjectDaoFunctions,Settings} ;
 
 abstract class DataObjectDao
 {
-    protected $keysAllowed = []   ;
-    protected $class       = ''   ;
     protected $values      = []   ;
     protected $valuesOld   = []   ;
     
     use ObjectDaoConstruct ;
     use Settings ;
 
-    protected function setupObject ( $args )
+    protected function setupObject ( $class , $args )
     {
-        switch ( $this->database )
+        switch ( $class::$dbType )
         {
             case 'data' :
             case 'cryptdata' :
-                $this->setupData( $args ) ;
+                $this->setupData( $class , $args ) ;
                 break ;
             case 'logs' :
             case 'cryptlogs' :
-                $this->setupLogs( $args ) ;
+                $this->setupLogs( $class , $args ) ;
                 break ;
         }
     }
 
-    protected function setupData ( $args )
+    protected function setupData ( $class , $args )
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $args ) ;
         /*
@@ -60,14 +58,14 @@ abstract class DataObjectDao
                             /*
                              *  count( $args[0] ) === count( $this->allowedKeys ) : nyt Object, der skal oprettes
                              */
-                            case count( $this->keysAllowed ) :
-                                $this->check( $args[0] ) ;
+                            case count( $class::$allowedKeys ) :
+                                $this->check( $class , $args[0] ) ;
                                 $this->values       = ( new \ArrayObject( $args[0] ) )->getArrayCopy() ;
                                 $this->values['id'] = $this->create( $this ) ;
                                 $this->notify( 'create' ) ;
                                 break ;
                             default :
-                                throw new \Exception( count( $args[0] ) . " : forkert antal parametre [" . count( $this->keysAllowed ) . "]" ) ;
+                                throw new \Exception( count( $args[0] ) . " : forkert antal parametre [" . count( $class::$allowedKeys ) . "]" ) ;
                                 break ;
                         }
                         break ;
@@ -86,7 +84,7 @@ abstract class DataObjectDao
                         if ( count( $args[0] ) !== count( $args[1] ) )
                             throw new \Exception( 'count() for $args[0] & $args[1] er forskellige' ) ;
                         $args[0] = array_combine( $args[0] , $args[1] ) ;
-                        $this->check( $args[0] ) ;
+                        $this->check( $class , $args[0] ) ;
                         $this->values = ( new \ArrayObject( $args[0] ) )->getArrayCopy() ;
                         break ;
                     default :
@@ -103,7 +101,7 @@ abstract class DataObjectDao
 
     }
 
-    protected function setupLogs ( $args )
+    protected function setupLogs ( $class , $args )
     {
         /*
          *  gettype( $args[0] ) === 'array'
@@ -119,19 +117,19 @@ abstract class DataObjectDao
                 {
                     case 'array' :
                         /*
-                         *  count( $args[0] ) === count( $this->keysAllowed ) : ny Log, der skal oprettes
+                         *  count( $args[0] ) === count( $class::allowedKeys ) : ny Log, der skal oprettes
                          */
                         switch ( count( $args[0] ) )
                         {
-                            case count( $this->keysAllowed ) :
-                                $this->check( $args[0] ) ;
+                            case count( $class::$allowedKeys ) :
+                                $this->check( $class , $args[0] ) ;
                                 $this->values       = ( new \ArrayObject( $args[0] ) )->getArrayCopy() ;
                                 $this->values['id'] = $this->create( $this ) ;
                                 $this->valuesOld    = ( new \ArrayObject( $this->values ) )->getArrayCopy() ;
                                 $this->notify( 'create' ) ;
                                 break ;
                             default :
-                                throw new \Exception( count( $args[0] ) . " : forkert antal parametre [" . count( $this->keysAllowed ) . "]" ) ;
+                                throw new \Exception( count( $args[0] ) . " : forkert antal parametre [" . count( $class::$allowedKeys ) . "]" ) ;
                                 break ;
                         }
                         break ;

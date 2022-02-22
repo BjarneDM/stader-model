@@ -22,10 +22,6 @@ class TableCryptDaoPdo
     extends DatabaseSetup
     implements ICrudDao
 {
-    private $dbh    = null ;
-    private $class  = null ;
-    private $table  = null ;
-
     private static $allowedKeys =
         [   'reference_id' => 'int' ,
             'salt'         => 'varchar' ,
@@ -34,17 +30,23 @@ class TableCryptDaoPdo
             'data'         => 'text'
         ] ;
 
-    public function __construct ( $database , $class )
+    public function __construct ( $dbType , $class , $allowedKeys )
     {   // echo 'class TableDaoPdo implements ICrudDao __construct' . \PHP_EOL ;
         // var_dump( $database ) ;
         // var_dump( $class ) ;
 
-        parent::__construct( $database ) ;
+        parent::__construct( $dbTcode:ype ) ;
+    }
 
-        $this->dbh   = $this->connect->getConn() ;
-        $this->class = $class ;
-        $this->table = explode( '\\' , $class ) ;
-        $this->table = strtolower( end( $this->table ) ) . 'crypt' ;
+    private function getTable ( $class )
+    {
+        $table = explode( '\\' , $class ) ;
+        $table = strtolower( end( $table ) ) ;
+    return $table ; }
+
+    private function getDatabase ( $object )
+    {
+        return self::$iniSettings[ $object::$dbType ]['dbname'] ;
     }
 
     private function getPdoParamType ( $valType )
@@ -70,13 +72,15 @@ class TableCryptDaoPdo
         // print_r( $object ) ;
         // print_r( self::$allowedKeys ) ;
 
+        $dbh  = self::$connect[ $this->getDatabase( $object ) ]->getConn() ;
+
         $sql  = 'insert into ' . $this->table ;
         $sql .= '        ( '  . implode( ' , '  , array_keys( self::$allowedKeys ) ) . ' )' ;
         $sql .= '    values' ;
         $sql .= '        ( :' . implode( ' , :' , array_keys( self::$allowedKeys ) ) . ' )' ;
         // echo $sql . \PHP_EOL ;
 
-        $stmt = $this->dbh->prepare( $sql ) ;
+        $stmt = $dbh->prepare( $sql ) ;
 
         $cryptData = $this->dataEncrypt( $object->getData() ) ;
         $cryptData['reference_id'] = $object->getData()['reference_id'] ;
@@ -91,7 +95,7 @@ class TableCryptDaoPdo
             throw new \Exception('PDO : rowCount != 1') ;
 
         $stmt = null ;
-    return (int) $this->dbh->lastInsertId() ; }
+    return (int) $dbh->lastInsertId() ; }
 
     private function dataEncrypt ( Array $data ) : array
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
@@ -140,19 +144,21 @@ class TableCryptDaoPdo
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $object ) ;
 
+        $dbh  = self::$connect[ $this->getDatabase( $object ) ]->getConn() ;
+
         $sql  = 'select * from ' . $this->table . ' ' ;
         $stmt = null ;
 
         switch ( count( $object->getData() ) )
         {
             case 0 :
-                $stmt = $this->dbh->prepare( $sql ) ;
+                $stmt = $dbh->prepare( $sql ) ;
                 break ;
             default :
                 if ( isset( $object->getData()['id'] ) )
                 {
                     $sql .= 'where id = :id ' ;
-                    $stmt = $this->dbh->prepare( $sql ) ;
+                    $stmt = $dbh->prepare( $sql ) ;
                     $stmt->bindParam( ':id' , $object->getData()['id'] , \pdo::PARAM_INT ) ;
                 } else {
                     $where = [] ;
@@ -162,7 +168,7 @@ class TableCryptDaoPdo
                     }   unset( $param , $value ) ;
                     $sql .= 'where ' . implode( ' and ' , $where ) ;
                 
-                    $stmt = $this->dbh->prepare( $sql ) ;
+                    $stmt = $dbh->prepare( $sql ) ;
 
                     foreach ( $object->getData() as $param => $value )
                     {
@@ -180,19 +186,21 @@ class TableCryptDaoPdo
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $object ) ;
 
+        $dbh  = self::$connect[ $this->getDatabase( $object ) ]->getConn() ;
+
         $sql  = 'select * from ' . $this->table . ' ' ;
         $stmt = null ;
 
         switch ( count( $object->getData() ) )
         {
             case 0 :
-                $stmt = $this->dbh->prepare( $sql ) ;
+                $stmt = $dbh->prepare( $sql ) ;
                 break ;
             default :
                 if ( isset( $object->getData()['id'] ) )
                 {
                     $sql .= 'where id = ?' ;
-                    $stmt = $this->dbh->prepare( $sql ) ;
+                    $stmt = $dbh->prepare( $sql ) ;
                 } else {
                     $where = [] ;
                     foreach ( $object->getData() as $param => $value )
@@ -201,7 +209,7 @@ class TableCryptDaoPdo
                     }   unset( $param , $value ) ;
                     $sql .= 'where ' . implode( ' and ' , $where ) ;
                 
-                    $stmt = $this->dbh->prepare( $sql ) ;
+                    $stmt = $dbh->prepare( $sql ) ;
 
                 }
                 break ;
@@ -278,6 +286,8 @@ class TableCryptDaoPdo
 
         if ( empty( $diffValues ) ) return 0 ;
 
+        $dbh  = self::$connect[ $this->getDatabase( $object ) ]->getConn() ;
+
         $sql  = 'update ' . $this->table . ' ' ;
 
         $set = [] ;
@@ -289,7 +299,7 @@ class TableCryptDaoPdo
 
         $sql .= 'where id = :id ' ;
 
-        $stmt = $this->dbh->prepare( $sql ) ;
+        $stmt = $dbh->prepare( $sql ) ;
 
         $cryptData = $this->dataEncrypt( $object->getData() ) ;
         foreach ( $cryptData as $param => $value )
@@ -309,6 +319,8 @@ class TableCryptDaoPdo
     {   echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         print_r( $object ) ;
 
+        $dbh  = self::$connect[ $this->getDatabase( $object ) ]->getConn() ;
+
         $sql  = 'update ' . $this->table . ' ' ;
 
         $cryptData = $this->dataEncrypt( $object->getData() ) ;
@@ -321,7 +333,7 @@ class TableCryptDaoPdo
         $sql .= 'set ' . implode( ' , ' , $set ) . ' ' ;
 
         $sql .= 'where id = ? ' ;
-        $stmt = $this->dbh->prepare( $sql ) ;
+        $stmt = $dbh->prepare( $sql ) ;
 
         $cryptData['id'] = $object->getData()['id'] ;
 
@@ -353,10 +365,12 @@ class TableCryptDaoPdo
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( [ $id ] ) ;
 
+        $dbh  = self::$connect[ $this->getDatabase( $object ) ]->getConn() ;
+
         $sql  = 'delete from ' . $this->table . ' ' ;
         $sql .= 'where id = :id' ;
 
-        $stmt = $this->dbh->prepare(  $sql ) ;
+        $stmt = $dbh->prepare(  $sql ) ;
 
         $stmt->bindParam( ':id' , $object->getData()['id'] , \PDO::PARAM_INT ) ;
  
@@ -379,32 +393,32 @@ class TableCryptDaoPdo
             Den oprindelige logik var sund nok - bare en skam at MySQL overhovedet ikke understøtter den
 
  */
-    private $stmt   = null ;
-    private $row    = null ;
+    private $stmt = [] ;
+    private $row  = [] ;
 
     public function rewind( $object ) : void
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $object ) ;
 
-        $this->stmt = $this->readData( $object ) ;
-        $this->row  = $this->stmt->fetch( \PDO::FETCH_ASSOC ) ;
+        $this->stmt[ $this->getTable( $object::$class ) ] = $this->readData( $object ) ;
+        $this->row  = $this->stmt[ $this->getTable( $object::$class ) ]->fetch( \PDO::FETCH_ASSOC ) ;
     }
 
     public function count( $object ) : int
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        if ( is_null( $this->stmt ) ) $this->rewind( $object ) ;
-        return $this->stmt->rowCount() ;
+        if ( is_null( $this->stmt[ $this->getTable( $object::$class ) ] ) ) $this->rewind( $object ) ;
+        return $this->stmt[ $this->getTable( $object::$class ) ]->rowCount() ;
     }
 
     public function next( $object ) : void
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        if ( is_null( $this->stmt ) ) $this->rewind( $object ) ;
-        $this->row = $this->stmt->fetch( \PDO::FETCH_ASSOC ) ;
+        if ( is_null( $this->stmt[ $this->getTable( $object::$class ) ] ) ) $this->rewind( $object ) ;
+        $this->row = $this->stmt[ $this->getTable( $object::$class ) ]->fetch( \PDO::FETCH_ASSOC ) ;
     }
 
     public function valid( $object )  : bool
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        if ( is_null( $this->stmt ) ) $this->rewind( $object ) ;
+        if ( is_null( $this->stmt[ $this->getTable( $object::$class ) ] ) ) $this->rewind( $object ) ;
         if ( $this->row === false )
              { return false ; } 
         else { return true ; }
@@ -412,13 +426,13 @@ class TableCryptDaoPdo
 
     public function current( $object ) : int
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        if ( is_null( $this->stmt ) ) $this->rewind( $object ) ;
+        if ( is_null( $this->stmt[ $this->getTable( $object::$class ) ] ) ) $this->rewind( $object ) ;
         return (int) $this->row['id'] ;
     }
 
     public function key( $object ) : int | false
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        if ( is_null( $this->stmt ) ) $this->rewind( $object ) ;
+        if ( is_null( $this->stmt[ $this->getTable( $object::$class ) ] ) ) $this->rewind( $object ) ;
         if ( $this->row === false )
              { return false ; } 
         else { return (int) $this->row['id'] ; }
@@ -431,9 +445,11 @@ class TableCryptDaoPdo
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $object ) ;
 
+        $dbh  = self::$connect[ $this->getDatabase( $object ) ]->getConn() ;
+
         $sql  = 'delete from ' . $this->table . ' ' ;
         $sql .= 'where id = :id' ;
-        $stmtHere = $this->dbh->prepare( $sql ) ;
+        $stmtHere = $dbh->prepare( $sql ) ;
 
         $this->stmt = $this->readData( $object ) ;
         while ( $rowHere = $this->stmt->fetch( \PDO::FETCH_ASSOC ) )
@@ -443,17 +459,19 @@ class TableCryptDaoPdo
         }   unset( $rowHere ) ;
     }
 
-    public function deleteAll() : void
+    public function deleteAll( $object ) : void
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
 
+        $dbh  = self::$connect[ $this->getDatabase( $object ) ]->getConn() ;
+
         $sql  = 'delete from ' . $this->table . ' ' ;
-        $stmt = $this->dbh->prepare( $sql ) ;
+        $stmt = $dbh->prepare( $sql ) ;
         $stmt->execute() ;
     }
 
     public function __destruct() 
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        $this->dbh = null ;
+        $dbh = null ;
     }
 
 }

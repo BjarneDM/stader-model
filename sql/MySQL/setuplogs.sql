@@ -49,49 +49,49 @@ create table if not exists loginlogcrypt
 ) ;
 
 drop table if exists beredskablog ;
-create table if not exists beredskablog
-(
-    id                  int auto_increment primary key ,
-    beredskab_id        int ,
-        index (beredskab_id) ,
-    header              varchar(255) ,
-        index (header) ,
-    old_value           text default null ,
-    new_value           text default null ,
-    log_timestamp       datetime
-        default current_timestamp ,
-        index (log_timestamp)
-) ;
+# create table if not exists beredskablog
+# (
+#     id                  int auto_increment primary key ,
+#     beredskab_id        int ,
+#         index (beredskab_id) ,
+#     header              varchar(255) ,
+#         index (header) ,
+#     old_value           text default null ,
+#     new_value           text default null ,
+#     log_timestamp       datetime
+#         default current_timestamp ,
+#         index (log_timestamp)
+# ) ;
 
 drop table if exists ticketlog ;
-create table if not exists ticketlog
-(
-    id              int auto_increment primary key ,
-    ticket_id       int not null ,
-        index (ticket_id) ,
-    header          varchar(255) ,
-        index (header) ,
-    old_value       text default null ,
-    new_value       text default null ,
-    log_timestamp   datetime
-        default current_timestamp ,
-        index (log_timestamp)
-) ;
+# create table if not exists ticketlog
+# (
+#     id              int auto_increment primary key ,
+#     ticket_id       int not null ,
+#         index (ticket_id) ,
+#     header          varchar(255) ,
+#         index (header) ,
+#     old_value       text default null ,
+#     new_value       text default null ,
+#     log_timestamp   datetime
+#         default current_timestamp ,
+#         index (log_timestamp)
+# ) ;
 
 drop table if exists placelog ;
-create table if not exists placelog
-(
-    id              int auto_increment primary key ,
-    place_id        int ,
-        index (place_id) ,
-    description     varchar(255) ,
-        index (description) ,
-    old_value       text default null ,
-    new_value       text default null ,
-    log_timestamp   datetime
-        default current_timestamp ,
-        index (log_timestamp)
-) ;
+# create table if not exists placelog
+# (
+#     id              int auto_increment primary key ,
+#     place_id        int ,
+#         index (place_id) ,
+#     description     varchar(255) ,
+#         index (description) ,
+#     old_value       text default null ,
+#     new_value       text default null ,
+#     log_timestamp   datetime
+#         default current_timestamp ,
+#         index (log_timestamp)
+# ) ;
 
 
 set foreign_key_checks = 1 ;

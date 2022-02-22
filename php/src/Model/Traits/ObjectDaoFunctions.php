@@ -9,30 +9,30 @@ trait ObjectDaoFunctions
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $array ) ;
 
-    return $this->functions->create( $object ) ; }
+    return self::$functions->create( $object ) ; }
 
     protected function read( $object ) : Array
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $args ) ;
 
         $this->notify( 'read' ) ;
-    return $this->functions->readOne( $object ) ; }
+    return self::$functions->readOne( $object ) ; }
 
     protected function readNULL( $object ) : Array
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $args ) ;
 
         $this->notify( 'read' ) ;
-//         $values = $this->functions->readNULL( $object ) ;
+//         $values = self::$functions->readNULL( $object ) ;
 //         print_r(  $values ) ;
 //     return $values ; }
-    return $this->functions->readNULL( $object ) ; }
+    return self::$functions->readNULL( $object ) ; }
 
     protected function update( $object ) : int
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $object ) ; // exit ;
 
-        $rowCount = $this->functions->update( 
+        $rowCount = self::$functions->update( 
             $object , 
             array_diff( $this->values , $this->valuesOld ) ) ;
         $this->notify( 'update' ) ;
@@ -41,7 +41,7 @@ trait ObjectDaoFunctions
     protected function deleteThis( $object ) : int
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
 
-        $rowCount = $this->functions->delete( $object ) ;
+        $rowCount = self::$functions->delete( $object ) ;
         $this->notify( 'delete' ) ;
         unset( $this->values , $this->valuesOld ) ;
     return $rowCount ; }
@@ -78,16 +78,16 @@ trait ObjectDaoFunctions
     /*
      *  default minimalt integritets check
      */
-    protected function check( Array &$toCheck ) : void
+    protected function check( $class , Array &$toCheck ) : void
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $toCheck ) ;
 
         foreach ( array_keys( $toCheck ) as $key )
         {
-            if ( ! array_key_exists( $key , $this->keysAllowed ) )
-                throw new \Exception( "'{$key}' doesn't exist in [" . implode( ',' , array_keys( $this->keysAllowed ) ) . "]" ) ;
+            if ( ! array_key_exists( $key , $class::$allowedKeys ) )
+                throw new \Exception( "'{$key}' doesn't exist in [" . implode( ',' , array_keys( $class::$allowedKeys ) ) . "]" ) ;
 
-            switch ( $this->keysAllowed[$key] )
+            switch ( $class::$allowedKeys[$key] )
             {
                 case 'int' :
                 case 'integer' :

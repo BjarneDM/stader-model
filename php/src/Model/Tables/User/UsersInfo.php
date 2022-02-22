@@ -5,7 +5,7 @@ use \Stader\Model\Traits\DataObjectsConstruct ;
 
 class UsersInfo extends DataObjectsDao
 {
-    private static $baseClass = '\\Stader\\Model\\Tables\\User\\UserInfo' ;
+    private static $class = '\\Stader\\Model\\Tables\\User\\UserInfo' ;
 
     use DataObjectsConstruct ;
 

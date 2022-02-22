@@ -19,13 +19,13 @@ create table if not exists userinfo
 class UserInfo extends DataObjectDao
 {
     public static $dbType      = 'cryptdata' ;
+    public static $class       = '\\Stader\\Model\\Tables\\User\\UserInfo' ;
     public static $allowedKeys = 
         [ 'name'         => 'varchar' , 
           'surname'      => 'varchar' , 
           'phone'        => 'varchar' ,
           'reference_id' => 'int'
         ] ;
-    public static $thisClass   = '\\Stader\\Model\\Tables\\User\\UserInfo' ;
 
     use DataObjectConstruct ;
 
