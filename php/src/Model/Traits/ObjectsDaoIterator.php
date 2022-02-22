@@ -26,40 +26,40 @@ trait ObjectsDaoIterator
 
     public function rewind() : void 
     {
-        self::$functions->rewind( $this ) ;
+        $this->functions->rewind( $this ) ;
         $this->position = 0 ;
     }
 
     public function count() : int
     {
-        return self::$functions->count( $this ) ;
+        return $this->functions->count( $this ) ;
     }
 
     public function next() : void 
     {
-        $this->row = self::$functions->next( $this ) ;
+        $this->row = $this->functions->next( $this ) ;
         ++$this->position ; 
     }
 
     public function valid() : bool
     {
-        return self::$functions->valid( $this ) ;
+        return $this->functions->valid( $this ) ;
     }
 
     public function current() : object
     {   // echo $this->class . \PHP_EOL ;
-        $id = self::$functions->current( $this ) ;
+        $id = $this->functions->current( $this ) ;
         return $this->getOne( $id ) ;
     }
 
     public function key() : int | false
     {
-        return self::$functions->key( $this ) ;
+        return $this->functions->key( $this ) ;
     }
 
     public function deleteAll() : void
     {
-        self::$functions->deleteAll( $this ) ;
+        $this->functions->deleteAll( $this ) ;
     }
     
     public function getIDs() : array 

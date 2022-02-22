@@ -35,7 +35,6 @@ require_once( 'classloader.php' ) ;
 
 use \Stader\Model\Tables\Area\{Area,Areas} ;
 use \Stader\Model\Tables\Place\{Place,Places} ;
-use \Stader\Model\Tables\PlaceOwner\{PlaceOwner,PlaceOwners} ;
 
 use \Stader\Control\Objects\AreaPlace\{AreaPlace,AreasPlaces} ;
 
@@ -45,32 +44,15 @@ use \Stader\Control\Objects\AreaPlace\{AreaPlace,AreasPlaces} ;
 
 echo '<pre>' . \PHP_EOL ;
 
-/*
- *  så problemet m/ nestede \Iterator dukker op igen
- *
 foreach ( ( new Areas() ) as $area )
 {
     foreach ( ( new Places( 'area_id' , $area->getData()['id'] ) ) as $place )
     {
-            $values['area']       = $area->getData()  ;
-            $values['place']      = $place->getData() ;
-            $values['placename']  = $area->getData()['name'] . $place->getData()['place_nr'] ;
-            $owner                = new PlaceOwner( $place->getData()['place_owner_id'] ) ;
-            $values['placeowner'] = $owner->getData() ;
-            print_r( [ 'full_place' => $values ] ) ;
-    }
-}
- */
-foreach ( ( new Areas() )->getIDs() as $areaID )
-{
-    $area = new Area( $areaID ) ;
-    foreach ( ( new Places( 'area_id' ,$area->getData()['id'] ) ) as $place )
-    {
-        print_r( 
-            ( new AreaPlace( 
+        print_r( ( 
+            new AreaPlace( 
                 $area->getData()['name'] . 
-                $place->getData()['place_nr'] ) 
-            )->getData() ) ;
+                $place->getData()['place_nr'] 
+        ) )->getData() ) ;
     }
 }
 

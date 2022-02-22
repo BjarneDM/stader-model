@@ -9,30 +9,30 @@ trait ObjectDaoFunctions
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $array ) ;
 
-    return self::$functions->create( $object ) ; }
+    return $this->functions->create( $object ) ; }
 
     protected function read( $object ) : Array
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $args ) ;
 
         $this->notify( 'read' ) ;
-    return self::$functions->readOne( $object ) ; }
+    return $this->functions->readOne( $object ) ; }
 
     protected function readNULL( $object ) : Array
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $args ) ;
 
         $this->notify( 'read' ) ;
-//         $values = self::$functions->readNULL( $object ) ;
+//         $values = $this->functions->readNULL( $object ) ;
 //         print_r(  $values ) ;
 //     return $values ; }
-    return self::$functions->readNULL( $object ) ; }
+    return $this->functions->readNULL( $object ) ; }
 
     protected function update( $object ) : int
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $object ) ; // exit ;
 
-        $rowCount = self::$functions->update( 
+        $rowCount = $this->functions->update( 
             $object , 
             array_diff( $this->values , $this->valuesOld ) ) ;
         $this->notify( 'update' ) ;
@@ -41,7 +41,7 @@ trait ObjectDaoFunctions
     protected function deleteThis( $object ) : int
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
 
-        $rowCount = self::$functions->delete( $object ) ;
+        $rowCount = $this->functions->delete( $object ) ;
         $this->notify( 'delete' ) ;
         unset( $this->values , $this->valuesOld ) ;
     return $rowCount ; }

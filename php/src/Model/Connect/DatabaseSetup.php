@@ -19,7 +19,6 @@ class DatabaseSetup
             switch ( $dbMethod )
             {
                 case "cryptdata" : $this->connect = new ConnectPDO( $dbType ) ; break ;
-                case "cryptlogs" : $this->connect = new ConnectPDO( $dbType ) ; break ;
                 case "mysql"     : $this->connect = new ConnectPDO( $dbType ) ; break ;
                 case "pgsql"     : $this->connect = new ConnectPDO( $dbType ) ; break ;
                 case "sqlite"    : $this->connect = new ConnectPDO( $dbType ) ; break ;
