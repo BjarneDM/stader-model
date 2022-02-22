@@ -36,8 +36,8 @@ create table if not exists loginlog
     loginfailures   int default 0 
 ) ;
 
-drop table if exists loglogincrypt ;
-create table if not exists loglogincrypt
+drop table if exists loginlogcrypt ;
+create table if not exists loginlogcrypt
 (
     id              int auto_increment primary key ,
     user_id         int default null ,

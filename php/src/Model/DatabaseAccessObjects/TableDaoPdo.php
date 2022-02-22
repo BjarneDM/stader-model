@@ -7,8 +7,9 @@ class TableDaoPdo
     extends DatabaseSetup
     implements ICrudDao
 {
-    private $dbh     = null ;
-    private $table   = null ;
+    private $dbh      = null ;
+    private $class    = null ;
+    private $table    = null ;
     private $database = null ;
 
     public function __construct ( $database , $class )
@@ -20,9 +21,11 @@ class TableDaoPdo
 
         $this->database = $database ;
         $this->dbh      = $this->connect->getConn() ;
+        $this->class    = $class ;
         $this->table    = explode( '\\' , $class ) ;
         $this->table    = strtolower( end( $this->table ) ) ;
 
+        $this->createTable( self::$iniSettings[$database]['dbname'] , $this->table , $class ) ;
     }
 
     private function getPdoParamType ( $valType ) 
@@ -51,8 +54,57 @@ class TableDaoPdo
         } 
     return $dataType ; }
 
-    /*
-     */
+
+/*
+select * 
+from information_schema.tables 
+where table_schema = "" 
+and table_name = "{$this->table}"
+ */
+    private function createTable ( $database , $table , $class )
+    {
+        $sql  = "select * " ;
+        $sql .= "from information_schema.tables " ;
+        $sql .= "where table_schema = \"{$database}\" " ;
+        $sql .= "and table_name = \"{$table}\" " ;
+
+        // echo $sql  . \PHP_EOL ;
+
+        $stmt = $this->dbh->prepare( $sql ) ;
+        $stmt->execute() ;
+
+        switch ( $stmt->rowCount() )
+        {
+            case 0 :
+                $allowedKeys = array_keys( $class::$allowedKeys )  ;
+    // print_r( $allowedKeys ) ; exit ;
+                $sql  = "create table if not exists {$table} " ;
+                $sql .= "( " ;
+                $sql .= "    id                  int auto_increment primary key , " ;
+                $sql .= "    {$allowedKeys[0]}   int , " ;
+                $sql .= "        index ({$allowedKeys[0]}) , " ;
+                $sql .= "    {$allowedKeys[1]}   varchar(255) , " ;
+                $sql .= "        index ({$allowedKeys[1]}) , " ;
+                $sql .= "    old_value           text default null , " ;
+                $sql .= "    new_value           text default null , " ;
+                $sql .= "    log_timestamp       datetime " ;
+                $sql .= "        default current_timestamp , " ;
+                $sql .= "        index (log_timestamp) " ;
+                $sql .= ") " ;
+
+                // echo $sql  . \PHP_EOL ;
+
+                $stmt = $this->dbh->prepare( $sql ) ;
+                $stmt->execute() ;
+
+                break ;
+            case 1 :
+                break ;
+            default :
+                break ;
+        }
+    }
+
     public function create( $object ) : int
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $object ) ;

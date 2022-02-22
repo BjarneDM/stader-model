@@ -26,7 +26,7 @@ alter  user 'staderlogs'@'localhost' identified by '[i8Z~iwGdW%Vq}p@E3m579+#' ;
 revoke all privileges, grant option
     from 'staderlogs'@'localhost'
 ;
-grant insert
+grant insert, create
     on table staderlogs.*
     to 'staderlogs'@'localhost'
 ;

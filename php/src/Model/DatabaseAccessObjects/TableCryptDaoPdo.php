@@ -23,6 +23,7 @@ class TableCryptDaoPdo
     implements ICrudDao
 {
     private $dbh    = null ;
+    private $class  = null ;
     private $table  = null ;
 
     private static $allowedKeys =
@@ -41,9 +42,9 @@ class TableCryptDaoPdo
         parent::__construct( $database ) ;
 
         $this->dbh   = $this->connect->getConn() ;
+        $this->class = $class ;
         $this->table = explode( '\\' , $class ) ;
         $this->table = strtolower( end( $this->table ) ) . 'crypt' ;
-
     }
 
     private function getPdoParamType ( $valType )
@@ -64,8 +65,6 @@ class TableCryptDaoPdo
         } 
     return $dataType ; }
 
-    /*
-     */
     public function create( $object )
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $object ) ;
@@ -75,6 +74,7 @@ class TableCryptDaoPdo
         $sql .= '        ( '  . implode( ' , '  , array_keys( self::$allowedKeys ) ) . ' )' ;
         $sql .= '    values' ;
         $sql .= '        ( :' . implode( ' , :' , array_keys( self::$allowedKeys ) ) . ' )' ;
+        // echo $sql . \PHP_EOL ;
 
         $stmt = $this->dbh->prepare( $sql ) ;
 
