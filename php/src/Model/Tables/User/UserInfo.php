@@ -19,7 +19,7 @@ create table if not exists userinfo
 class UserInfo extends DataObjectDao
 {
     public static $dbType      = 'cryptdata' ;
-    public static $class       = '\\Stader\\Model\\Tables\\User\\UserInfo' ;
+    public static $thisClass   = '\\Stader\\Model\\Tables\\User\\UserInfo' ;
     public static $allowedKeys = 
         [ 'name'         => 'varchar' , 
           'surname'      => 'varchar' , 
@@ -27,7 +27,19 @@ class UserInfo extends DataObjectDao
           'reference_id' => 'int'
         ] ;
 
-    use DataObjectConstruct ;
+    // use DataObjectConstruct ;
+    function __construct ( ...$args )
+    {   echo "class ". self::$thisClass ." extends DataObjectDao __construct" . \PHP_EOL ;
+        echo self::$thisClass . \PHP_EOL ;
+        // print_r( $args ) ;
+
+        $this->setValuesDefault ( $args ) ;
+        print_r( [ 'dbType' => self::$dbType , 'thisClass' => self::$thisClass , 'allowedKeys' => self::$allowedKeys ] ) ;
+        parent::__construct( dbType: self::$dbType , thisClass: self::$thisClass , allowedKeys: self::$allowedKeys  ) ;
+        $this->setupObject( self::$thisClass , $args ) ;
+        $this->fixValuesType () ;
+
+    }
 
     protected function fixValuesType () : void
     {

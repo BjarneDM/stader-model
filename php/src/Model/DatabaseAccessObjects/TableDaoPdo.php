@@ -8,21 +8,21 @@ class TableDaoPdo
     implements ICrudDao
 {
 
-    public function __construct ( $dbType , $class , $allowedKeys )
+    public function __construct ( $dbType , $thisClass , $allowedKeys )
     {   // echo 'class TableDaoPdo implements ICrudDao __construct' . \PHP_EOL ;
-        // print_r( ['dbType' => $dbType , 'class' => $class , 'allowedKeys' => $allowedKeys] ) ;
+        // print_r( ['dbType' => $dbType , 'class' => $thisClass , 'allowedKeys' => $allowedKeys] ) ;
 
         parent::__construct( $dbType ) ;
 
         $this->createTable( 
             $dbType , 
-            $this->getTable( $class ) , 
-            $class ) ;
+            $this->getTable( $thisClass ) , 
+            $thisClass ) ;
     }
 
-    private function getTable ( $class ) : string
+    private function getTable ( $thisClass ) : string
     {
-        $table = explode( '\\' , $class ) ;
+        $table = explode( '\\' , $thisClass ) ;
         $table = strtolower( end( $table ) ) ;
     return $table ; }
 
@@ -64,7 +64,7 @@ from information_schema.tables
 where table_schema = "" 
 and table_name = "{$this->table}"
  */
-    private function createTable ( $dbType , $table , $class ) : void
+    private function createTable ( $dbType , $table , $thisClass ) : void
     {   // print_r( ['dbType' => $dbType , 'table' => $table , 'class' => $class] ) ;
         // print_r( self::$connect ) ;
         // print_r( self::$iniSettings[$dbType] ) ;
@@ -121,7 +121,7 @@ and table_name = "{$this->table}"
 
         $dbh  = self::$connect[ $this->getDatabase( $object ) ]->getConn() ;
 
-        $sql  = 'insert into ' . $this->getTable( $object::$class ) ;
+        $sql  = 'insert into ' . $this->getTable( $object::$thisClass ) ;
         $sql .= '        ( '  . implode( ' , '  , array_keys( $object::$allowedKeys ) ) . ' )' ;
         $sql .= '    values' ;
         $sql .= '        ( :' . implode( ' , :' , array_keys( $object::$allowedKeys ) ) . ' )' ;
@@ -155,7 +155,7 @@ and table_name = "{$this->table}"
 
         $dbh  = self::$connect[ $this->getDatabase( $object ) ]->getConn() ;
 
-        $sql  = 'select * from ' . $this->getTable( $object::$class ) . ' ' ;
+        $sql  = 'select * from ' . $this->getTable( $object::$thisClass ) . ' ' ;
         $stmt = null ;
 
         switch ( count( $object->getData() ) )
@@ -197,7 +197,7 @@ and table_name = "{$this->table}"
 
         $dbh  = self::$connect[ $this->getDatabase( $object ) ]->getConn() ;
 
-        $sql  = 'select * from ' . $this->getTable( $object::$class ) . ' ' ;
+        $sql  = 'select * from ' . $this->getTable( $object::$thisClass ) . ' ' ;
         $stmt = null ;
 
         switch ( count( $object->getData() ) )
@@ -311,7 +311,7 @@ and table_name = "{$this->table}"
 
         $dbh  = self::$connect[ $this->getDatabase( $object ) ]->getConn() ;
 
-        $sql  = 'update ' . $this->getTable( $object::$class ) . ' ' ;
+        $sql  = 'update ' . $this->getTable( $object::$thisClass ) . ' ' ;
 
         $set = [] ;
         foreach ( $diffValues as $key => $value )
@@ -345,7 +345,7 @@ and table_name = "{$this->table}"
 
         $dbh  = self::$connect[ $this->getDatabase( $object ) ]->getConn() ;
 
-        $sql  = 'update ' . $this->getTable( $object::$class ) . ' ' ;
+        $sql  = 'update ' . $this->getTable( $object::$thisClass ) . ' ' ;
 
         $set = [] ;
         foreach ( $diffValues as $key => $value )
@@ -397,7 +397,7 @@ and table_name = "{$this->table}"
 
         $dbh  = self::$connect[ $this->getDatabase( $object ) ]->getConn() ;
 
-        $sql  = 'delete from ' . $this->getTable( $object::$class ) . ' ' ;
+        $sql  = 'delete from ' . $this->getTable( $object::$thisClass ) . ' ' ;
         $sql .= 'where id = :id' ;
 
         $stmt = $dbh->prepare(  $sql ) ;
@@ -428,12 +428,12 @@ and table_name = "{$this->table}"
 
     public function rewind( $object ) : void
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        // echo $object::$class . \PHP_EOL ;
+        // echo $object::$thisClass . \PHP_EOL ;
         // print_r( $object ) ;
 
-        $this->stmt[ $this->getTable( $object::$class ) ] = $this->readData( $object ) ;
-        $this->row [ $this->getTable( $object::$class ) ] 
-            = $this->stmt[ $this->getTable( $object::$class ) ]->fetch( \PDO::FETCH_ASSOC ) ;
+        $this->stmt[ $this->getTable( $object::$thisClass ) ] = $this->readData( $object ) ;
+        $this->row [ $this->getTable( $object::$thisClass ) ] 
+            = $this->stmt[ $this->getTable( $object::$thisClass ) ]->fetch( \PDO::FETCH_ASSOC ) ;
 
         // print_r( $this->stmt ) ;
         // print_r( $this->row  ) ;
@@ -441,15 +441,15 @@ and table_name = "{$this->table}"
 
     public function count( $object ) : int
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        if ( is_null( $this->stmt[ $this->getTable( $object::$class ) ] ) ) $this->rewind( $object ) ;
-        return $this->stmt[ $this->getTable( $object::$class ) ]->rowCount() ;
+        if ( is_null( $this->stmt[ $this->getTable( $object::$thisClass ) ] ) ) $this->rewind( $object ) ;
+        return $this->stmt[ $this->getTable( $object::$thisClass ) ]->rowCount() ;
     }
 
     public function next( $object ) : void
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        if ( is_null( $this->stmt[ $this->getTable( $object::$class ) ] ) ) $this->rewind( $object ) ;
-        $this->row[ $this->getTable( $object::$class ) ] = 
-            $this->stmt[ $this->getTable( $object::$class ) ]->fetch( \PDO::FETCH_ASSOC ) ;
+        if ( is_null( $this->stmt[ $this->getTable( $object::$thisClass ) ] ) ) $this->rewind( $object ) ;
+        $this->row[ $this->getTable( $object::$thisClass ) ] = 
+            $this->stmt[ $this->getTable( $object::$thisClass ) ]->fetch( \PDO::FETCH_ASSOC ) ;
 
         // print_r( $this->stmt ) ;
         // print_r( $this->row  ) ;
@@ -457,24 +457,24 @@ and table_name = "{$this->table}"
 
     public function valid( $object )  : bool
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        if ( is_null( $this->stmt[ $this->getTable( $object::$class ) ] ) ) $this->rewind( $object ) ;
-        if ( $this->row[ $this->getTable( $object::$class ) ] === false )
+        if ( is_null( $this->stmt[ $this->getTable( $object::$thisClass ) ] ) ) $this->rewind( $object ) ;
+        if ( $this->row[ $this->getTable( $object::$thisClass ) ] === false )
              { return false ; } 
         else { return true ; }
     }
 
     public function current( $object ) : int
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        if ( is_null( $this->stmt[ $this->getTable( $object::$class ) ] ) ) $this->rewind( $object ) ;
-        return (int) $this->row[ $this->getTable( $object::$class ) ]['id'] ;
+        if ( is_null( $this->stmt[ $this->getTable( $object::$thisClass ) ] ) ) $this->rewind( $object ) ;
+        return (int) $this->row[ $this->getTable( $object::$thisClass ) ]['id'] ;
     }
 
     public function key( $object ) : int | false
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        if ( is_null( $this->stmt[ $this->getTable( $object::$class ) ] ) ) $this->rewind( $object ) ;
-        if ( $this->row[ $this->getTable( $object::$class ) ] === false )
+        if ( is_null( $this->stmt[ $this->getTable( $object::$thisClass ) ] ) ) $this->rewind( $object ) ;
+        if ( $this->row[ $this->getTable( $object::$thisClass ) ] === false )
              { return false ; } 
-        else { return (int) $this->row[ $this->getTable( $object::$class ) ]['id'] ; }
+        else { return (int) $this->row[ $this->getTable( $object::$thisClass ) ]['id'] ; }
     }
 /*
  *  functions for \Iterator
@@ -486,12 +486,12 @@ and table_name = "{$this->table}"
 
         $dbh  = self::$connect[ $this->getDatabase( $object ) ]->getConn() ;
 
-        $sql  = 'delete from ' . $this->getTable( $object::$class ) . ' ' ;
+        $sql  = 'delete from ' . $this->getTable( $object::$thisClass ) . ' ' ;
         $sql .= 'where id = :id' ;
         $stmtHere = $dbh->prepare( $sql ) ;
 
-        $this->stmt[ $this->getTable( $object::$class ) ] = $this->readData( $object ) ;
-        while ( $rowHere = $this->stmt[ $this->getTable( $object::$class ) ]->fetch( \PDO::FETCH_ASSOC ) )
+        $this->stmt[ $this->getTable( $object::$thisClass ) ] = $this->readData( $object ) ;
+        while ( $rowHere = $this->stmt[ $this->getTable( $object::$thisClass ) ]->fetch( \PDO::FETCH_ASSOC ) )
         {
             $stmtHere->bindParam( ':id' , $rowHere['id'] , \PDO::PARAM_INT ) ;
             $stmtHere->execute() ;
@@ -503,7 +503,7 @@ and table_name = "{$this->table}"
 
         $dbh  = self::$connect[ $this->getDatabase( $object ) ]->getConn() ;
 
-        $sql  = 'delete from ' . $this->getTable( $object::$class ) . ' ' ;
+        $sql  = 'delete from ' . $this->getTable( $object::$thisClass ) . ' ' ;
         $stmt = $dbh->prepare( $sql ) ;
         $stmt->execute() ;
     }

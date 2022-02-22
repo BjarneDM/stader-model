@@ -27,14 +27,25 @@ create table if not exists userlogin
 class UserLogin extends DataObjectDao
 {
     public static $dbType      = 'data' ;
-    public static $class       = '\\Stader\\Model\\Tables\\User\\UserLogin' ;
+    public static $thisClass   = '\\Stader\\Model\\Tables\\User\\UserLogin' ;
     public static $allowedKeys = 
         [ 'username'      => 'varchar' , 
           'passwd'        => 'varchar' , 
           'email'         => 'varchar'
         ] ;
 
-    use DataObjectConstruct ;
+    // use DataObjectConstruct ;
+    function __construct ( ...$args )
+    {   // echo "class ". self::$thisClass ." extends DataObjectDao __construct" . \PHP_EOL ;
+        // echo self::$thisClass . \PHP_EOL ;
+        // print_r( $args ) ;
+
+        $this->setValuesDefault ( $args ) ;
+        parent::__construct( dbType: self::$dbType , thisClass: self::$thisClass , allowedKeys: self::$allowedKeys  ) ;
+        $this->setupObject( self::$thisClass , $args ) ;
+        $this->fixValuesType () ;
+
+    }
 
     function fixValuesType () : void
     {

@@ -286,6 +286,17 @@ create table if not exists loginlog
 
     protected function create () : int
     {
+        $this->userInfo 
+            = new UserInfo( [
+                'name'         => $this->values['name'] ,
+                'surname'      => $this->values['surname'] ,
+                'phone'        => $this->values['phone'] ,
+                'reference_id' => 0
+                ]) ;
+    return $this->userInfo->getData()['id'] ; }
+
+    protected function createOK () : int
+    {
         $this->userLogin
             = new UserLogin([ 
                 'username'     => $this->values['username'] ,
@@ -301,7 +312,6 @@ create table if not exists loginlog
                 ]) ;
         $this->values['passwd'] = $this->userLogin->getData()['passwd'] ;
     return $this->userLogin->getData()['id'] ; }
-
 }
 
 ?>

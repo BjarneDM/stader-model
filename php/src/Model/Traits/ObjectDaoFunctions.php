@@ -61,7 +61,7 @@ trait ObjectDaoFunctions
         switch ( strtolower( gettype( $values ) ) )
         {
             case 'array' :
-                $this->check( $values ) ;
+                $this->check( $this , $values ) ;
                 foreach ( $values as $key => $value )
                 {
                     $this->valuesOld[ $key ] = $this->values[ $key ] ;

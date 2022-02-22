@@ -84,6 +84,19 @@ create table if not exists user
     loginfailures   int default 0
 ) ;
 
+# test table
+drop table if exists  userinfocrypt;
+create table if not exists userinfocrypt
+(
+    id              int auto_increment primary key ,
+    reference_id    int ,
+    salt            varchar(255) ,
+    algo            varchar(255) ,
+    tag             varchar(255) ,
+    data            text
+) ;
+
+drop table if exists userinfocrypt ;
 create table if not exists userinfocrypt
 (
     id              int auto_increment primary key ,

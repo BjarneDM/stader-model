@@ -24,7 +24,7 @@ trait ObjectsDaoIterator
 
     private function getOne( $object , int $index )
     {   // print_r( $object ) ;
-        return new $object::$class( $index ) ; 
+        return new $object::$thisClass( $index ) ; 
     }
 
     public function rewind() : void 

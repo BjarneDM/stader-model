@@ -8,25 +8,25 @@ abstract class DataObjectDao
     protected $values      = []   ;
     protected $valuesOld   = []   ;
     
-    use ObjectDaoConstruct ;
     use Settings ;
+    use ObjectDaoConstruct ;
 
-    protected function setupObject ( $class , $args )
+    protected function setupObject ( $thisClass , $args )
     {
-        switch ( $class::$dbType )
+        switch ( $thisClass::$dbType )
         {
             case 'data' :
             case 'cryptdata' :
-                $this->setupData( $class , $args ) ;
+                $this->setupData( $thisClass , $args ) ;
                 break ;
             case 'logs' :
             case 'cryptlogs' :
-                $this->setupLogs( $class , $args ) ;
+                $this->setupLogs( $thisClass , $args ) ;
                 break ;
         }
     }
 
-    protected function setupData ( $class , $args )
+    protected function setupData ( $thisClass , $args )
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $args ) ;
         /*
@@ -58,14 +58,14 @@ abstract class DataObjectDao
                             /*
                              *  count( $args[0] ) === count( $this->allowedKeys ) : nyt Object, der skal oprettes
                              */
-                            case count( $class::$allowedKeys ) :
-                                $this->check( $class , $args[0] ) ;
+                            case count( $thisClass::$allowedKeys ) :
+                                $this->check( $thisClass , $args[0] ) ;
                                 $this->values       = ( new \ArrayObject( $args[0] ) )->getArrayCopy() ;
                                 $this->values['id'] = $this->create( $this ) ;
                                 $this->notify( 'create' ) ;
                                 break ;
                             default :
-                                throw new \Exception( count( $args[0] ) . " : forkert antal parametre [" . count( $class::$allowedKeys ) . "]" ) ;
+                                throw new \Exception( count( $args[0] ) . " : forkert antal parametre [" . count( $thisClass::$allowedKeys ) . "]" ) ;
                                 break ;
                         }
                         break ;
@@ -84,7 +84,7 @@ abstract class DataObjectDao
                         if ( count( $args[0] ) !== count( $args[1] ) )
                             throw new \Exception( 'count() for $args[0] & $args[1] er forskellige' ) ;
                         $args[0] = array_combine( $args[0] , $args[1] ) ;
-                        $this->check( $class , $args[0] ) ;
+                        $this->check( $thisClass , $args[0] ) ;
                         $this->values = ( new \ArrayObject( $args[0] ) )->getArrayCopy() ;
                         break ;
                     default :
@@ -101,7 +101,7 @@ abstract class DataObjectDao
 
     }
 
-    protected function setupLogs ( $class , $args )
+    protected function setupLogs ( $thisClass , $args )
     {
         /*
          *  gettype( $args[0] ) === 'array'
@@ -121,15 +121,15 @@ abstract class DataObjectDao
                          */
                         switch ( count( $args[0] ) )
                         {
-                            case count( $class::$allowedKeys ) :
-                                $this->check( $class , $args[0] ) ;
+                            case count( $thisClass::$allowedKeys ) :
+                                $this->check( $thisClass , $args[0] ) ;
                                 $this->values       = ( new \ArrayObject( $args[0] ) )->getArrayCopy() ;
                                 $this->values['id'] = $this->create( $this ) ;
                                 $this->valuesOld    = ( new \ArrayObject( $this->values ) )->getArrayCopy() ;
                                 $this->notify( 'create' ) ;
                                 break ;
                             default :
-                                throw new \Exception( count( $args[0] ) . " : forkert antal parametre [" . count( $class::$allowedKeys ) . "]" ) ;
+                                throw new \Exception( count( $args[0] ) . " : forkert antal parametre [" . count( $thisClass::$allowedKeys ) . "]" ) ;
                                 break ;
                         }
                         break ;
