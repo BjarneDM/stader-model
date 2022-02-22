@@ -46,7 +46,7 @@ class DatabaseSetup
 
         $sql[0]  = 'select *  ' ;
         $sql[0] .= 'from information_schema.tables ' ;
-        $sql[0] .= 'where   table_schema = "stader"  ' ;
+        $sql[0] .= 'where   table_schema = "'. self::$iniSettings[$dbType]['dbname'] .'"  ' ;
 
         $stmt[0] = $dbh->prepare( $sql[0] ) ;
         $stmt[0]->execute() ;
