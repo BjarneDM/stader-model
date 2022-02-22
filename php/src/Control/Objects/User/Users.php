@@ -13,9 +13,9 @@ class Users extends DataObjectsDao
 
     use DataObjectsConstruct ;
 
-    protected function setupData ( $args )
+    protected function setupData ( $thisClass , $args )
     {
-        parent::setupData( $args ) ;
+        parent::setupData( $thisClass , $args ) ;
         $this->usersLogin = new UsersLogin() ;
     }
 
@@ -44,7 +44,7 @@ class Users extends DataObjectsDao
     public function current() : Object 
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         $this->userLogin = $this->usersLogin->current() ;
-        return $this->getOne( $this->userLogin->getData()['id'] ) ;
+        return $this->getOne( $this->userLogin , $this->userLogin->getData()['id'] ) ;
     }
 
     public function key() : int | false 

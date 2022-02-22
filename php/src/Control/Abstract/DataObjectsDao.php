@@ -3,16 +3,14 @@
 abstract class DataObjectsDao
          implements \Iterator
 {
-    private     $keysAllowed = []   ;
-    protected   $class       = ''   ;
-    protected   $position    = 0    ;
+    protected   $position = 0    ;
     
     function __construct ()
     {   // echo 'abstract class ObjectsDao extends Setup __construct' . \PHP_EOL ;
 
     }
 
-    protected function setupData ( $args )
+    protected function setupData ( $thisClass , $args )
     {
         /*
          *  gettype( $args[0] ) === 'null' 
@@ -29,13 +27,13 @@ abstract class DataObjectsDao
                 break ;
             case 'string' :
                 $this->values[$args[0]] = $args[1] ;
-                $this->check( $this->values ) ;
+                $this->check( $thisClass::$allowedKeys , $args ) ;
                 break ;
             case 'array' :
                 if ( count( $args[0] ) !== count( $args[1] ) )
                     throw new \Exception( 'count() for $args[0] & $args[1] er forskellige' ) ;
                 $this->values  = array_combine( $args[0] , $args[1] ) ;
-                $this->check( $this->values ) ;
+                $this->check( $thisClass::$allowedKeys , $args ) ;
                 break ;
             default :
                 throw new \Exception( gettype( $args[0] ) . " : forkert input type [null,string,array]" ) ;
@@ -46,14 +44,14 @@ abstract class DataObjectsDao
     /*
      *  default minimalt integritets check
      */
-    protected function check( Array &$toCheck )
+    protected function check( $thisClass , Array &$toCheck )
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $toCheck ) ;
 
         foreach ( array_keys( $toCheck ) as $key )
         {
-            if ( ! array_key_exists( $key , $this->keysAllowed ) )
-                throw new \Exception( "'{$key}' doesn't exist in [" . implode( ',' , array_keys( $this->keysAllowed ) ) . "]" ) ;
+            if ( ! array_key_exists( $key , $thisClass::$allowedKeys ) )
+                throw new \Exception( "'{$key}' doesn't exist in [" . implode( ',' , array_keys( $thisClass::$allowedKeys ) ) . "]" ) ;
         }
     }
 
@@ -63,11 +61,11 @@ abstract class DataObjectsDao
 
 // https://www.php.net/manual/en/class.iterator.php
 
-    protected function getOne( int $index ) 
+    protected function getOne( $thisClass , int $index ) 
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // echo $this->class. \PHP_EOL ;
         // echo "int \$index : {$index}" . \PHP_EOL ;
-        return new $this->class( $index ) ; 
+        return new $thisClass( $index ) ; 
     }
 
     abstract public function rewind() : void ;

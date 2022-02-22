@@ -65,6 +65,7 @@ Array
 
 class User extends DataObjectDao
 {
+    public static $thisClass   = '\\Stader\\Control\\Objects\\User\\User' ;
     public static $allowedKeys = 
         [ 'name'     => 'varchar' , 
           'surname'  => 'varchar' , 
@@ -73,7 +74,6 @@ class User extends DataObjectDao
           'passwd'   => 'varchar' , 
           'email'    => 'varchar' 
         ] ;
-    public static $thisClass  = '\\Stader\\Control\\Objects\\User\\User' ;
 
     protected UserInfo  $userInfo  ;
     protected UserLogin $userLogin ;
@@ -84,7 +84,7 @@ class User extends DataObjectDao
         
         parent::__construct( self::$allowedKeys ) ;
 
-        $this->setupData( $args ) ;
+        $this->setupData( self::$thisClass , $args ) ;
 
     }
 
@@ -235,7 +235,7 @@ create table if not exists loginlog
         return $values ;
    }
 
-    protected function check( Array &$toCheck )
+    protected function check( $thisClass , Array &$toCheck )
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $toCheck ) ;
 
@@ -245,7 +245,7 @@ create table if not exists loginlog
                 unset( $toCheck[ $key ] ) ;
         }
 
-        parent::check( $toCheck ) ;
+        parent::check( $thisClass , $toCheck ) ;
     }
 
     protected function update( Array $values ) : void
@@ -284,7 +284,8 @@ create table if not exists loginlog
         parent::delete() ;
     }
 
-    protected function create () : int
+    // lavet for at teste userinfocrypt separat
+    protected function createTest () : int
     {
         $this->userInfo 
             = new UserInfo( [
@@ -295,7 +296,7 @@ create table if not exists loginlog
                 ]) ;
     return $this->userInfo->getData()['id'] ; }
 
-    protected function createOK () : int
+    protected function create () : int
     {
         $this->userLogin
             = new UserLogin([ 

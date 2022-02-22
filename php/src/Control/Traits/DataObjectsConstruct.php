@@ -10,13 +10,10 @@ trait DataObjectsConstruct
         // var_dump( $args ) ;
 
         if ( ! self::$allowedKeys ) self::$allowedKeys = ( new \ArrayObject( self::$baseClass::$allowedKeys ) )->getArrayCopy() ;
-        $this->keysAllowed = ( new \ArrayObject( self::$baseClass::$allowedKeys ) )->getArrayCopy() ;
-
-        if ( ! self::$thisClass ) self::$thisClass   = self::$baseClass::$thisClass ;
-        $this->class = self::$baseClass::$thisClass ;
+        if ( ! self::$thisClass   ) self::$thisClass   = self::$baseClass::$thisClass ;
 
         parent::__construct() ;
-        $this->setupData( $args ) ;
+        $this->setupData( self::$thisClass , $args ) ;
 
     }
 }

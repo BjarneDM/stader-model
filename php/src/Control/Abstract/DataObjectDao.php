@@ -3,20 +3,15 @@
 
 abstract class DataObjectDao
 {
-    private     $keysAllowed = []   ;
     protected   $values      = []   ;
     protected   $valuesOld   = []   ;
-    protected   $class       = ''   ;
-    public static $thisClass = ''   ;
     
-    function __construct ( Array $allowedKeys )
+    function __construct ()
     {   // echo 'abstract class ObjectDao extends Setup __construct' . \PHP_EOL ;
-
-        $this->keysAllowed = $allowedKeys ;
 
     }
 
-    protected function setupData ( $args )
+    protected function setupData ( $thisClass , $args )
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $args ) ;
         /*
@@ -45,14 +40,14 @@ abstract class DataObjectDao
                             /*
                              *  count( $args[0] ) === count( $this->keysAllowed ) : nyt Object, der skal oprettes
                              */
-                            case count( $this->keysAllowed ) :
-                                $this->check( $args[0] ) ;
+                            case count( $thisClass::$allowedKeys ) :
+                                $this->check( $thisClass , $args[0] ) ;
                                 $this->values       = ( new \ArrayObject( $args[0] ) )->getArrayCopy() ;
                                 $this->values['id'] = $this->create() ;
                                 $this->notify( 'create' ) ;
                                 break ;
                             default :
-                                throw new \Exception( count( $args[0] ) . " : forkert antal parametre [" . count( $this->keysAllowed ) . "]" ) ;
+                                throw new \Exception( count( $args[0] ) . " : forkert antal parametre [" . count( $thisClass::$allowedKeys ) . "]" ) ;
                                 break ;
                         }
                         break ;
@@ -71,7 +66,7 @@ abstract class DataObjectDao
                         if ( count( $args[0] ) !== count( $args[1] ) )
                             throw new \Exception( 'count() for $args[0] & $args[1] er forskellige' ) ;
                         $args[0] = array_combine( $args[0] , $args[1] ) ;
-                        $this->check( $args[0] ) ;
+                        $this->check( $thisClass , $args[0] ) ;
                         $this->values = ( new \ArrayObject( $args[0] ) )->getArrayCopy() ;
                         break ;
                     default :
@@ -99,7 +94,7 @@ abstract class DataObjectDao
     public function getValues() { return array_values( $this->values ) ; }
     public function getKeys()   { return array_keys( $this->values ) ; }
  
-    public function setValues( Array $values )
+    public function setValues( $thisClass , Array $values )
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // echo $this->class. \PHP_EOL ;
         // print_r( $values ) ;
@@ -107,7 +102,7 @@ abstract class DataObjectDao
         switch ( strtolower( gettype( $values ) ) )
         {
             case 'array' :
-                $this->check( $values ) ;
+                $this->check( $thisClass , $values ) ;
                 foreach ( $values as $key => $value )
                 {
                     $this->valuesOld[ $key ] = $this->values[ $key ] ;
@@ -124,17 +119,17 @@ abstract class DataObjectDao
     /*
      *  default minimalt integritets check
      */
-    protected function check( Array &$toCheck )
+    protected function check( $thisClass , Array &$toCheck )
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $toCheck ) ;
 
         foreach ( array_keys( $toCheck ) as $key )
         {
-            if ( ! array_key_exists( $key , $this->keysAllowed ) )
+            if ( ! array_key_exists( $key , $thisClass::$allowedKeys ) )
                 unset( $toCheck[ $key ] ) ;
-                // throw new \Exception( "'{$key}' doesn't exist in [" . implode( ',' , array_keys( $this->keysAllowed ) ) . "]" ) ;
+                // throw new \Exception( "'{$key}' doesn't exist in [" . implode( ',' , array_keys( $thisClass::$allowedKeys ) ) . "]" ) ;
 
-            switch ( $this->keysAllowed[$key] )
+            switch ( $thisClass::$allowedKeys[$key] )
             {
                 case 'int' :
                 case 'integer' :
