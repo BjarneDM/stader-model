@@ -64,19 +64,19 @@ class TicketStatus extends DataObjectDao
         $this->values['type_byte_id'] = (int) $this->values['type_byte_id'] ;
     }
 
-    protected function check( Array &$toCheck ) : void
+    protected function check( $thisClass , Array &$toCheck ) : void
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $toCheck ) ;
 
-        parent::check( $toCheck ) ;
+        parent::check( $thisClass , $toCheck ) ;
 
         foreach ( array_keys( $toCheck ) as $key )
         {
             switch ( $key )
             {
                 case 'default_colour' :
-                    if ( ! in_array( $toCheck[ $key ] , self::$allowedColours ) )
-                        throw new \Exception( "'{$toCheck[ $key ]}' doesn't exist in [ " . implode( ' , ' , self::$allowedColours ) . " ]" ) ;
+                    if ( ! in_array( $toCheck[ $key ] , $thisClass::$allowedColours ) )
+                        throw new \Exception( "'{$toCheck[ $key ]}' doesn't exist in [ " . implode( ' , ' , $thisClass::$allowedColours ) . " ]" ) ;
                     break ;
             }
 

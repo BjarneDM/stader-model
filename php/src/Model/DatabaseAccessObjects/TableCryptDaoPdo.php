@@ -146,7 +146,7 @@ class TableCryptDaoPdo
 
         $dbh  = self::$connect[ $this->getDatabase( $object ) ]->getConn() ;
 
-        $sql  = 'select * from ' . $this->getTable( $object::$thisClass ) ;
+        $sql  = 'select * from ' . $this->getTable( $object::$thisClass ) . ' ' ; 
         $stmt = null ;
 
         switch ( count( $object->getData() ) )
@@ -188,7 +188,7 @@ class TableCryptDaoPdo
 
         $dbh  = self::$connect[ $this->getDatabase( $object ) ]->getConn() ;
 
-        $sql  = 'select * from ' . $this->getTable( $object::$thisClass ) ;
+        $sql  = 'select * from ' . $this->getTable( $object::$thisClass ) . ' ' ;
         $stmt = null ;
 
         switch ( count( $object->getData() ) )

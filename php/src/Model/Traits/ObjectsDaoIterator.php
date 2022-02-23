@@ -5,13 +5,13 @@ trait ObjectsDaoIterator
     /*
      *  default minimalt integritets check
      */
-    protected function check( Array &$toCheck )
+    protected function check( $thisClass , Array &$toCheck )
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $toCheck ) ;
 
         foreach ( array_keys( $toCheck ) as $key )
         {
-            if ( ! array_key_exists( $key , $this->keysAllowed ) )
+            if ( ! array_key_exists( $key , $thisClass::$allowedKeys ) )
                 throw new \Exception( "'{$key}' doesn't exist in [" . implode( ',' , array_keys( $this->keysAllowed ) ) . "]" ) ;
         }
     }

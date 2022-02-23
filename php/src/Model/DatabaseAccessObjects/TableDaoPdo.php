@@ -9,8 +9,8 @@ class TableDaoPdo
 {
 
     public function __construct ( $dbType , $thisClass , $allowedKeys )
-    {   // echo 'class TableDaoPdo implements ICrudDao __construct' . \PHP_EOL ;
-        // print_r( ['dbType' => $dbType , 'class' => $thisClass , 'allowedKeys' => $allowedKeys] ) ;
+    {   echo 'class TableDaoPdo implements ICrudDao __construct' . \PHP_EOL ;
+        print_r( ['dbType' => $dbType , 'class' => $thisClass , 'allowedKeys' => $allowedKeys] ) ;
 
         parent::__construct( $dbType ) ;
 
@@ -76,15 +76,16 @@ and table_name = "{$this->table}"
         $sql .= "where table_schema = \"". self::$iniSettings[$dbType]['dbname'] ."\" " ;
         $sql .= "and table_name = \"{$table}\" " ;
 
-        // echo $sql  . \PHP_EOL ;
+        echo $sql  . \PHP_EOL ;
 
         $stmt = $dbh->prepare( $sql ) ;
         $stmt->execute() ;
 
+        echo "\$stmt->rowCount() : {$stmt->rowCount()}" . \PHP_EOL ;
         switch ( $stmt->rowCount() )
         {
             case 0 :
-                $allowedKeys = array_keys( $class::$allowedKeys )  ;
+                $allowedKeys = array_keys( $thisClass::$allowedKeys )  ;
                 // print_r( $allowedKeys ) ; exit ;
 
                 $sql  = "create table if not exists {$table} " ;
@@ -103,7 +104,7 @@ and table_name = "{$this->table}"
 
                 // echo $sql  . \PHP_EOL ;
 
-                $stmt = $this->dbh->prepare( $sql ) ;
+                $stmt = $dbh->prepare( $sql ) ;
                 $stmt->execute() ;
 
                 break ;

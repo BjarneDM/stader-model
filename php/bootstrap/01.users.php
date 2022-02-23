@@ -77,9 +77,9 @@ $users =
 //     [ 'name' => 'dummy' , 'surname' => '' , 'phone' => '' , 'username' => 'dummy' , 'passwd' => '' , 'email' => '' ] ,
 
     [ 'name' => 'Michael' , 'surname' => '' , 'phone' => 'D' , 'username' => 'mich' , 'passwd' => $passwords[$i++ % count( $passwords )] , 'email' => '' ] ,
-//     [ 'name' => 'Lars' , 'surname' => 'Starbech' , 'phone' => 'B' , 'username' => 'last' , 'passwd' => $passwords[$i++ % count( $passwords )] , 'email' => '' ] ,
-//     [ 'name' => 'SKP-IT' , 'surname' => 'Slagelse' , 'phone' => 'A' , 'username' => 'skp' , 'passwd' => $passwords[$i++ % count( $passwords )] , 'email' => '' ] ,
-//     [ 'name' => 'Lars' , 'surname' => 'Nielsen' , 'phone' => 'S' , 'username' => 'lani' , 'passwd' => $passwords[$i++ % count( $passwords )] , 'email' => '' ] ,
+    [ 'name' => 'Lars' , 'surname' => 'Starbech' , 'phone' => 'B' , 'username' => 'last' , 'passwd' => $passwords[$i++ % count( $passwords )] , 'email' => '' ] ,
+    [ 'name' => 'SKP-IT' , 'surname' => 'Slagelse' , 'phone' => 'A' , 'username' => 'skp' , 'passwd' => $passwords[$i++ % count( $passwords )] , 'email' => '' ] ,
+    [ 'name' => 'Lars' , 'surname' => 'Nielsen' , 'phone' => 'S' , 'username' => 'lani' , 'passwd' => $passwords[$i++ % count( $passwords )] , 'email' => '' ] ,
 
     [ 'name' => 'Kris' , 'surname' => 'Kristensen' , 'phone' => 'C' , 'username' => 'krkr' , 'passwd' => $passwords[$i++ % count( $passwords )] , 'email' => '2' ] 
 

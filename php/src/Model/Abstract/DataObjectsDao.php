@@ -28,13 +28,13 @@ abstract class DataObjectsDao
                 break ;
             case 'string' :
                 $this->values[$args[0]] = $args[1] ;
-                $this->check( $this->values ) ;
+                $this->check( $this , $this->values ) ;
                 break ;
             case 'array' :
                 if ( count( $args[0] ) !== count( $args[1] ) )
                     throw new \Exception( 'count() for $args[0] & $args[1] er forskellige' ) ;
                 $this->values = array_combine( $args[0] , $args[1] ) ;
-                $this->check( $this->values ) ;
+                $this->check( $this , $this->values ) ;
                 break ;
             default :
                 throw new \Exception( gettype( $args[0] ) . " : forkert input type [null,string,array]" ) ;

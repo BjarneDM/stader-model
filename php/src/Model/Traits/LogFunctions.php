@@ -20,14 +20,14 @@ trait LogFunctions
             : OurDateTime::createFromFormat( 'Y-m-d H:i:s' , $this->values['creationtime'] ) ;
     }
 
-    protected function check( Array &$toCheck ) : void
+    protected function check( $thisClass , Array &$toCheck ) : void
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $toCheck ) ;
 
         foreach ( array_keys( $toCheck ) as $key )
         {
-            if ( ! array_key_exists( $key , self::$allowedKeys ) )
-                throw new \Exception( "'{$key}' doesn't exist in [" . implode( ',' , array_keys( self::$allowedKeys ) ) . "]" ) ;
+            if ( ! array_key_exists( $key , $thisClass::$allowedKeys ) )
+                throw new \Exception( "'{$key}' doesn't exist in [" . implode( ',' , array_keys( $thisClass::$allowedKeys ) ) . "]" ) ;
 
             switch ( $key )
             {

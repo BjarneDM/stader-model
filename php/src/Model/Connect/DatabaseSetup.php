@@ -14,7 +14,9 @@ class DatabaseSetup
 
         $this->getSettings() ;
         if ( ! isset( self::$connect[ self::$iniSettings[$dbType]['dbname'] ] ) ) 
-        {
+        {   //  echo "switch ( ". self::$iniSettings[$dbType]['dbname'] ." )" . \PHP_EOL ;
+            //  print_r( [ 'dbType' => $dbType ] ) ;
+
             $dbMethod = self::$iniSettings[$dbType]['method'] ;
             switch ( $dbMethod )
             {
@@ -25,9 +27,10 @@ class DatabaseSetup
                 case "xml"       : self::$connect[ self::$iniSettings[$dbType]['dbname'] ] = new ConnectXML( $dbType ) ; break ;
                 default: throw new \Exception() ;
             }   //  echo self::$connect[ self::$iniSettings[$dbType]['dbname'] ]->getType() . PHP_EOL ;
+                //  print_r( self::$connect ) ;
         }   //  print_r( ['after',self::$connect[ self::$iniSettings[$dbType]['dbname'] ]->getConn()] ) ;
 
-        // $this->checkConnection( $dbType ) ;
+        //  $this->checkConnection( $dbType ) ;
     }
 
     use Settings ;
