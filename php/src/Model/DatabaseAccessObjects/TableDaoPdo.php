@@ -278,8 +278,8 @@ and table_name = "{$this->table}"
     return $ids ; }
 
     public function readNULL( $object ) : array
-    {   echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        print_r( $object ) ;
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        // print_r( $object ) ;
 
         $dbh  = self::$connect[ $this->getDatabase( $object ) ]->getConn() ;
 
