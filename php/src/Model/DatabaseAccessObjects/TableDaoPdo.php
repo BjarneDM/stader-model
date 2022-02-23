@@ -14,10 +14,6 @@ class TableDaoPdo
 
         parent::__construct( $dbType ) ;
 
-        $this->createTable( 
-            $dbType , 
-            $this->getTable( $thisClass ) , 
-            $thisClass ) ;
     }
 
     private function getTable ( $thisClass ) : string
@@ -76,12 +72,12 @@ and table_name = "{$this->table}"
         $sql .= "where table_schema = \"". self::$iniSettings[$dbType]['dbname'] ."\" " ;
         $sql .= "and table_name = \"{$table}\" " ;
 
-        echo $sql  . \PHP_EOL ;
+        //  echo $sql  . \PHP_EOL ;
 
         $stmt = $dbh->prepare( $sql ) ;
         $stmt->execute() ;
 
-        echo "\$stmt->rowCount() : {$stmt->rowCount()}" . \PHP_EOL ;
+        //  echo "\$stmt->rowCount() : {$stmt->rowCount()}" . \PHP_EOL ;
         switch ( $stmt->rowCount() )
         {
             case 0 :
@@ -119,6 +115,11 @@ and table_name = "{$this->table}"
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $object ) ;
         // print_r( $object::$allowedKeys ) ;
+
+        $this->createTable( 
+            $object::$dbType , 
+            $this->getTable( $object::$thisClass ) , 
+            $object::$thisClass ) ;
 
         $dbh  = self::$connect[ $this->getDatabase( $object ) ]->getConn() ;
 
