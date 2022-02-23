@@ -25,13 +25,13 @@ create table if not exists ticketlog
 class TicketLog extends DataObjectDao
 {
     public static $dbType      = 'logs' ;
+    public static $thisClass   = '\\Stader\\Model\\Tables\\Ticket\\TicketLog' ;
     public static $allowedKeys = 
         [ 'ticket_id' => 'int'     , 
           'header'    => 'varchar' , 
           'old_value' => 'text'    , 
           'new_value' => 'text' 
         ] ;
-    public static $thisClass   = '\\Stader\\Model\\Tables\\Ticket\\TicketLog' ;
     private $referenceID ;
     private $descriptID  ;
 

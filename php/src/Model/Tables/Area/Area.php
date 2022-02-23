@@ -21,11 +21,11 @@ name er primary key da getAll() ønskes sorteret efter denne
 class Area extends DataObjectDao
 {
     public static $dbType      = 'data' ;
+    public static $thisClass   = '\\Stader\\Model\\Tables\\Area\\Area' ;
     public static $allowedKeys = 
         [ 'name'        => 'varchar' , 
           'description' => 'text' 
         ] ;
-    public static $thisClass   = '\\Stader\\Model\\Tables\\Area\\Area' ;
 
     use DataObjectConstruct ;
 

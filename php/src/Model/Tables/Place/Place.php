@@ -31,6 +31,7 @@ create table if not exists place
 class Place extends DataObjectDao
 {
     public static $dbType      = 'data' ;
+    public static $thisClass   = '\\Stader\\Model\\Tables\\Place\\Place' ;
     public static $allowedKeys = 
         [ 'place_nr'       => 'varchar' , 
           'description'    => 'text'    , 
@@ -38,7 +39,6 @@ class Place extends DataObjectDao
           'area_id'        => 'int'     , 
           'active'         => 'bool'
         ] ;
-    public static $thisClass   = '\\Stader\\Model\\Tables\\Place\\Place' ;
     private $thisLog ;
     private $referenceID ;
     private $descriptID  ;

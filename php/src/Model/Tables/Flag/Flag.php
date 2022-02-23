@@ -18,11 +18,11 @@ create table if not exists flag
 class Flag extends DataObjectDao
 {
     public static $dbType      = 'data' ;
+    public static $thisClass   = '\\Stader\\Model\\Tables\\Flag\\Flag' ;
     public static $allowedKeys = 
         [ 'text'    => 'varchar' , 
           'unicode' => 'char'
         ] ;
-    public static $thisClass   = '\\Stader\\Model\\Tables\\Flag\\Flag' ;
 
     use DataObjectConstruct ;
 

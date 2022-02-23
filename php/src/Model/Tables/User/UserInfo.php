@@ -29,12 +29,12 @@ class UserInfo extends DataObjectDao
 
     // use DataObjectConstruct ;
     function __construct ( ...$args )
-    {   echo "class ". self::$thisClass ." extends DataObjectDao __construct" . \PHP_EOL ;
-        echo self::$thisClass . \PHP_EOL ;
+    {   // echo "class ". self::$thisClass ." extends DataObjectDao __construct" . \PHP_EOL ;
+        // echo self::$thisClass . \PHP_EOL ;
         // print_r( $args ) ;
 
         $this->setValuesDefault ( $args ) ;
-        print_r( [ 'dbType' => self::$dbType , 'thisClass' => self::$thisClass , 'allowedKeys' => self::$allowedKeys ] ) ;
+        // print_r( [ 'dbType' => self::$dbType , 'thisClass' => self::$thisClass , 'allowedKeys' => self::$allowedKeys ] ) ;
         parent::__construct( dbType: self::$dbType , thisClass: self::$thisClass , allowedKeys: self::$allowedKeys  ) ;
         $this->setupObject( self::$thisClass , $args ) ;
         $this->fixValuesType () ;

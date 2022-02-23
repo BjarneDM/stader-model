@@ -20,6 +20,7 @@ create table if not exists placeowner
 class PlaceOwner extends DataObjectDao
 {
     public static $dbType      = 'data' ;
+    public static $thisClass   = '\\Stader\\Model\\Tables\\PlaceOwner\\PlaceOwner' ;
     public static $allowedKeys = 
         [ 'name'         => 'varchar' , 
           'surname'      => 'varchar' , 
@@ -27,7 +28,6 @@ class PlaceOwner extends DataObjectDao
           'email'        => 'varchar' , 
           'organisation' => 'varchar' 
         ] ;
-    public static $thisClass   = '\\Stader\\Model\\Tables\\PlaceOwner\\PlaceOwner' ;
 
     use DataObjectConstruct ;
 

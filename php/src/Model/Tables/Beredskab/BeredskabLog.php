@@ -25,13 +25,13 @@ create table if not exists beredskablog
 class BeredskabLog extends DataObjectDao
 {
     public static $dbType      = 'logs' ;
+    public static $thisClass   = '\\Stader\\Model\\Tables\\Beredskab\\BeredskabLog' ;
     public static $allowedKeys = 
         [ 'beredskab_id' => 'int'     , 
           'header'       => 'varchar' , 
           'old_value'    => 'text'    , 
           'new_value'    => 'text'
         ] ;
-    public static $thisClass   = '\\Stader\\Model\\Tables\\Beredskab\\BeredskabLog' ;
     private $referenceID ;
     private $descriptID  ;
 

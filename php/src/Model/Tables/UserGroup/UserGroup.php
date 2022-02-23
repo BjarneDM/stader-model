@@ -25,11 +25,11 @@ create table usersgroups
 class UserGroup extends DataObjectDao
 {
     public static $dbType      = 'data' ;
+    public static $thisClass   = '\\Stader\\Model\\Tables\\UserGroup\\UserGroup' ;
     public static $allowedKeys = 
         [ 'user_id'  => 'int' , 
           'group_id' => 'int'
         ] ;
-    public static $thisClass   = '\\Stader\\Model\\Tables\\UserGroup\\UserGroup' ;
 
     use DataObjectConstruct ;
 

@@ -5,8 +5,8 @@ use \Stader\Model\Traits\{ObjectDaoConstruct,ObjectsDaoIterator,Settings} ;
 abstract class DataObjectsDao
          implements \Iterator
 {
-    protected $values      = []   ;
-    private   $position    = 0    ;
+    protected $values    = [] ;
+    private   $position  =  0 ;
 
     use ObjectDaoConstruct ;
     use Settings ;

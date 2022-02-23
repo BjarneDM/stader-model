@@ -20,12 +20,12 @@ create table if not exists urole
 class URole extends DataObjectDao
 {
     public static $dbType      = 'data' ;
+    public static $thisClass   = '\\Stader\\Model\\Tables\\Role\\URole' ;
     public static $allowedKeys = 
         [ 'role'     => 'varchar' , 
           'note'     => 'text'    , 
           'priority' => 'int'
         ] ;
-    public static $thisClass   = '\\Stader\\Model\\Tables\\Role\\URole' ;
 
     use DataObjectConstruct ;
 

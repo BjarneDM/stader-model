@@ -23,13 +23,13 @@ create table if not exists ticket_status
 class TicketStatus extends DataObjectDao
 {
     public static $dbType      = 'data' ;
+    public static $thisClass   = '\\Stader\\Model\\Tables\\TicketStatus\\TicketStatus' ;
     public static $allowedKeys = 
         [ 'name'           => 'varchar' , 
           'default_colour' => 'varchar' , 
           'description'    => 'text' , 
           'type_byte_id'   => 'int' 
         ] ;
-    public static $thisClass   = '\\Stader\\Model\\Tables\\TicketStatus\\TicketStatus' ;
 
     public static $allowedColours =
         [

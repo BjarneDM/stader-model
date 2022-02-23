@@ -7,32 +7,35 @@ trait ObjectDaoFunctions
 
     protected function create( $object ) : int
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        // print_r( $array ) ;
-
-    return self::$functions->create( $object ) ; }
+        // print_r( $object ) ;
+        $method = self::$iniSettings[ $this->theDBtype ]['method'] ;
+    return self::$functions[ $method ]->create( $object ) ; }
 
     protected function read( $object ) : Array
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $args ) ;
 
+        $method = self::$iniSettings[ $this->theDBtype ]['method'] ;
         $this->notify( 'read' ) ;
-    return self::$functions->readOne( $object ) ; }
+    return self::$functions[ $method ]->readOne( $object ) ; }
 
     protected function readNULL( $object ) : Array
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $args ) ;
 
+        $method = self::$iniSettings[ $this->theDBtype ]['method'] ;
         $this->notify( 'read' ) ;
-//         $values = self::$functions->readNULL( $object ) ;
+//         $values = self::$functions[ $method ]->readNULL( $object ) ;
 //         print_r(  $values ) ;
 //     return $values ; }
-    return self::$functions->readNULL( $object ) ; }
+    return self::$functions[ $method ]->readNULL( $object ) ; }
 
     protected function update( $object ) : int
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $object ) ; // exit ;
 
-        $rowCount = self::$functions->update( 
+        $method = self::$iniSettings[ $this->theDBtype ]['method'] ;
+        $rowCount = self::$functions[ $method ]->update( 
             $object , 
             array_diff( $this->values , $this->valuesOld ) ) ;
         $this->notify( 'update' ) ;
@@ -41,7 +44,8 @@ trait ObjectDaoFunctions
     protected function deleteThis( $object ) : int
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
 
-        $rowCount = self::$functions->delete( $object ) ;
+        $method = self::$iniSettings[ $this->theDBtype ]['method'] ;
+        $rowCount = self::$functions[ $method ]->delete( $object ) ;
         $this->notify( 'delete' ) ;
         unset( $this->values , $this->valuesOld ) ;
     return $rowCount ; }

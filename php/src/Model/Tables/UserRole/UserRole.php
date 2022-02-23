@@ -25,11 +25,11 @@ create table if not exists users_roles
 class UserRole extends DataObjectDao
 {
     public static $dbType      = 'data' ;
+    public static $thisClass   = '\\Stader\\Model\\Tables\\UserRole\\UserRole' ;
     public static $allowedKeys = 
         [ 'user_id' => 'int' , 
           'role_id' => 'int' 
         ] ;
-    public static $thisClass   = '\\Stader\\Model\\Tables\\UserRole\\UserRole' ;
 
     use DataObjectConstruct ;
 

@@ -29,40 +29,47 @@ trait ObjectsDaoIterator
 
     public function rewind() : void 
     {
-        self::$functions->rewind( $this ) ;
+        $method = self::$iniSettings[ $this->theDBtype ]['method'] ;
+        self::$functions[ $method ]->rewind( $this ) ;
         $this->position = 0 ;
     }
 
     public function count() : int
     {
-        return self::$functions->count( $this ) ;
+        $method = self::$iniSettings[ $this->theDBtype ]['method'] ;
+        return self::$functions[ $method ]->count( $this ) ;
     }
 
     public function next() : void 
     {
-        $this->row = self::$functions->next( $this ) ;
+        $method = self::$iniSettings[ $this->theDBtype ]['method'] ;
+        $this->row = self::$functions[ $method ]->next( $this ) ;
         ++$this->position ; 
     }
 
     public function valid() : bool
     {
-        return self::$functions->valid( $this ) ;
+        $method = self::$iniSettings[ $this->theDBtype ]['method'] ;
+        return self::$functions[ $method ]->valid( $this ) ;
     }
 
     public function current() : object
     {   // echo $this->class . \PHP_EOL ;
-        $id = self::$functions->current( $this ) ;
+        $method = self::$iniSettings[ $this->theDBtype ]['method'] ;
+        $id = self::$functions[ $method ]->current( $this ) ;
         return $this->getOne( $this , $id ) ;
     }
 
     public function key() : int | false
     {
-        return self::$functions->key( $this ) ;
+        $method = self::$iniSettings[ $this->theDBtype ]['method'] ;
+        return self::$functions[ $method ]->key( $this ) ;
     }
 
     public function deleteAll() : void
     {
-        self::$functions->deleteAll( $this ) ;
+        $method = self::$iniSettings[ $this->theDBtype ]['method'] ;
+        self::$functions[ $method ]->deleteAll( $this ) ;
     }
     
     public function getIDs() : array 

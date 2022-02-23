@@ -36,6 +36,7 @@ create table if not exists ticket
 class Ticket extends DataObjectDao
 {
     public static $dbType      = 'data' ;
+    public static $thisClass   = '\\Stader\\Model\\Tables\\Ticket\\Ticket' ;
     public static $allowedKeys = 
         [ 'header'            => 'varchar' , 
           'description'       => 'text'    , 
@@ -44,7 +45,6 @@ class Ticket extends DataObjectDao
           'assigned_user_id'  => 'int'     , 
           'active'            => 'bool'
         ] ;
-    public static $thisClass   = '\\Stader\\Model\\Tables\\Ticket\\Ticket' ;
     private $thisLog ;
     private $referenceID ;
     private $descriptID  ;

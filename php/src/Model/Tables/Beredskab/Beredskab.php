@@ -28,6 +28,7 @@ create table if not exists beredskab
 class Beredskab extends DataObjectDao
 {
     public static $dbType      = 'data' ;
+    public static $thisClass   = '\\Stader\\Model\\Tables\\Beredskab\\Beredskab' ;
     public static $allowedKeys = 
         [ 'message'       => 'text'    , 
           'header'        => 'text'    , 
@@ -36,7 +37,6 @@ class Beredskab extends DataObjectDao
           'colour'        => 'varchar' , 
           'active'        => 'bool' 
         ] ;
-    public static $thisClass   = '\\Stader\\Model\\Tables\\Beredskab\\Beredskab' ;
     private $thisLog ;
     private $referenceID ;
     private $descriptID  ;

@@ -18,11 +18,11 @@ create table if not exists ugroup
 class UGroup extends DataObjectDao
 {
     public static $dbType      = 'data' ;
+    public static $thisClass  = '\\Stader\\Model\\Tables\\Group\\UGroup' ;
     public static $allowedKeys = 
         [ 'name'        => 'varchar' , 
           'description' => 'varchar'
         ] ;
-    public static $thisClass  = '\\Stader\\Model\\Tables\\Group\\UGroup' ;
 
     use DataObjectConstruct ;
 

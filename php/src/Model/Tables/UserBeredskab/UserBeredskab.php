@@ -23,11 +23,11 @@ create table if not exists user_beredskab
 class UserBeredskab extends DataObjectDao
 {
     public static $dbType      = 'data' ;
+    public static $thisClass   = '\\Stader\\Model\\Tables\\UserBeredskab\\UserBeredskab' ;
     public static $allowedKeys = 
         [ 'user_id'      => 'int' ,
           'beredskab_id' => 'int'  
         ] ;
-    public static $thisClass   = '\\Stader\\Model\\Tables\\UserBeredskab\\UserBeredskab' ;
 
     use DataObjectConstruct ;
 

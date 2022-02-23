@@ -22,11 +22,12 @@ create table if not exists ticketgroup
 
 class TicketGroup extends DataObjectDao
 {
+    public static $dbType      = 'data' ; 
+    public static $thisClass   = '\\Stader\\Model\\Tables\\TicketGroup\\TicketGroup' ;
     public static $allowedKeys = 
         [ 'ticket_id' => 'int' , 
           'group_id'  => 'int' 
         ] ;
-    public static $thisClass   = '\\Stader\\Model\\Tables\\TicketGroup\\TicketGroup' ;
 
     use DataObjectConstruct ;
 
