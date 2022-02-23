@@ -9,9 +9,8 @@ use \Stader\Control\Abstract\DataObjectDao ;
 
 class AreaPlace extends DataObjectDao
 {
-    public static $allowedKeys = 
-        [ 'areaplace' => 'varchar' ] ;
-    protected   $class  = '\\Stader\\Control\\Object\\AreaPlace\\AreaPlace' ;
+    public static $thisClass   = '\\Stader\\Control\\Object\\AreaPlace\\AreaPlace' ;
+    public static $allowedKeys = [ 'areaplace' => 'varchar' ] ;
 
     protected Area       $area  ;
     protected Place      $place ;
@@ -25,11 +24,11 @@ class AreaPlace extends DataObjectDao
 
         parent::__construct( self::$allowedKeys ) ;
 
-        $this->setupData( $args ) ;
+        $this->setupData( self::$thisClass , $args ) ;
 
     }
 
-    protected function setupData ( $args )
+    protected function setupData ( $thisClass , $args )
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $args ) ;
         /*

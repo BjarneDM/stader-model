@@ -278,15 +278,15 @@ and table_name = "{$this->table}"
     return $ids ; }
 
     public function readNULL( $object ) : array
-    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        // print_r( $object ) ;
+    {   echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        print_r( $object ) ;
 
         $dbh  = self::$connect[ $this->getDatabase( $object ) ]->getConn() ;
 
         $sql  = "select column_name " ;
         $sql .= "from information_schema.columns " ;
-        $sql .= "where table_schema = '" . self::$iniSettings[$this->database]['dbname'] . "' " ;
-        $sql .= "and table_name = '{$this->table}' " ;
+        $sql .= "where table_schema = '" . self::$iniSettings[$object::$dbType]['dbname'] . "' " ;
+        $sql .= "and table_name = '". $this->getTable( $object::$thisClass ) ."' " ;
 
         $stmt = $dbh->prepare( $sql ) ;
         $stmt->execute() ;
