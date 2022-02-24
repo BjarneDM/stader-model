@@ -23,6 +23,7 @@ class Flag extends DataObjectDao
         [ 'text'    => 'varchar' , 
           'unicode' => 'char'
         ] ;
+    public static $privateKeys = [] ;
 
     use DataObjectConstruct ;
 

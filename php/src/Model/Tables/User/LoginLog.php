@@ -26,8 +26,8 @@ create table if not exists loginlog
 
 class LoginLog extends DataObjectDao
 {
-    public static $dbType  = 'logs' ;
-    public static $class   = '\\Stader\\Model\\Tables\\User\\LoginLog' ;
+    public static $dbType      = 'logs' ;
+    public static $thisClass   = '\\Stader\\Model\\Tables\\User\\LoginLog' ;
     public static $allowedKeys = 
         [ 'user_id'       => 'int'      , 
           'action'        => 'varchar'  ,
@@ -39,6 +39,7 @@ class LoginLog extends DataObjectDao
           'lastloginfail' => 'datetime' ,
           'loginfailures' => 'int' 
         ] ;
+    public static $privateKeys = [] ;
 
     use DataObjectConstruct ;
 

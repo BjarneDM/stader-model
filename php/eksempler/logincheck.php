@@ -8,7 +8,7 @@ set_include_path( dirname( __DIR__ ) ) ;
 require_once( 'settings/phpValues.php' ) ;
 
 require_once( 'classloader.php' ) ;
-use \Stader\Control\User\{User} ;
+use \Stader\Control\Objects\User\{User} ;
 
 
 $method    = @( $argv[1] ) ?: 'manual' ;

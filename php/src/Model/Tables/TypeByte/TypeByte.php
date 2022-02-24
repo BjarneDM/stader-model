@@ -19,6 +19,7 @@ class TypeByte extends DataObjectDao
     public static $dbType      = 'data' ;
     public static $thisClass   = '\\Stader\\Model\\Tables\\TypeByte\\TypeByte' ;
     public static $allowedKeys = [ 'name' => 'varchar' ] ;
+    public static $privateKeys = [] ;
 
     use DataObjectConstruct ;
 

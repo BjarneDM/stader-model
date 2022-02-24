@@ -28,6 +28,7 @@ class TicketGroup extends DataObjectDao
         [ 'ticket_id' => 'int' , 
           'group_id'  => 'int' 
         ] ;
+    public static $privateKeys = [] ;
 
     use DataObjectConstruct ;
 

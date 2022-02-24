@@ -33,6 +33,12 @@ class UserLogin extends DataObjectDao
           'passwd'        => 'varchar' , 
           'email'         => 'varchar'
         ] ;
+    public static $privateKeys = 
+        [ 'ip_addr'       => 'varchar' , 
+          'lastlogintime' => 'datetime' , 
+          'lastloginfail' => 'datetime' , 
+          'loginfailures' => 'int'
+        ] ;
 
     // use DataObjectConstruct ;
     function __construct ( ...$args )

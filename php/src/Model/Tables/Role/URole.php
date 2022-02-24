@@ -26,6 +26,7 @@ class URole extends DataObjectDao
           'note'     => 'text'    , 
           'priority' => 'int'
         ] ;
+    public static $privateKeys = [] ;
 
     use DataObjectConstruct ;
 

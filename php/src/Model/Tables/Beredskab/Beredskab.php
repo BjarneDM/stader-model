@@ -37,6 +37,7 @@ class Beredskab extends DataObjectDao
           'colour'        => 'varchar' , 
           'active'        => 'bool' 
         ] ;
+    public static $privateKeys = [] ;
     private $thisLog ;
     private $referenceID ;
     private $descriptID  ;

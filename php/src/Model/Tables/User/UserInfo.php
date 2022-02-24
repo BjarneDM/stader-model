@@ -26,6 +26,7 @@ class UserInfo extends DataObjectDao
           'phone'        => 'varchar' ,
           'reference_id' => 'int'
         ] ;
+    public static $privateKeys = [] ;
 
     // use DataObjectConstruct ;
     function __construct ( ...$args )

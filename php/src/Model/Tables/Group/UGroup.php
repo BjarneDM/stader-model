@@ -23,6 +23,7 @@ class UGroup extends DataObjectDao
         [ 'name'        => 'varchar' , 
           'description' => 'varchar'
         ] ;
+    public static $privateKeys = [] ;
 
     use DataObjectConstruct ;
 

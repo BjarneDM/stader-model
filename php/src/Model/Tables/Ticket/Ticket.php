@@ -45,6 +45,7 @@ class Ticket extends DataObjectDao
           'assigned_user_id'  => 'int'     , 
           'active'            => 'bool'
         ] ;
+    public static $privateKeys = [] ;
     private $thisLog ;
     private $referenceID ;
     private $descriptID  ;

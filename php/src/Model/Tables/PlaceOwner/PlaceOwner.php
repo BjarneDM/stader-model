@@ -28,6 +28,7 @@ class PlaceOwner extends DataObjectDao
           'email'        => 'varchar' , 
           'organisation' => 'varchar' 
         ] ;
+    public static $privateKeys = [] ;
 
     use DataObjectConstruct ;
 

@@ -25,13 +25,14 @@ create table if not exists placelog
 class PlaceLog extends DataObjectDao
 {
     public static $dbType      = 'logs' ;
+    public static $thisClass   = '\\Stader\\Model\\Tables\\Place\\PlaceLog' ;
     public static $allowedKeys = 
         [ 'place_id'     => 'int'     , 
           'description'  => 'varchar' , 
           'old_value'    => 'text'    , 
           'new_value'    => 'text'
         ] ;
-    public static $thisClass   = '\\Stader\\Model\\Tables\\Place\\PlaceLog' ;
+    public static $privateKeys = [] ;
     private $referenceID ;
     private $descriptID  ;
 

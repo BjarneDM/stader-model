@@ -30,6 +30,7 @@ class UserGroup extends DataObjectDao
         [ 'user_id'  => 'int' , 
           'group_id' => 'int'
         ] ;
+    public static $privateKeys = [] ;
 
     use DataObjectConstruct ;
 

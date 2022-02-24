@@ -32,6 +32,7 @@ class BeredskabLog extends DataObjectDao
           'old_value'    => 'text'    , 
           'new_value'    => 'text'
         ] ;
+    public static $privateKeys = [] ;
     private $referenceID ;
     private $descriptID  ;
 

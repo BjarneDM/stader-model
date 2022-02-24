@@ -9,7 +9,6 @@ set_include_path( implode( ':' , $include_paths ) ) ;
 // echo 'IncludePaths : ' . \PHP_EOL ;
 // print_r( explode( ':' , get_include_path() ) ) ;
 
-require_once( dirname( __file__ , 2 ) . '/control/class.classloader.php' ) ;
 require_once( 'classloader.php' ) ;
 
 use \Stader\Model\Instance\{MInstance,MInstances} ;

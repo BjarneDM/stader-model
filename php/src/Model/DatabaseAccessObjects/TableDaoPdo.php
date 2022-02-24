@@ -9,8 +9,8 @@ class TableDaoPdo
 {
 
     public function __construct ( $dbType , $thisClass , $allowedKeys )
-    {   echo 'class TableDaoPdo implements ICrudDao __construct' . \PHP_EOL ;
-        print_r( ['dbType' => $dbType , 'class' => $thisClass , 'allowedKeys' => $allowedKeys] ) ;
+    {   // echo 'class TableDaoPdo implements ICrudDao __construct' . \PHP_EOL ;
+        // print_r( ['dbType' => $dbType , 'class' => $thisClass , 'allowedKeys' => $allowedKeys] ) ;
 
         parent::__construct( $dbType ) ;
 
@@ -326,9 +326,10 @@ and table_name = "{$this->table}"
 
         $stmt = $dbh->prepare( $sql ) ;
 
+        $totalKeys = array_merge( $object::$allowedKeys , $object::$privateKeys ) ;
         foreach ( $diffValues as $param => $value )
         {
-            $stmt->bindParam( ":{$param}" , $value , $this->getPdoParamType( $object::$allowedKeys[$param] ) ) ;
+            $stmt->bindParam( ":{$param}" , $value , $this->getPdoParamType( $totalKeys[$param] ) ) ;
         }   unset( $param , $value ) ;
         $stmt->bindParam( ':id' , $object->getData()['id'] , \PDO::PARAM_INT ) ;
 

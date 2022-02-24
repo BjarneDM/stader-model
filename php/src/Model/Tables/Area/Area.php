@@ -26,6 +26,7 @@ class Area extends DataObjectDao
         [ 'name'        => 'varchar' , 
           'description' => 'text' 
         ] ;
+    public static $privateKeys = [] ;
 
     use DataObjectConstruct ;
 

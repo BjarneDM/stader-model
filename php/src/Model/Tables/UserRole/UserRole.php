@@ -30,6 +30,7 @@ class UserRole extends DataObjectDao
         [ 'user_id' => 'int' , 
           'role_id' => 'int' 
         ] ;
+    public static $privateKeys = [] ;
 
     use DataObjectConstruct ;
 

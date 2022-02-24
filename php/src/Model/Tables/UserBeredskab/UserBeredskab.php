@@ -28,6 +28,7 @@ class UserBeredskab extends DataObjectDao
         [ 'user_id'      => 'int' ,
           'beredskab_id' => 'int'  
         ] ;
+    public static $privateKeys = [] ;
 
     use DataObjectConstruct ;
 

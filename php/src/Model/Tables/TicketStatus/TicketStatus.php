@@ -30,6 +30,7 @@ class TicketStatus extends DataObjectDao
           'description'    => 'text' , 
           'type_byte_id'   => 'int' 
         ] ;
+    public static $privateKeys = [] ;
 
     public static $allowedColours =
         [

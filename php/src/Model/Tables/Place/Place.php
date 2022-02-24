@@ -39,6 +39,7 @@ class Place extends DataObjectDao
           'area_id'        => 'int'     , 
           'active'         => 'bool'
         ] ;
+    public static $privateKeys = [] ;
     private $thisLog ;
     private $referenceID ;
     private $descriptID  ;
