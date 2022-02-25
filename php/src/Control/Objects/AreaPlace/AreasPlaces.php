@@ -29,7 +29,7 @@ class AreasPlaces extends DataObjectsDao
 // https://www.php.net/manual/en/class.iterator.php
 
     public function rewind() : void 
-    {   echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+    {   //  echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         $this->areas->rewind() ;
         if ( $this->areas->valid() )
         {
@@ -40,12 +40,12 @@ class AreasPlaces extends DataObjectsDao
     }
 
     public function count() : int 
-    {   echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+    {   //  echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         return $this->areas->count() ;
     }
 
     public function next() : void 
-    {   echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+    {   //  echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         $this->places->next() ;
         if ( ! $this->places->valid() )
         {
@@ -62,21 +62,24 @@ class AreasPlaces extends DataObjectsDao
     }
 
     public function valid() : bool 
-    {   echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+    {   //  echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         return ( $this->areas->valid() && $this->places->valid() ) ;
     }
 
     public function current() : Object 
-    {   echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+    {   //  echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         return new AreaPlace(
             $this->areas->current()->getData()['name'] .
             $this->places->current()->getData()['place_nr']
         ) ;
     }
 
-    public function key() : int | false 
-    {   echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        return $this->usersLogin->key() ;
+    public function key() : string | false 
+    {   //  echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        return (
+            $this->areas->current()->getData()['name'] .
+            $this->places->current()->getData()['place_nr']
+        ) ;
     }
 
 }
