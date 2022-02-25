@@ -44,6 +44,7 @@ use \Stader\Control\Objects\AreaPlace\{AreaPlace,AreasPlaces} ;
 
 echo '<pre>' . \PHP_EOL ;
 
+/*
 foreach ( ( new Areas() ) as $area )
 {
     foreach ( ( new Places( 'area_id' , $area->getData()['id'] ) ) as $place )
@@ -55,7 +56,11 @@ foreach ( ( new Areas() ) as $area )
         ) )->getData() ) ;
     }
 }
+*/
 
+foreach ( ( new AreasPlaces() ) as $areaplace )
+    print_r( $areaplace->getData() ) ;
+    unset( $areaplace ) ;
 
 echo '</pre>' . \PHP_EOL ;
 

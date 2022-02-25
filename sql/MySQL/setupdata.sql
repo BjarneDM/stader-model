@@ -176,6 +176,12 @@ create table if not exists place
     unique key (place_nr,area_id)
 ) ;
 
+create view areaplace as
+select concat( a.name , p.place_nr ) as placename
+from area as a , place as p 
+where a.id = p.area_id
+;
+
 create table if not exists ticket
 (
     id                  int auto_increment primary key ,

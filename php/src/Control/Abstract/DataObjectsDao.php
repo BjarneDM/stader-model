@@ -85,11 +85,8 @@ abstract class DataObjectsDao
     abstract public function current() : object ;
         // return $this->getOne( $this->functions->current() ) ;
 
-    abstract public function key() : int | false ;
+    abstract public function key() : mixed ;
         // return $this->functions->key() ;
-
-    abstract public function deleteAll() : void ;
-        // $this->functions->deleteAll( $this ) ;
     
 /*
     public function getAll() : array 
