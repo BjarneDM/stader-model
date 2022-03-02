@@ -1,11 +1,16 @@
-<?php   namespace stader\tests ;
-use PHPUnit\Framework\TestCase;
+<?php  
+declare(strict_types=1) ;
+namespace Stader\Tests ;
 
-set_include_path( '/Volumes/Bjarne/Sites/info/mathiesen/zbc/stader/php' ) ;
+    $include_paths   = [] ;
+    $include_paths[] =  dirname( __DIR__ ) ;
+set_include_path( implode( ':' , $include_paths ) ) ;
 
 require_once( 'classloader.php' ) ;
+require_once( 'vendor/autoload.php' ) ;
 
-use \Stader\Model\Tables\\{User} ;
+use \PHPUnit\Framework\TestCase;
+use \Stader\Control\Objects\User\{User} ;
 
 class UserUseTest extends TestCase
 {
@@ -26,7 +31,7 @@ class UserUseTest extends TestCase
 
     protected function setUp() : void
     {   echo \PHP_EOL . '-> entering ' . __function__ . \PHP_EOL ;
-        $this->testUser = new User( self::$setup::$connect , self::$newUser ) ;
+        $this->testUser = new User( self::$newUser ) ;
     }
 
 
@@ -64,7 +69,7 @@ class UserUseTest extends TestCase
 
         print_r( $this->testUser->getData() ) ;
         $this->testUser->setValues( [ 'name' => 'Bjarne' , 'surname' => 'Mathiesen' ] ) ;
-        $this->testUser->setValues( [ 'passwd' => 'BjarneMathiesen' ] ) ;
+        $this->testUser->setValues( ['passwd' => 'BjarneMathiesen'] ) ;
         print_r( $this->testUser->getData() ) ;
         $this->assertTrue( true ) ;
 

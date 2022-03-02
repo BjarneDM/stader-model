@@ -281,14 +281,14 @@ class TableCryptDaoPdo
      *  ?!?!?!?!?
      */
     private function updateNamed( $object ) : int
-    {   echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        print_r( $object ) ;
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        // print_r( $object ) ;
 
         if ( empty( $diffValues ) ) return 0 ;
 
         $dbh  = self::$connect[ $this->getDatabase( $object ) ]->getConn() ;
 
-        $sql  = 'update ' . $this->getTable( $object::$thisClass ) ;
+        $sql  = 'update ' . $this->getTable( $object::$thisClass ) . ' ' ;
 
         $set = [] ;
         foreach ( self::$allowedKeys as $key => $value )
@@ -316,12 +316,12 @@ class TableCryptDaoPdo
     return $rowCount ; }
 
     private function updatePosit( $object ) : int
-    {   echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        print_r( $object ) ;
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        // print_r( $object ) ;
 
         $dbh  = self::$connect[ $this->getDatabase( $object ) ]->getConn() ;
 
-        $sql  = 'update ' . $this->getTable( $object::$thisClass ) ;
+        $sql  = 'update ' . $this->getTable( $object::$thisClass ) . ' ' ;
 
         $cryptData = $this->dataEncrypt( $object->getData() ) ;
         $cryptData['reference_id'] = $object->getData()['reference_id'] ;
@@ -343,7 +343,7 @@ class TableCryptDaoPdo
 
     return $rowCount ; }
 
-    public function update( $object , $dummy = [] ) : int
+    public function update( $object ) : int
     {
         switch ( count( $object->getData() ) )
         {

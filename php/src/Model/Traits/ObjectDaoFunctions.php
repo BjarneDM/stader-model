@@ -35,9 +35,7 @@ trait ObjectDaoFunctions
         // print_r( $object ) ; // exit ;
 
         $method = self::$iniSettings[ $this->theDBtype ]['method'] ;
-        $rowCount = self::$functions[ $method ]->update( 
-            $object , 
-            array_diff( $this->values , $this->valuesOld ) ) ;
+        $rowCount = self::$functions[ $method ]->update( $object ) ;
         $this->notify( 'update' ) ;
     return $rowCount ; }
 
@@ -47,12 +45,15 @@ trait ObjectDaoFunctions
         $method = self::$iniSettings[ $this->theDBtype ]['method'] ;
         $rowCount = self::$functions[ $method ]->delete( $object ) ;
         $this->notify( 'delete' ) ;
-        unset( $this->values , $this->valuesOld ) ;
+        $this->values    = [] ;
+        $this->valuesOld = [] ;
     return $rowCount ; }
 
     public function getData()   { return $this->values ; }
     public function getValues() { return array_values( $this->values ) ; }
     public function getKeys()   { return array_keys( $this->values ) ; }
+
+    public function getDiff()   { return array_diff( $this->values , $this->valuesOld ) ; }
 
     public function delete() : int
     {

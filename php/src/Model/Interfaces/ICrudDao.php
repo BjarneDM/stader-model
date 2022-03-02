@@ -20,7 +20,7 @@ interface ICrudDao
     /**
      * Update the object's fields.
      */
-    function update( $object , Array $diffValues ) ;
+    function update( $object ) ;
 
     /**
      * Delete the object from the database.

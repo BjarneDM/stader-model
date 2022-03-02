@@ -6,34 +6,6 @@ use \Stader\Control\Abstract\DataObjectDao ;
 
 /*
 
-create table users
-(
-    id          int auto_increment primary key , <- denne bliver genereret af DB
-    name        varchar(255) not null ,          <- de resterende felter er krævede
-    surname     varchar(255) default '' ,
-    phone       varchar(255) not null ,
-    username    varchar(255) not null ,
-        constraint unique (username) ,
-    passwd      varchar(255) not null ,
-    email       varchar(255) not null ,
-        constraint unique (email) ,
-) ;
-
-select * from userlogin as ul , userinfo as ui where ul.id = ui.userlogin_id \G
-*************************** 3. row ***************************
-           id: 99
-     username: skp
-        email: skp@example.com
-       passwd: $2y$04$xDxkVtrjfaTO4QHBnEuqKe6rlK2LVFx0wpkQzDocNsIDfR3zvu1q2
-lastlogintime: 2022-02-15 16:28:18
-lastloginfail: 2022-02-15 16:20:13
-loginfailures: 0
-           id: 99
- userlogin_id: 99
-         name: SKP-IT
-      surname: Slagelse
-        phone: 8892 4596
-
 Array
 (
     [id] => 99
@@ -43,6 +15,7 @@ Array
     [username] => skp
     [email] => skp@example.com
     [passwd] => $2y$04$xDxkVtrjfaTO4QHBnEuqKe6rlK2LVFx0wpkQzDocNsIDfR3zvu1q2
+    [ip_addr] => 123.456.789.012
     [lastlogintime] => Stader\Model\OurDateTime Object
         (
             [displayFormat:Stader\Model\OurDateTime:private] => mysql
@@ -50,7 +23,6 @@ Array
             [timezone_type] => 3
             [timezone] => Europe/Copenhagen
         )
-
     [lastloginfail] => Stader\Model\OurDateTime Object
         (
             [displayFormat:Stader\Model\OurDateTime:private] => mysql
@@ -58,7 +30,6 @@ Array
             [timezone_type] => 3
             [timezone] => Europe/Copenhagen
         )
-
     [loginfailures] => 0
 
  */
@@ -260,6 +231,7 @@ create table if not exists loginlog
             if ( array_key_exists( $key , UserLogin::$allowedKeys ) )
                 { $this->userLogin->setValues( [ $key => $value ] ) ; }
         }
+
     }
     
     public function pwdVerify( $password )
@@ -277,12 +249,12 @@ create table if not exists loginlog
         $this->userLogin->setLoginFailure() ;
     }
 
-    public function delete() : void
+    public function delete() : int
     {
-        $this->userLogin->delete() ;
+        $rowCount = $this->userLogin->delete() ;
         unset( $this->userInfo , $this->userLogin ) ;
         parent::delete() ;
-    }
+    return $rowCount ; }
 
     // lavet for at teste userinfocrypt separat
     protected function createTest () : int

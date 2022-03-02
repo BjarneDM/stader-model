@@ -1,11 +1,20 @@
-<?php   namespace stader\tests ;
+<?php   
+declare(strict_types=1) ;
+namespace Stader\Tests  ;
+
+    $include_paths   = [] ;
+    $include_paths[] =  dirname( __DIR__ ) ;
+set_include_path( implode( ':' , $include_paths ) ) ;
+
+require_once( 'classloader.php' ) ;
+require_once( 'vendor/autoload.php' ) ;
+
 /*
  *  Usage :
  *      phpunit --cache-result-file=./phpunit.result.cache tests/CreateGroupTest.php 
  */
 use PHPUnit\Framework\TestCase;
 
-set_include_path(  ) ;
 
 /*
 
@@ -19,9 +28,7 @@ create table groups
 
  */
 
-require_once( 'classloader.php' ) ;
-
-use \Stader\Model\Tables\\{Group} ;
+use \Stader\Model\Tables\Group\{UGroup} ;
 
 class GroupCreateTest extends TestCase
 {
@@ -42,7 +49,7 @@ class GroupCreateTest extends TestCase
         /*
          *  helt ny gruppe oprettes
          */
-        $testGroup = new Group( self::$setup::$connect , self::$newGroup ) ;
+        $testGroup = new UGroup( self::$newGroup ) ;
         $data = $testGroup->getData() ;
         print_r( $data ) ;
 
@@ -53,7 +60,7 @@ class GroupCreateTest extends TestCase
         $this->assertEquals( self::$newGroup['description'] , $data['description'] ) ;
 
         echo '<- exiting ' . __function__ . \PHP_EOL ;
-    return (int) $data['group_id'] ; }
+    return (int) $data['id'] ; }
 
     /**
      *  @depends testConstruct1
@@ -64,14 +71,14 @@ class GroupCreateTest extends TestCase
          *  gruppe hentes fra databasen baseret på gruppe_id
          */
         var_dump( $group_id ) ;
-        $testGroup = new Group( self::$setup::$connect , $group_id ) ;
+        $testGroup = new UGroup( $group_id ) ;
         $data = $testGroup->getData() ;
         print_r( $data ) ;
 
         $this->assertIsObject( $testGroup ) ;
         $this->assertEquals( 3 , count( $testGroup->getData() ) ) ;
 
-        $this->assertEquals( $group_id                      , $data['group_id']    ) ;
+        $this->assertEquals( $group_id                      , $data['id']    ) ;
         $this->assertEquals( self::$newGroup['name']        , $data['name']    ) ;
         $this->assertEquals( self::$newGroup['description'] , $data['description'] ) ;
 
@@ -86,14 +93,14 @@ class GroupCreateTest extends TestCase
         /*
          *  gruppe hentes fra databasen baseret på 'name' som string
          */
-        $testGroup = new Group( self::$setup::$connect , 'name' , self::$newGroup['name'] ) ;
+        $testGroup = new UGroup( 'name' , self::$newGroup['name'] ) ;
         $data = $testGroup->getData() ;
         print_r( $data ) ;
 
         $this->assertIsObject( $testGroup ) ;
         $this->assertEquals( 3 , count( $testGroup->getData() ) ) ;
 
-        $this->assertEquals( $group_id                      , $data['group_id']    ) ;
+        $this->assertEquals( $group_id                      , $data['id']    ) ;
         $this->assertEquals( self::$newGroup['name']        , $data['name']    ) ;
         $this->assertEquals( self::$newGroup['description'] , $data['description'] ) ;
 
@@ -108,14 +115,14 @@ class GroupCreateTest extends TestCase
         /*
          *  gruppe hentes fra databasen baseret på 'name' som Array
          */
-        $testGroup = new Group( self::$setup::$connect , ['name'] , [self::$newGroup['name']] ) ;
+        $testGroup = new UGroup( ['name'] , [self::$newGroup['name']] ) ;
         $data = $testGroup->getData() ;
         print_r( $data ) ;
 
         $this->assertIsObject( $testGroup ) ;
         $this->assertEquals( 3 , count( $testGroup->getData() ) ) ;
 
-        $this->assertEquals( $group_id                      , $data['group_id']    ) ;
+        $this->assertEquals( $group_id                      , $data['id']    ) ;
         $this->assertEquals( self::$newGroup['name']        , $data['name']    ) ;
         $this->assertEquals( self::$newGroup['description'] , $data['description'] ) ;
 
@@ -125,7 +132,7 @@ class GroupCreateTest extends TestCase
    /**
      *  @depends testConstruct2
      */
-    public function testDelete( Group $testGroup )
+    public function testDelete( UGroup $testGroup )
     {   echo \PHP_EOL . '-> entering ' . __function__ . \PHP_EOL ;
         $rowCount = $testGroup->delete() ;
 

@@ -369,11 +369,12 @@ and table_name = "{$this->table}"
 
     return $rowCount ; }
 
-    public function update(  $object , Array $diffValues ) : int
+    public function update( $object ) : int
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $object ) ;
-        // print_r( $diffValues ) ;
         // exit ;
+
+        $diffValues = $object->getDiff() ;
 
         switch ( count( $diffValues ) )
         {

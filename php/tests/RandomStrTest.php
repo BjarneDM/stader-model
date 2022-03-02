@@ -1,15 +1,21 @@
-<?php   namespace stader\tests ;
+<?php   
+declare(strict_types=1) ;
+namespace Stader\Tests  ;
+
 /*
  *  Usage :
  *      phpunit --cache-result-file=./phpunit.result.cache tests/RandomStrTest.php 
  */
-use PHPUnit\Framework\TestCase;
 
-set_include_path( '/Volumes/Bjarne/Sites/info/mathiesen/zbc/stader/php' ) ;
+    $include_paths   = [] ;
+    $include_paths[] =  dirname( __DIR__ ) ;
+set_include_path( implode( ':' , $include_paths ) ) ;
 
 require_once( 'classloader.php' ) ;
+require_once( 'vendor/autoload.php' ) ;
 
-use \Stader\Model\Tables\\{RandomStr} ;
+use \PHPUnit\Framework\TestCase;
+use \Stader\Model\{RandomStr} ;
 
 class RandomStrTest extends TestCase
 {

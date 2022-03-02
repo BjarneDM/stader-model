@@ -44,6 +44,7 @@ abstract class DataObjectDao
                                 $this->check( $thisClass , $args[0] ) ;
                                 $this->values       = ( new \ArrayObject( $args[0] ) )->getArrayCopy() ;
                                 $this->values['id'] = $this->create() ;
+                                $this->values       = $this->read() ;
                                 $this->notify( 'create' ) ;
                                 break ;
                             default :
@@ -85,16 +86,17 @@ abstract class DataObjectDao
     abstract protected function create ()                 : int   ;
     abstract protected function read   ()                 : Array  ;
     abstract protected function update ( Array  $values ) : void  ;
-    public             function delete ()                 : void 
+    public             function delete () 
     {
-        unset( $this->values , $this->valuesOld ) ;
+        $this->values    = [] ;
+        $this->valuesOld = [] ;
     }
 
     public function getData()   { return $this->values ; }
     public function getValues() { return array_values( $this->values ) ; }
     public function getKeys()   { return array_keys( $this->values ) ; }
  
-    public function setValues( $thisClass , Array $values )
+    public function setValues( Array $values )
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // echo $this->class. \PHP_EOL ;
         // print_r( $values ) ;
@@ -102,7 +104,7 @@ abstract class DataObjectDao
         switch ( strtolower( gettype( $values ) ) )
         {
             case 'array' :
-                $this->check( $thisClass , $values ) ;
+                $this->check( $this , $values ) ;
                 foreach ( $values as $key => $value )
                 {
                     $this->valuesOld[ $key ] = $this->values[ $key ] ;
@@ -114,22 +116,23 @@ abstract class DataObjectDao
                 throw new \Exception( gettype( $values ) . " : forkert input type [array]" ) ;
                 break ;
         }
+        $this->values = $this->read() ;
     }
 
     /*
      *  default minimalt integritets check
      */
-    protected function check( $thisClass , Array &$toCheck )
+    protected function check( $class , Array &$toCheck )
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $toCheck ) ;
 
         foreach ( array_keys( $toCheck ) as $key )
         {
-            if ( ! array_key_exists( $key , $thisClass::$allowedKeys ) )
+            if ( ! array_key_exists( $key , $class::$allowedKeys ) )
                 unset( $toCheck[ $key ] ) ;
                 // throw new \Exception( "'{$key}' doesn't exist in [" . implode( ',' , array_keys( $thisClass::$allowedKeys ) ) . "]" ) ;
 
-            switch ( $thisClass::$allowedKeys[$key] )
+            switch ( $class::$allowedKeys[$key] )
             {
                 case 'int' :
                 case 'integer' :
