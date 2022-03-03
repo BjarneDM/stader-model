@@ -93,16 +93,17 @@ create table if not exists loginlog
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $args ) ;
 
-        $loginCheck = 'success' ;
-        $values     = []   ;
-        $nullValues = []   ;
+        $returnValue = null ;
+        $loginCheck  = 'success' ;
+        $values      = ( new \ArrayObject( $args ) )->getArrayCopy() ;
+        $nullValues  = [] ;
         foreach ( LoginLog::$allowedKeys as $key => $type )
             { $nullValues[ $key ] = null ; }
             unset( $key , $type ) ;
-        $returnValue = null ;
 
         try {
-            $user = new UserLogin( array_keys( $args) , array_values( $args ) ) ;
+            unset( $values['password'] ) ;
+            $user = new UserLogin( array_keys( $values) , array_values( $values ) ) ;
 
             if ( ! $user->pwdVerify( $args['password'] ) )
             {
@@ -114,6 +115,7 @@ create table if not exists loginlog
             // echo "username tjek fejler" . \PHP_EOL ;
             $loginCheck = 'username' ;
         }
+        
 
         switch ( $loginCheck ) 
         {
