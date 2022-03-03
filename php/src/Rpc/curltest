@@ -12,15 +12,27 @@ php index.html '<jsonrpc-values>'
     "jsonrpc": "2.0",
     "id": 1,
     "result": {
-        "authstring": "81390b628681724d4b3dd965b88a9798",
+        "authstring": "f1b2b02bb5ea17185fbf81d692231bb4",
         "user": {
             "id": 2,
             "name": "Lars",
             "surname": "Starbech",
-            "phone": "1334 8864",
+            "phone": "9616 5413",
             "username": "last",
-            "passwd": "$2y$04$JACSB26cKh3wflvFgRr.MerGclIEMSkoUlZkfZhpZxm4v87x.oLme",
-            "email": "last@example.com"
+            "email": "last@example.com",
+            "passwd": "$2y$04$VXfpu7OHJ95RebDkcXGFR.jPL4aYOaMU7j.HRasD4WKFLEzG9ToTm",
+            "ip_addr": null,
+            "lastlogintime": {
+                "date": "2022-03-03 15:34:16.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            },
+            "lastloginfail": {
+                "date": "2022-03-03 15:34:10.000000",
+                "timezone_type": 3,
+                "timezone": "UTC"
+            },
+            "loginfailures": 0
         }
     }
 }

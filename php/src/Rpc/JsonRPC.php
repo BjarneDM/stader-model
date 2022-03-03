@@ -9,7 +9,7 @@
 
 require_once( dirname( __DIR__ , 2 ) . '/classloader.php' ) ;
 use \Stader\Model\Tables\Ticket\{Ticket,Tickets} ;
-use \Stader\Model\Tables\User\{UserLogin,User} ;
+use \Stader\Control\Objects\User\{User} ;
 use \Stader\Model\RandomStr ;
 
 class JsonRPC
@@ -184,8 +184,8 @@ class JsonRPC
         {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
             // print_r( [ $login , $password ] ) ;
 
-            $user = new UserLogin( [ 'username' => $login , 'passwd' => $password ] ) ;
-            if ( is_null( $user->getData() ) ) 
+            $user = User::userCheck( [ 'username' => $login , 'password' => $password ] ) ;
+            if ( is_null( $user ) ) 
                 { return null  ; }
             else
                 { return $user ; }
