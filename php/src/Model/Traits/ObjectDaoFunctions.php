@@ -2,7 +2,19 @@
 
 trait ObjectDaoFunctions
 {
+
+    /*
+     *  Denne funktion skal evt overrides i selve klassen 
+     *  m/ evt ting & sager, der skal ske m/ $args !før! man forsøger at konstruere Object
+     */
     protected function setValuesDefault ( &$args ) : void {}
+
+    /*
+     *  Denne funktion skal evt overrides i selve klassen
+     *  for at f.eks fikse datatypen på de ting, der kommer ud af SQL
+     *  da der udelukkende kommer tekst ud af SQL
+     *  Et godt/ekstremt eksempel på dette er datoer
+     */
     protected function fixValuesType () : void {}
 
     protected function create( $object ) : int
@@ -19,15 +31,16 @@ trait ObjectDaoFunctions
         $this->notify( 'read' ) ;
     return self::$functions[ $method ]->readOne( $object ) ; }
 
+    /*
+     *  Denne funktion returnere et Object m/ null i alle values
+     *  Bruges i forbindelse m/ left|full|right join
+     */
     protected function readNULL( $object ) : Array
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $args ) ;
 
         $method = self::$iniSettings->getSetting( $this->theDBtype, 'method') ;
         $this->notify( 'read' ) ;
-//         $values = self::$functions[ $method ]->readNULL( $object ) ;
-//         print_r(  $values ) ;
-//     return $values ; }
     return self::$functions[ $method ]->readNULL( $object ) ; }
 
     protected function update( $object ) : int

@@ -5,7 +5,7 @@ use \Stader\Model\Settings ;
 
 class DatabaseSetup
 {
-    /* private static $connect  = new IDbDriver() ; */
+    // holder styr på forbindelserne t/ de enkelte DBer
     protected static $connect = [] ;
     protected static Settings $iniSettings ;
 

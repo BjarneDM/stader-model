@@ -1,5 +1,16 @@
 <?php namespace Stader\Control\Objects\AreaPlace ;
 
+/*
+
+select * 
+from area as a , place as p left join placeowner as po 
+on p.place_owner_id = po.id 
+where a.id = p.area_id 
+\G
+
+ */
+
+
 use \Stader\Model\Tables\Area\{Area,Areas} ;
 use \Stader\Model\Tables\Place\{Place,Places} ;
 use \Stader\Model\Tables\PlaceOwner\{PlaceOwner,PlaceOwners} ;

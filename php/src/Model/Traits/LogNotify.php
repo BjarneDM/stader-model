@@ -1,5 +1,25 @@
 <?php namespace Stader\Model\Traits ;
 
+/*
+for at få logning til at fungere , skal der i den class, der skal logges, være det flg : 
+
+    private $thisLog ;
+    private $referenceID ;
+    private $descriptID  ;
+
+    protected function setValuesDefault ( &$args ) : void
+    {
+        $this->thisLog = self::$thisClass . 'Log' ;
+        $this->referenceID = array_keys( $this->thisLog::$allowedKeys )[0] ;
+        $this->descriptID  = array_keys( $this->thisLog::$allowedKeys )[1] ;
+    }
+
+
+& dette trait skal så inkluderes sidst i class
+
+tabellen behøver IKKE at være oprettet på forhånd i DB
+ */
+
 trait LogNotify
 {
     protected function notify ( string $action ) : void

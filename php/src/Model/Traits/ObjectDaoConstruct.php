@@ -3,9 +3,17 @@
 use \Stader\Model\DatabaseAccessObjects\{TableDaoPdo,TableCryptDaoPdo} ;
 use \Stader\Model\Settings ;
 
+/*
+ *  Idéen er, at der kan være flere DAO & at DAO bestemmes pr Object / DB tabel
+ *  f.eks kan der logges ned i en DB medens resten af tabellerne er i en primær DB
+ */
+
+
 trait ObjectDaoConstruct
 {
+    // holder styr på hvilke $dbTypes => $method denne contructor er blevet kaldt med
     private   static $dbTypes   = [] ;
+    // indeholder DB funktionerne for den enkelte $method
     private   static $functions = [] ;
     protected        $theDBtype = '' ;
     private static Settings $iniSettings ;

@@ -20,6 +20,36 @@ trait ObjectsDaoIterator
     public function getValues() { return array_values( $this->values ) ; }
     public function getKeys()   { return array_keys( $this->values ) ; }
 
+    public function deleteAll() : void
+    {
+        $method = self::$iniSettings[ $this->theDBtype ]['method'] ;
+        self::$functions[ $method ]->deleteAll( $this ) ;
+    }
+
+/*
+    public function getIDs() : array 
+    {
+        $IDs = [] ;
+        $this->rewind() ;
+        while ( $this->valid() )
+        {
+            $IDs[] = $this->key() ;
+            $this->next() ;
+        }
+    return $IDs ; }
+ */
+
+/*
+    public function getAll() : array 
+    {
+        $allObjects = [] ;
+        foreach ( $this->objectIDs as $oneID )
+        {
+            $allObjects[] = new $this->class( (int) $oneID ) ;
+        }
+    return  $allObjects ; }
+ */
+
 // https://www.php.net/manual/en/class.iterator.php
 
     private function getOne( $object , int $index )
@@ -66,6 +96,7 @@ trait ObjectsDaoIterator
         return self::$functions[ $method ]->key( $this ) ;
     }
 
+<<<<<<< HEAD
     public function deleteAll() : void
     {
         $method = self::$iniSettings->getSetting( $this->theDBtype, 'method') ;
@@ -95,6 +126,8 @@ trait ObjectsDaoIterator
     return  $allObjects ; }
  */
 
+=======
+>>>>>>> e08102f (On branch Documentation)
 }
 
 ?>

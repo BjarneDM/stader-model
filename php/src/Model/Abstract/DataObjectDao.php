@@ -29,12 +29,19 @@ abstract class DataObjectDao
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $args ) ;
         /*
-         *  gettype( $args[0] ) === 'integer' 
-         *      hent et Object på basis af et id
-         *      $testObject = new Object( id ) ;
+         *  setupData tager sig af C og R delene af CRUD
+         *
+         *  Create :
+         *  --------
          *  gettype( $args[0] ) === 'array'
          *      opret en Object på basis af værdierne i $args[0]
          *      $testObject = new Object( $args[0] )
+         *
+         *  Read :
+         *  ------
+         *  gettype( $args[0] ) === 'integer' 
+         *      hent et Object på basis af et id
+         *      $testObject = new Object( id ) ;
          *  gettype( $args[0] ) === ['string','array'] , gettype( $args[1] ) === ['string','array']
          *      hent et Object på basis af værdierne i $args[0],$args[1]
          *      $testObject = new Object( $keys , $values )
@@ -50,7 +57,7 @@ abstract class DataObjectDao
                     case 'integer' :
                         $this->values['id'] = $args[0] ;
                         $this->values       = $this->read( $this ) ;
-                       break ;
+                        break ;
                     case 'array' :
                         switch ( count( $args[0] ) )
                         {

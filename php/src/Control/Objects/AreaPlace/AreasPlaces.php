@@ -1,5 +1,16 @@
 <?php namespace Stader\Control\Objects\AreaPlace ;
 
+/*
+
+create view areaplace as
+select concat( a.name , p.place_nr ) as placename
+from area as a , place as p 
+where a.id = p.area_id
+;
+
+ */
+
+
 use \Stader\Model\Tables\Area\{Area,Areas} ;
 use \Stader\Model\Tables\Place\{Place,Places} ;
 use \Stader\Model\Tables\PlaceOwner\{PlaceOwner,PlaceOwners} ;

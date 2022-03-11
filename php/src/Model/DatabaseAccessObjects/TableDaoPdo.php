@@ -60,6 +60,9 @@ from information_schema.tables
 where table_schema = "" 
 and table_name = "{$this->table}"
  */
+    /*
+     *  opretter logtabeller hvis de ikke findes
+     */
     private function createTable ( $dbType , $table , $thisClass ) : void
     {   // print_r( ['dbType' => $dbType , 'table' => $table , 'class' => $class] ) ;
         // print_r( self::$connect ) ;
@@ -80,6 +83,7 @@ and table_name = "{$this->table}"
         //  echo "\$stmt->rowCount() : {$stmt->rowCount()}" . \PHP_EOL ;
         switch ( $stmt->rowCount() )
         {
+            // burde kun kunne give [0,1]
             case 0 :
                 $allowedKeys = array_keys( $thisClass::$allowedKeys )  ;
                 // print_r( $allowedKeys ) ; exit ;
