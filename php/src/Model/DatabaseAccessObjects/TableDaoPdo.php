@@ -8,7 +8,7 @@ class TableDaoPdo
     implements ICrudDao
 {
 
-    public function __construct ( $dbType , $thisClass , $allowedKeys )
+    public function __construct ( $dbType )
     {   // echo 'class TableDaoPdo implements ICrudDao __construct' . \PHP_EOL ;
         // print_r( ['dbType' => $dbType , 'class' => $thisClass , 'allowedKeys' => $allowedKeys] ) ;
 

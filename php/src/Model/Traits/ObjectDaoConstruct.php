@@ -24,16 +24,24 @@ trait ObjectDaoConstruct
 
             $method = self::$iniSettings->getSetting($dbType, 'method') ;
             self::$dbTypes[ $dbType ] = $method ;
-            switch ( $method )
-            {   
-                case "cryptdata"    : self::$functions[ $method ] = new TableCryptDaoPdo( $dbType , $thisClass , $allowedKeys ) ; break ;
-                case "mysql"        : self::$functions[ $method ] = new TableDaoPdo     ( $dbType , $thisClass , $allowedKeys ) ; break ;
-                case "pgsql"        : self::$functions[ $method ] = new TableDaoPdo     ( $dbType , $thisClass , $allowedKeys ) ; break ;
-                case "sqlite"       : self::$functions[ $method ] = new TableDaoPdo     ( $dbType , $thisClass , $allowedKeys ) ; break ;
-                case "xml"          : self::$functions[ $method ] = new TableDaoXml     ( $dbType , $thisClass , $allowedKeys ) ; break ;
-                default: throw new \Exception() ;
-                // var_dump( $this->functions ) ;
-            }
+            /*
+             *  dette trick kan IKKE benyttes, da der i de enkelte DAO skabes et PDOconnect 
+             *  på basis af self::$iniSettings->getSetting($dbType, 'dbname')
+             *  & der kan være flere PDOconnect pr $method
+             */
+            // if ( ! isset( self::$functions[ $method ] ) )
+            // {
+                switch ( $method )
+                {   
+                    case "cryptdata"    : self::$functions[ $method ] = new TableCryptDaoPdo( $dbType ) ; break ;
+                    case "mysql"        : self::$functions[ $method ] = new TableDaoPdo     ( $dbType ) ; break ;
+                    case "pgsql"        : self::$functions[ $method ] = new TableDaoPdo     ( $dbType ) ; break ;
+                    case "sqlite"       : self::$functions[ $method ] = new TableDaoPdo     ( $dbType ) ; break ;
+                    case "xml"          : self::$functions[ $method ] = new TableDaoXml     ( $dbType ) ; break ;
+                    default: throw new \Exception() ;
+                    // var_dump( $this->functions ) ;
+                }
+            // }
         }
     }
 
