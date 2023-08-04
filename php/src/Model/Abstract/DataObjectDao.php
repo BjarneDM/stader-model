@@ -1,14 +1,13 @@
 <?php namespace Stader\Model\Abstract ;
 
 use \Stader\Model\DatabaseAccessObjects\{TableDaoPdo} ;
-use \Stader\Model\Traits\{ObjectDaoConstruct,ObjectDaoFunctions,Settings} ;
+use \Stader\Model\Traits\{ObjectDaoConstruct,ObjectDaoFunctions} ;
 
 abstract class DataObjectDao
 {
     protected $values      = []   ;
     protected $valuesOld   = []   ;
     
-    use Settings ;
     use ObjectDaoConstruct ;
 
     protected function setupObject ( $thisClass , $args )

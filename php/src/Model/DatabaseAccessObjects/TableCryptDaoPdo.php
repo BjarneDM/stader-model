@@ -46,7 +46,7 @@ class TableCryptDaoPdo
 
     private function getDatabase ( $object )
     {
-        return self::$iniSettings[ $object::$dbType ]['dbname'] ;
+        return self::$iniSettings->getSetting( $object::$dbType, 'dbname') ;
     }
 
     private function getPdoParamType ( $valType )
@@ -102,11 +102,11 @@ class TableCryptDaoPdo
         // print_r( $user ) ;
 
         unset( $data['id'] , $data['reference_id'] ) ;
-        $cipher = self::$iniSettings['crypt']['method'] ;
+        $cipher = self::$iniSettings->getSetting('crypt', 'method') ;
         if ( in_array( $cipher , openssl_get_cipher_methods() ) )
         {
             $dataJson = json_encode( $data , JSON_NUMERIC_CHECK ) ;
-            $key   = openssl_digest( self::$iniSettings['crypt']['key'] , 'sha256' , true ) ;
+            $key   = openssl_digest( self::$iniSettings->getSetting('crypt', 'key') , 'sha256' , true ) ;
             $ivlen = openssl_cipher_iv_length( $cipher );
             $iv    = openssl_random_pseudo_bytes( $ivlen );
             $data = openssl_encrypt( $dataJson , $cipher , $key , 0 , $iv , $tag ) ;
@@ -114,14 +114,14 @@ class TableCryptDaoPdo
 
         return [ 
             'salt' => base64_encode( $iv ) ,
-            'algo' => self::$iniSettings['crypt']['method'] , 
+            'algo' => self::$iniSettings->getSetting('crypt', 'method') , 
             'tag'  => base64_encode( $tag ) , 
             'data' => base64_encode( $data ) ] ; }
 
     public function dataDecrypt ( Array $data ) : array
     {
         $cipher   = $data['algo'] ;
-        $key      = openssl_digest( self::$iniSettings['crypt']['key'] , 'sha256' , true ) ;
+        $key      = openssl_digest( self::$iniSettings->getSetting('crypt', 'key') , 'sha256' , true ) ;
         $dataJson = openssl_decrypt( 
                         base64_decode( $data['data'] ) , 
                         $cipher , $key , 0 , 

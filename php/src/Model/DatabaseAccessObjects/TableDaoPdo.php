@@ -24,7 +24,7 @@ class TableDaoPdo
 
     private function getDatabase ( $object )
     {
-        return self::$iniSettings[ $object::$dbType ]['dbname'] ;
+        return self::$iniSettings->getSetting( $object::$dbType, 'dbname' ) ;
     }
 
     private function getPdoParamType ( $valType )
@@ -63,13 +63,13 @@ and table_name = "{$this->table}"
     private function createTable ( $dbType , $table , $thisClass ) : void
     {   // print_r( ['dbType' => $dbType , 'table' => $table , 'class' => $class] ) ;
         // print_r( self::$connect ) ;
-        // print_r( self::$iniSettings[$dbType] ) ;
+        // print_r( self::$iniSettings($dbType) ) ;
 
-        $dbh  = self::$connect[ self::$iniSettings[$dbType]['dbname'] ]->getConn() ;
+        $dbh  = self::$connect[ self::$iniSettings->getSetting($dbType, 'dbname') ]->getConn() ;
 
         $sql  = "select * " ;
         $sql .= "from information_schema.tables " ;
-        $sql .= "where table_schema = \"". self::$iniSettings[$dbType]['dbname'] ."\" " ;
+        $sql .= "where table_schema = \"". self::$iniSettings->getSetting($dbType, 'dbname') ."\" " ;
         $sql .= "and table_name = \"{$table}\" " ;
 
         //  echo $sql  . \PHP_EOL ;
@@ -285,7 +285,7 @@ and table_name = "{$this->table}"
 
         $sql  = "select column_name " ;
         $sql .= "from information_schema.columns " ;
-        $sql .= "where table_schema = '" . self::$iniSettings[$object::$dbType]['dbname'] . "' " ;
+        $sql .= "where table_schema = '" . self::$iniSettings->getSetting($object::$dbType, 'dbname') . "' " ;
         $sql .= "and table_name = '". $this->getTable( $object::$thisClass ) ."' " ;
 
         $stmt = $dbh->prepare( $sql ) ;

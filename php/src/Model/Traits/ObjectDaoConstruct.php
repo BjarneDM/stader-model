@@ -1,26 +1,28 @@
 <?php namespace Stader\Model\Traits ;
 
 use \Stader\Model\DatabaseAccessObjects\{TableDaoPdo,TableCryptDaoPdo} ;
+use \Stader\Model\Settings ;
 
 trait ObjectDaoConstruct
 {
     private   static $dbTypes   = [] ;
     private   static $functions = [] ;
     protected        $theDBtype = '' ;
+    private static Settings $iniSettings ;
 
     function __construct ( string $dbType , string $thisClass , array $allowedKeys  )
     {   // echo "trait ObjectDaoConstruct"  . \PHP_EOL ;
         // echo 'abstract class DataObjectDao extends Setup __construct' . \PHP_EOL ;
         // print_r( [ 'dbType' => $dbType , 'thisClass' => $thisClass , 'allowedKeys' => $allowedKeys ] ) ;
 
-        $this->getSettings() ;
         $this->theDBtype = $dbType ;
+        if ( ! isset( self::$iniSettings ) ) self::$iniSettings = new Settings() ;
 
         if ( ! isset( self::$dbTypes[ $dbType ] ) )
-        {   // echo "switch ( ". self::$iniSettings[$dbType]['method'] ." )" . \PHP_EOL ;
+        {   // echo "switch ( ". self::$iniSettings->getSetting($dbType, 'method') ." )" . \PHP_EOL ;
             // print_r( [ 'dbType' => $dbType , 'thisClass' => $thisClass ] ) ;
 
-            $method = self::$iniSettings[$dbType]['method'] ;
+            $method = self::$iniSettings->getSetting($dbType, 'method') ;
             self::$dbTypes[ $dbType ] = $method ;
             switch ( $method )
             {   

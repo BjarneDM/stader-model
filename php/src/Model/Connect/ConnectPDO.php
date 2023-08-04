@@ -1,12 +1,13 @@
 <?php namespace Stader\Model\Connect ;
 
 use \Stader\Model\Interfaces\DbDriver ;
-use \Stader\Model\Traits\Settings ;
+use \Stader\Model\Settings ;
 
 class ConnectPDO extends DbDriver
 {
-    private $conn = null ;
-    private $type = null ;
+    private $conn   = null ;
+    private $dbType = null ;
+    private Settings $iniSettings ;
  
     /**
     * This method returns the connection object.
@@ -20,16 +21,17 @@ class ConnectPDO extends DbDriver
         // echo $dbType  . \PHP_EOL ;
         // print_r( ['before',$this->conn,$this->type] ) ;
 
-        if ( ! self::$iniSettings ) $this->getSettings() ;
+        $this->dbType = $dbType ;
+        $this->iniSettings = new Settings() ;
 
-        switch ( self::$iniSettings[$dbType]['method'] )
+        switch ( $this->iniSettings->getSetting($dbType, 'method') )
         {
             case 'mysql'  :
-                $connStr  = self::$iniSettings[$dbType]['pdo'] ;
-                $connStr .= ':host=' . self::$iniSettings[$dbType]['host'] ;
-                if ( self::$iniSettings[$dbType]['host'] !== 'localhost')
-                    $connStr .= ';port=' . self::$iniSettings[$dbType]['port'] ;
-                $connStr .= ';dbname=' . self::$iniSettings[$dbType]['dbname'] ;
+                $connStr  = $this->iniSettings->getSetting($dbType, 'pdo') ;
+                $connStr .= ':host=' . $this->iniSettings->getSetting($dbType, 'host') ;
+                if ( $this->iniSettings->getSetting($dbType, 'host') !== 'localhost')
+                    $connStr .= ';port=' . $this->iniSettings->getSetting($dbType, 'port') ;
+                $connStr .= ';dbname=' . $this->iniSettings->getSetting($dbType, 'dbname') ;
                 $connStr .= ';charset=utf8mb4' ;
  
                 break ;
@@ -44,14 +46,19 @@ class ConnectPDO extends DbDriver
         print_r( 
         [
             $connStr , 
-            $iniSettings[$type]['user'] , 
-            $iniSettings[$type]['pass'] 
+            $this->iniSettings->getSetting($dbType, 'user') , 
+            $this->iniSettings->getSetting($dbType, 'pass')
         ] ) ;
-        */
+         */
 
         try
         {
-            $this->conn = new \PDO( $connStr , self::$iniSettings[$dbType]['user'] , self::$iniSettings[$dbType]['pass'] ) ;
+            $this->conn = 
+                new \PDO( 
+                    $connStr , 
+                    $this->iniSettings->getSetting($dbType, 'user') , 
+                    $this->iniSettings->getSetting($dbType, 'pass') 
+                ) ;
             $this->conn->setAttribute
             (
                 \PDO::ATTR_ERRMODE,
@@ -66,11 +73,9 @@ class ConnectPDO extends DbDriver
         }
     }
 
-    use Settings ;
-
     public function getConn() { return $this->conn ; }
     
-    public function getType() { return $this->type ; }
+    public function getType() { return $this->dbType ; }
 
     function __destruct() { $this->conn = null ; }
 }

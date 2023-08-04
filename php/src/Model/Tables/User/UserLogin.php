@@ -91,11 +91,11 @@ class UserLogin extends DataObjectDao
         // print_r( [ $password ] ) ;
 
         $options = [] ;
-        $options['bcrypt'] = [ 'cost' => self::$iniSettings['crypt']['cost'] ] ;
+        $options['bcrypt'] = [ 'cost' => self::$iniSettings->getSetting('crypt', 'cost') ] ;
         return 
             password_hash( 
                 $password , 
-                self::$iniSettings['crypt']['algoConst'] ,  
+                self::$iniSettings->getSetting('crypt', 'algoConst') ,  
                 $options['bcrypt'] 
             ) ;
     }
@@ -136,8 +136,8 @@ class UserLogin extends DataObjectDao
         {
             $pwdInfo = password_get_info( $this->values['passwd'] ) ;
             if (
-                    $pwdInfo['algoName'] !== self::$iniSettings['crypt']['algoName']
-                ||  (int) $pwdInfo['options']['cost'] !== (int) self::$iniSettings['crypt']['cost']
+                    $pwdInfo['algoName'] !== self::$iniSettings->getSetting('crypt', 'algoName')
+                ||  (int) $pwdInfo['options']['cost'] !== (int) self::$iniSettings->getSetting('crypt', 'cost')
             )   $this->setValues( [ 'passwd' => $pwd ] ) ;
         }
     return $result ; }

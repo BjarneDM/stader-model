@@ -8,14 +8,14 @@ trait ObjectDaoFunctions
     protected function create( $object ) : int
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $object ) ;
-        $method = self::$iniSettings[ $this->theDBtype ]['method'] ;
+        $method = self::$iniSettings->getSetting( $this->theDBtype, 'method') ;
     return self::$functions[ $method ]->create( $object ) ; }
 
     protected function read( $object ) : Array
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $args ) ;
 
-        $method = self::$iniSettings[ $this->theDBtype ]['method'] ;
+        $method = self::$iniSettings->getSetting( $this->theDBtype, 'method') ;
         $this->notify( 'read' ) ;
     return self::$functions[ $method ]->readOne( $object ) ; }
 
@@ -23,7 +23,7 @@ trait ObjectDaoFunctions
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $args ) ;
 
-        $method = self::$iniSettings[ $this->theDBtype ]['method'] ;
+        $method = self::$iniSettings->getSetting( $this->theDBtype, 'method') ;
         $this->notify( 'read' ) ;
 //         $values = self::$functions[ $method ]->readNULL( $object ) ;
 //         print_r(  $values ) ;
@@ -34,7 +34,7 @@ trait ObjectDaoFunctions
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // print_r( $object ) ; // exit ;
 
-        $method = self::$iniSettings[ $this->theDBtype ]['method'] ;
+        $method = self::$iniSettings->getSetting( $this->theDBtype, 'method') ;
         $rowCount = self::$functions[ $method ]->update( $object ) ;
         $this->notify( 'update' ) ;
     return $rowCount ; }
@@ -42,7 +42,7 @@ trait ObjectDaoFunctions
     protected function deleteThis( $object ) : int
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
 
-        $method = self::$iniSettings[ $this->theDBtype ]['method'] ;
+        $method = self::$iniSettings->getSetting( $this->theDBtype, 'method') ;
         $rowCount = self::$functions[ $method ]->delete( $object ) ;
         $this->notify( 'delete' ) ;
         $this->values    = [] ;

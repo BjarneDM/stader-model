@@ -29,46 +29,46 @@ trait ObjectsDaoIterator
 
     public function rewind() : void 
     {
-        $method = self::$iniSettings[ $this->theDBtype ]['method'] ;
+        $method = self::$iniSettings->getSetting( $this->theDBtype, 'method') ;
         self::$functions[ $method ]->rewind( $this ) ;
         $this->position = 0 ;
     }
 
     public function count() : int
     {
-        $method = self::$iniSettings[ $this->theDBtype ]['method'] ;
+        $method = self::$iniSettings->getSetting( $this->theDBtype, 'method') ;
         return self::$functions[ $method ]->count( $this ) ;
     }
 
     public function next() : void 
     {
-        $method = self::$iniSettings[ $this->theDBtype ]['method'] ;
+        $method = self::$iniSettings->getSetting( $this->theDBtype, 'method') ;
         $this->row = self::$functions[ $method ]->next( $this ) ;
         ++$this->position ; 
     }
 
     public function valid() : bool
     {
-        $method = self::$iniSettings[ $this->theDBtype ]['method'] ;
+        $method = self::$iniSettings->getSetting( $this->theDBtype, 'method') ;
         return self::$functions[ $method ]->valid( $this ) ;
     }
 
     public function current() : object
     {   // echo $this->class . \PHP_EOL ;
-        $method = self::$iniSettings[ $this->theDBtype ]['method'] ;
+        $method = self::$iniSettings->getSetting( $this->theDBtype, 'method') ;
         $id = self::$functions[ $method ]->current( $this ) ;
         return $this->getOne( $this , $id ) ;
     }
 
     public function key() : int | false
     {
-        $method = self::$iniSettings[ $this->theDBtype ]['method'] ;
+        $method = self::$iniSettings->getSetting( $this->theDBtype, 'method') ;
         return self::$functions[ $method ]->key( $this ) ;
     }
 
     public function deleteAll() : void
     {
-        $method = self::$iniSettings[ $this->theDBtype ]['method'] ;
+        $method = self::$iniSettings->getSetting( $this->theDBtype, 'method') ;
         self::$functions[ $method ]->deleteAll( $this ) ;
     }
     

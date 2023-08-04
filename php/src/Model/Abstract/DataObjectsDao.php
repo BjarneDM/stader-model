@@ -1,18 +1,22 @@
 <?php namespace Stader\Model\Abstract ;
 
-use \Stader\Model\Traits\{ObjectDaoConstruct,ObjectsDaoIterator,Settings} ;
+use \Stader\Model\Traits\{ObjectDaoConstruct,ObjectsDaoIterator} ;
+use \Stader\Model\Settings ;
 
 abstract class DataObjectsDao
          implements \Iterator
 {
     protected $values    = [] ;
     private   $position  =  0 ;
+    private static Settings $iniSettings ;
+    private $row ;
 
     use ObjectDaoConstruct ;
-    use Settings ;
 
     protected function setupData ( $args )
     {
+        self::$iniSettings = new Settings() ;
+
         /*
          *  gettype( $args[0] ) === 'null' 
          *      hent alle Objects
