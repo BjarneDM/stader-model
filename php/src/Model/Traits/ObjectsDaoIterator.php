@@ -22,11 +22,10 @@ trait ObjectsDaoIterator
 
     public function deleteAll() : void
     {
-        $method = self::$iniSettings[ $this->theDBtype ]['method'] ;
+        $method = self::$iniSettings->getSetting( $this->theDBtype, 'method') ;
         self::$functions[ $method ]->deleteAll( $this ) ;
     }
-
-/*
+    
     public function getIDs() : array 
     {
         $IDs = [] ;
@@ -37,7 +36,6 @@ trait ObjectsDaoIterator
             $this->next() ;
         }
     return $IDs ; }
- */
 
 /*
     public function getAll() : array 
@@ -49,6 +47,7 @@ trait ObjectsDaoIterator
         }
     return  $allObjects ; }
  */
+
 
 // https://www.php.net/manual/en/class.iterator.php
 
@@ -95,35 +94,6 @@ trait ObjectsDaoIterator
         $method = self::$iniSettings->getSetting( $this->theDBtype, 'method') ;
         return self::$functions[ $method ]->key( $this ) ;
     }
-
-    public function deleteAll() : void
-    {
-        $method = self::$iniSettings->getSetting( $this->theDBtype, 'method') ;
-        self::$functions[ $method ]->deleteAll( $this ) ;
-    }
-    
-    public function getIDs() : array 
-    {
-        $IDs = [] ;
-        $this->rewind() ;
-        while ( $this->valid() )
-        {
-            $IDs[] = $this->key() ;
-            $this->next() ;
-        }
-    return $IDs ; }
-
-
-/*
-    public function getAll() : array 
-    {
-        $allObjects = [] ;
-        foreach ( $this->objectIDs as $oneID )
-        {
-            $allObjects[] = new $this->class( (int) $oneID ) ;
-        }
-    return  $allObjects ; }
- */
 
 }
 
