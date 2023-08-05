@@ -96,7 +96,6 @@ trait ObjectsDaoIterator
         return self::$functions[ $method ]->key( $this ) ;
     }
 
-<<<<<<< HEAD
     public function deleteAll() : void
     {
         $method = self::$iniSettings->getSetting( $this->theDBtype, 'method') ;
@@ -126,8 +125,6 @@ trait ObjectsDaoIterator
     return  $allObjects ; }
  */
 
-=======
->>>>>>> e08102f (On branch Documentation)
 }
 
 ?>
