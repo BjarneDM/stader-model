@@ -1,5 +1,7 @@
 <?php namespace Stader\Control\Abstract ;
 
+use \Stader\Model\Traits\MagicMethods ;
+
 
 abstract class DataObjectDao
 {
@@ -150,6 +152,7 @@ abstract class DataObjectDao
      */
     protected function notify ( string $action ) : void {}
 
+    use MagicMethods ;
 }
 
 ?>

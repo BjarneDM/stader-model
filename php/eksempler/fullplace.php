@@ -59,8 +59,10 @@ foreach ( ( new Areas() ) as $area )
 */
 
 foreach ( ( new AreasPlaces() ) as $areaplace )
-    print_r( $areaplace->getData() ) ;
-    unset( $areaplace ) ;
+    {
+        // print_r( $areaplace->getData() ) ;
+        echo $areaplace . PHP_EOL ;
+    } unset( $areaplace ) ;
 
 echo '</pre>' . \PHP_EOL ;
 

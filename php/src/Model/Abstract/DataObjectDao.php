@@ -1,7 +1,7 @@
 <?php namespace Stader\Model\Abstract ;
 
 use \Stader\Model\DatabaseAccessObjects\{TableDaoPdo} ;
-use \Stader\Model\Traits\{ObjectDaoConstruct,ObjectDaoFunctions} ;
+use \Stader\Model\Traits\{ObjectDaoConstruct,ObjectDaoFunctions,MagicMethods} ;
 
 abstract class DataObjectDao
 {
@@ -151,6 +151,7 @@ abstract class DataObjectDao
     }
 
     use ObjectDaoFunctions ;
+    use MagicMethods ;
 
 }
 
