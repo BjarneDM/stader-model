@@ -45,16 +45,19 @@ class UserLogin extends DataObjectDao
     function fixValuesType () : void
     {
         $this->update( $this , [ 'ip_addr' , empty( $_SERVER['REMOTE_ADDR'] ) ?: '' ] ) ;
-        $this->values['id']             = (int) $this->values['id'] ;
-        $this->values['lastlogintime']  = @is_null( $this->values['lastlogintime']   ) 
-                                          ? null
-                                          : OurDateTime::createFromFormat( 'Y-m-d H:i:s' , $this->values['lastlogintime']   ) ;
-        $this->values['lastloginfail']  = @is_null( $this->values['lastloginfail'] ) 
-                                          ? null 
-                                          : OurDateTime::createFromFormat( 'Y-m-d H:i:s' , $this->values['lastloginfail'] ) ;
-        $this->values['loginfailures']  = @empty( $this->values['loginfailures'] )
-                                          ? 0
-                                          : (int) $this->values['loginfailures'] ;
+        $this->values['id'] = (int) $this->values['id'] ;
+        $this->values['lastlogintime']  
+        =   @is_null( $this->values['lastlogintime']   ) 
+            ? null
+            : OurDateTime::createFromFormat( 'Y-m-d H:i:s' , $this->values['lastlogintime']   ) ;
+        $this->values['lastloginfail']  
+        =   @is_null( $this->values['lastloginfail'] ) 
+            ? null 
+            : OurDateTime::createFromFormat( 'Y-m-d H:i:s' , $this->values['lastloginfail'] ) ;
+        $this->values['loginfailures']  
+        =   @empty( $this->values['loginfailures'] )
+            ? 0
+            : (int) $this->values['loginfailures'] ;
     }
 
     public function setLoginTime() : void
