@@ -54,14 +54,16 @@ class Place extends DataObjectDao
     }
 
     protected function fixValuesType () : void {
-        $this->values['place_owner_id'] = @is_null( $this->values['place_owner_id'] ) 
-                                          ? null 
-                                          : (int)  $this->values['place_owner_id'] ;
+        $this->values['place_owner_id'] 
+        =   @is_null( $this->values['place_owner_id'] ) 
+            ? null 
+            : (int)  $this->values['place_owner_id'] ;
         $this->values['area_id']        = (int)  $this->values['area_id']        ;
         $this->values['active']         = (bool) $this->values['active']         ;
-        $this->values['lastchecked']    = @is_null( $this->values['lastchecked'] ) 
-                                          ? null 
-                                          : OurDateTime::createFromFormat( 'Y-m-d H:i:s' , $this->values['lastchecked'] ) ;
+        $this->values['lastchecked']
+        =   @is_null( $this->values['lastchecked'] ) 
+            ? null 
+            : OurDateTime::createFromFormat( 'Y-m-d H:i:s' , $this->values['lastchecked'] ) ;
 
     }
 

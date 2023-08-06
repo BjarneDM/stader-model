@@ -64,12 +64,14 @@ class Ticket extends DataObjectDao
         $this->values['assigned_place_id'] = (int) $this->values['assigned_place_id'] ;
         $this->values['ticket_status_id']  = (int) $this->values['ticket_status_id']  ;
         $this->values['assigned_user_id']  = (int) $this->values['assigned_user_id']  ;
-        $this->values['creationtime']      = @is_null( $this->values['creationtime']   ) 
-                                             ? new OurDateTime()
-                                             : OurDateTime::createFromFormat( 'Y-m-d H:i:s' , $this->values['creationtime']   ) ;
-        $this->values['lastupdatetime']    = @is_null( $this->values['lastupdatetime'] ) 
-                                             ? null 
-                                             : OurDateTime::createFromFormat( 'Y-m-d H:i:s' , $this->values['lastupdatetime'] ) ;
+        $this->values['creationtime']
+        =   @is_null( $this->values['creationtime']   ) 
+            ? new OurDateTime()
+            : OurDateTime::createFromFormat( 'Y-m-d H:i:s' , $this->values['creationtime']   ) ;
+        $this->values['lastupdatetime']
+        =   @is_null( $this->values['lastupdatetime'] ) 
+            ? null 
+            : OurDateTime::createFromFormat( 'Y-m-d H:i:s' , $this->values['lastupdatetime'] ) ;
     }
 
     use LogNotify ;

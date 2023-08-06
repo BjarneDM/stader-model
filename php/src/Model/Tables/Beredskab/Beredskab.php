@@ -69,9 +69,10 @@ class Beredskab extends DataObjectDao
     {
         $this->values['created_by_id'] = (int)  $this->values['created_by_id'] ;
         $this->values['active']        = (bool) $this->values['active']        ;
-        $this->values['creationtime']  = 
-            @is_null( $this->values['creationtime'] ) 
-            ? new OurDateTime() : OurDateTime::createFromFormat( 'Y-m-d H:i:s' , $this->values['creationtime'] ) ;
+        $this->values['creationtime']
+        =   @is_null( $this->values['creationtime'] ) 
+            ? new OurDateTime()
+            : OurDateTime::createFromFormat( 'Y-m-d H:i:s' , $this->values['creationtime'] ) ;
     }
 
     public function switchOff()

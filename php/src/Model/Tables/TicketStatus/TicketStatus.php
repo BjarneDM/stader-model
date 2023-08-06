@@ -77,7 +77,11 @@ class TicketStatus extends DataObjectDao
             {
                 case 'default_colour' :
                     if ( ! in_array( $toCheck[ $key ] , $thisClass::$allowedColours ) )
-                        throw new \Exception( "'{$toCheck[ $key ]}' doesn't exist in [ " . implode( ' , ' , $thisClass::$allowedColours ) . " ]" ) ;
+                        throw new \Exception( 
+                            "'{$toCheck[ $key ]}' doesn't exist in [ " 
+                            . implode( ' , ' , $thisClass::$allowedColours ) 
+                            . " ]" 
+                        ) ;
                     break ;
             }
 
