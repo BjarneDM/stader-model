@@ -1,5 +1,8 @@
 <?php namespace Stader\Model\Traits ;
 
+// https://refactoring.guru/design-patterns/singleton/php/example
+// https://phpenthusiast.com/blog/the-singleton-design-pattern-in-php
+
 trait SingletonSetup
 {
     private static $instance = null ;
