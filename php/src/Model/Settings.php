@@ -3,18 +3,12 @@
 // https://refactoring.guru/design-patterns/singleton/php/example
 // https://phpenthusiast.com/blog/the-singleton-design-pattern-in-php
 
-use \Stader\Model\Traits\MagicMethods ;
+use \Stader\Model\Traits\{MagicMethods,SingletonSetup} ;
 
 class Settings
 {
-    private static $instance = null ;
-    private $values ;
-    
-    private function __clone() {}
-    public function __wakeup()
-    {
-        throw new \Exception("Cannot unserialize a singleton.");
-    }
+    use SingletonSetup ;
+    use MagicMethods ;
 
     private function __construct()
     {
@@ -51,8 +45,6 @@ class Settings
                 break ;
         }
     }
-
-    use MagicMethods ;
 
 }
 

@@ -2,14 +2,31 @@
 
 use \Stader\Model\Connect\{ConnectPDO,ConnectXML} ;
 use \Stader\Model\Settings ;
+use \Stader\Model\Traits\{MagicMethods,SingletonSetup} ;
 
 class DatabaseSetup
 {
-    // holder styr på forbindelserne t/ de enkelte DBer
-    protected static $connect = [] ;
-    protected static Settings $iniSettings ;
+    use SingletonSetup ;
+    use MagicMethods ;
 
-    function __construct( $dbType )
+    // holder styr på forbindelserne t/ de enkelte DBer
+    private static $connect = [] ;
+    private static Settings $iniSettings ;
+
+    public static function getInstance()
+    {
+        if( ! self::$instance )
+        {
+          self::$instance = new DatabaseSetup() ;
+        }
+    return self::$instance ; }
+
+    private function __construct()
+    {
+        self::$iniSettings = Settings::getInstance() ;
+    }
+
+    private function setConnect( $dbType )
     {   // echo 'class DatabaseSetup __construct' . \PHP_EOL ;
         // echo $dbType . \PHP_EOL ;
 
@@ -36,7 +53,12 @@ class DatabaseSetup
     }
 
     public function getDBH( $dbType )
-        { return self::$connect[ self::$iniSettings->getSetting($dbType, 'dbname') ]->getConn() ; }
+    {
+        if ( ! isset( self::$connect[ self::$iniSettings->getSetting($dbType, 'dbname') ] ) )
+        {
+            $this->setConnect( $dbType ) ;
+        }
+    return self::$connect[ self::$iniSettings->getSetting($dbType, 'dbname') ]->getConn() ; }
 
 /*
     function __destruct()
