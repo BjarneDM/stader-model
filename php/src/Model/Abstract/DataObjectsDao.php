@@ -15,7 +15,7 @@ abstract class DataObjectsDao
 
     protected function setupData ( $args )
     {
-        self::$iniSettings = new Settings() ;
+        self::$iniSettings = Settings::getInstance() ;
 
         /*
          *  gettype( $args[0] ) === 'null' 

@@ -24,7 +24,7 @@ trait ObjectDaoConstruct
         // print_r( [ 'dbType' => $dbType , 'thisClass' => $thisClass , 'allowedKeys' => $allowedKeys ] ) ;
 
         $this->theDBtype = $dbType ;
-        if ( ! isset( self::$iniSettings ) ) self::$iniSettings = new Settings() ;
+        if ( ! isset( self::$iniSettings ) ) self::$iniSettings = Settings::getInstance() ;
 
         if ( ! isset( self::$dbTypes[ $dbType ] ) )
         {   // echo "switch ( ". self::$iniSettings->getSetting($dbType, 'method') ." )" . \PHP_EOL ;

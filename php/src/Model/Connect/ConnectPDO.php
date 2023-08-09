@@ -22,7 +22,7 @@ class ConnectPDO extends DbDriver
         // print_r( ['before',$this->conn,$this->type] ) ;
 
         $this->dbType = $dbType ;
-        $this->iniSettings = new Settings() ;
+        $this->iniSettings = Settings::getInstance() ;
 
         switch ( $this->iniSettings->getSetting($dbType, 'method') )
         {

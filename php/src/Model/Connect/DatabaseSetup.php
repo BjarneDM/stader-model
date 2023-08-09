@@ -13,7 +13,7 @@ class DatabaseSetup
     {   // echo 'class DatabaseSetup __construct' . \PHP_EOL ;
         // echo $dbType . \PHP_EOL ;
 
-        if ( ! isset( self::$iniSettings ) ) self::$iniSettings = new Settings() ;
+        if ( ! isset( self::$iniSettings ) ) self::$iniSettings = Settings::getInstance() ;
 
         if ( ! isset( self::$connect[ self::$iniSettings->getSetting($dbType, 'dbname') ] ) ) 
         {   // echo "switch ( ". $this->iniSettings->getSetting($dbType, 'dbname') ." )" . \PHP_EOL ;
