@@ -13,14 +13,6 @@ class DatabaseSetup
     private static $connect = [] ;
     private static Settings $iniSettings ;
 
-    public static function getInstance()
-    {
-        if( ! self::$instance )
-        {
-          self::$instance = new DatabaseSetup() ;
-        }
-    return self::$instance ; }
-
     private function __construct()
     {
         self::$iniSettings = Settings::getInstance() ;

@@ -11,14 +11,13 @@ trait SingletonSetup
         throw new \Exception("Cannot unserialize a singleton.");
     }
 
-/*
     public static function getInstance()
     {
         if( ! self::$instance )
         {
-          self::$instance = new Settings() ;
+            $CLASS = __CLASS__ ;
+            self::$instance = new $CLASS() ;
         }
     return self::$instance ; }
-*/
 
 }

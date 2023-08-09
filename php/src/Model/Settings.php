@@ -22,14 +22,6 @@ class Settings
 
     }
 
-    public static function getInstance()
-    {
-        if( ! self::$instance )
-        {
-          self::$instance = new Settings() ;
-        }
-    return self::$instance ; }
-
     public function getSetting( ...$args ): string | int | bool
     {
         switch ( count( $args ) )
