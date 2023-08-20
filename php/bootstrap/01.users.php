@@ -66,8 +66,8 @@ $passwords[] = 'WYa9yhZ8' ; $passwords[] = 'dqJzbf6D' ; $passwords[] = '56JCxPRK
 // $passwords[] = '@[8fz).80+QJv}Mgw\\PN!5NL' ;
 // $passwords[] = 'o|<OA%=rA\'hm!&x[jcX}f8%m' ;
 
-$password = new RandomStr( [ 'length' => 8 , 'ks' => 0 ] ) ;
-$phone    = new RandomStr( [ 'length' => 4 , 'ks' => 4 ] ) ;
+$password = new RandomStr( length: 8 , ks: 0 ) ;
+$phone    = new RandomStr( length: 4 , ks: 4 ) ;
 // print_r( $phone) ; exit() ;
 
 $i = 0 ;

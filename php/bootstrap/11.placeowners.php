@@ -72,7 +72,7 @@ $users =
 //     $placeowner = new PlaceOwner( $data ) ;
 // }   unset( $key , $user ) ;
 
-$phone = new RandomStr( [ 'length' => 4 , 'ks' => 4 ] ) ;
+$phone = new RandomStr( length: 4 , ks: 4 ) ;
 foreach ( $users as $key => $user )
 {
     $user['email'] = str_replace( ' ' , '-' , strtolower( "{$user['name']}@{$user['organisation']}.dk" ) ) ;

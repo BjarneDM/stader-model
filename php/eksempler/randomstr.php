@@ -12,7 +12,7 @@ use \Stader\Model\{RandomStr} ;
 
 $randomStr = new RandomStr() ;
 echo $randomStr->current() . \PHP_EOL ;
-$randomStr = new RandomStr( [ 'length' => 24 , 'ks' => 0 ] ) ;
+$randomStr = new RandomStr( length: 24, ks: 0 ) ;
 echo $randomStr->current() . \PHP_EOL ;
 echo $randomStr->next() . \PHP_EOL ;
 

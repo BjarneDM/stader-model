@@ -33,19 +33,18 @@ exit() ; }
 
 if ( in_array( $argv[1], [ '-k' , '--keyspaces' ] ) )
 {
-    ( new RandomStr() )->getKeyspaces() ;
+    RandomStr::getKeyspaces() ;
 exit() ; }
 
 /*
  *  main
  */
 $randomStr = new RandomStr(  
-    [ 
-        'length' => (( $argv[2] ) ?: 24) , 
-        'ks'     => (( $argv[3] ) ?:  1) 
-    ] ) ;
+        length: (( @$argv[2] ) ?: 24) , 
+        ks:     (( @$argv[3] ) ?:  1) 
+    ) ;
 for ( $i = 0 ; 
-      $i < ( $argv[1] ?: 5 ) ; 
+      $i < ( @$argv[1] ?: 5 ) ; 
       $i++ 
     )
     echo $randomStr->next() . \PHP_EOL ;

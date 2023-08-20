@@ -28,7 +28,7 @@ class RandomStrTest extends TestCase
 
     public function testGenerate2()
     {   echo \PHP_EOL . '-> entering ' . __function__ . \PHP_EOL ;
-        $randomStr = new RandomStr( [ 'length' => 24 , 'ks' => 0 ] ) ;
+        $randomStr = new RandomStr( length: 24 , ks: 0 ) ;
         echo $randomStr->current() . \PHP_EOL ;
     }
 

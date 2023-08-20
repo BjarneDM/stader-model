@@ -16,94 +16,100 @@
  * @return string
  */
 
+use \Stader\Model\Traits\{MagicMethods} ;
+
+
 class RandomStr
 {
-    private $length = 24 ;
-    private $ks = 1 ;
     private $randomstr = '' ;
-    private $keyspace = '' ;
+    private $values = [] ;
 
-    private $kSpace = [] ;
-    private $keyspaces = [] ;
+    private static $kSpace = [] ;
+    private static $keyspaces = [] ;
 
-    function initKeySpaces ()
-    {
+
+    private static function initKeySpaces ()
+    {   //  echo __CLASS__ . " : " . __function__ . \PHP_EOL ;
+
         // $kSpace[''] = '' ;
-        $this->kSpace['digits']  = '0123456789' ;
-        $this->kSpace['enLower'] = 'abcdefghijklmnopqrstuvwxyz' ;
-        $this->kSpace['enUpper'] = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' ;
-        $this->kSpace['special'] = '-=~!@#$%^&*()_+,./<>?;:[]{}\\|\'' ;
-        $this->kSpace['daDK']    = 'æøåÆØÅ' ;
-
-        
-        // array[string] $keyspaces    Strings of all possible characters to select from
-        $this->keyspaces[0] =  $this->kSpace['digits'] . $this->kSpace['enLower'] . $this->kSpace['enUpper'] ;
-        $this->keyspaces[1] =  $this->keyspaces[0] . $this->kSpace['special'] ;
-        $this->keyspaces[2] =  $this->keyspaces[0] . $this->kSpace['daDK'] ;
-        $this->keyspaces[3] =  $this->keyspaces[0] . $this->kSpace['special'] . $this->kSpace['daDK'] ;
-        $this->keyspaces[4] =  $this->kSpace['digits'] ;
-        $this->keyspaces[5] =  $this->kSpace['digits'] . 'abcdef' ;
-        $this->keyspaces[6] =  $this->kSpace['digits'] . 'ABCDEF' ;
-    }
-
-    public function getKeyspaces ()
-    {
-        $this->initKeySpaces() ;
-        print_r( $this->keyspaces ) ;
-    }
-
-    function __construct( ...$args )
-    {   // echo 'class RandomStr __construct' . \PHP_EOL ;
-        // print_r( $args ) ;
-
-        $this->initKeySpaces() ;
-
-        if ( count( $args ) == 1 )
+        if ( count( self::$kSpace ) === 0 )
         {
-            foreach ( $args[0] as $key => $value ) 
-            {
-                if ( in_array( $key , [ 'length' , 'ks' ] ) )
-                {
-                    $this->$key = $value ;
-                }
-            }
+            self::$kSpace['digits']  = '0123456789' ;
+            self::$kSpace['enLower'] = 'abcdefghijklmnopqrstuvwxyz' ;
+            self::$kSpace['enUpper'] = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' ;
+            self::$kSpace['special'] = '-=~!@#$%^&*()_+,./<>?;:[]{}\\|\'' ;
+            self::$kSpace['daDK']    = 'æøåÆØÅ' ;
         }
-        // print_r( [ $this->length , $this->ks ] ) ;
 
-        
+        // array[string] $keyspaces    Strings of all possible characters to select from
+        if ( count( self::$keyspaces ) === 0 )
+        {
+            self::$keyspaces[0] =  self::$kSpace['digits'] . self::$kSpace['enLower'] . self::$kSpace['enUpper'] ;
+            self::$keyspaces[1] =  self::$keyspaces[0] . self::$kSpace['special'] ;
+            self::$keyspaces[2] =  self::$keyspaces[0] . self::$kSpace['daDK'] ;
+            self::$keyspaces[3] =  self::$keyspaces[0] . self::$kSpace['special'] . self::$kSpace['daDK'] ;
+            self::$keyspaces[4] =  self::$kSpace['digits'] ;
+            self::$keyspaces[5] =  self::$kSpace['digits'] . 'abcdef' ;
+            self::$keyspaces[6] =  self::$kSpace['digits'] . 'ABCDEF' ;
+        }
+    }
+
+    public static function getKeyspaces ()
+    {   //  echo __CLASS__ . " : " . __function__ . \PHP_EOL ;
+
+        self::initKeySpaces() ;
+        $outString = print_r( self::$keyspaces, true ) ;
+        $outString = preg_replace( ['/^Array\n/','/Array/','/.*[(,)]\n/'], [''], $outString ) ;
+        $outString = preg_replace( ['/\n\n/'], ["\n"], $outString ) ;
+    return $outString ; }
+
+    function __construct( int $length = 24 , int $ks = 1 )
+    {   //  echo __CLASS__ . " : " . __function__ . \PHP_EOL ;
+
+        $this->values['length'] = $length ;
+        $this->values['ks'] = $ks ;
+
+       self::initKeySpaces() ;       
 
         /*
          *  tjek
          *  let's make sure we always return something sensible
          */
-        $this->ks = max( 0 , min( count( $this->keyspaces ) -1 , (int) $this->ks ) ) ; // 0 <= ks < count(keyspaces)
-        if   ( $this->ks === 4 )
-             { $this->length = max( 4 , ((int) $this->length) %  7 ) ; } // PinKoder
-        else { $this->length = max( 8 , ((int) $this->length) % 33 ) ; } // 8 <= length <= 32
+        $this->values['ks'] = max( 0 , min( count( self::$keyspaces ) -1 , $this->values['ks'] ) ) ; // 0 <= ks < count(keyspaces)
+        if   ( $this->values['ks'] === 4 )
+             { $this->values['length'] = max( 4 , (min( 6, $this->values['length']))) ; } // PinKoder
+        else { $this->values['length'] = max( 8 , (min(32, $this->values['length']))) ; } // 8 <= length <= 32
 
-        $this->keyspace = $this->keyspaces[ $this->ks ] ;
+        $this->values['keyspace'] = self::$keyspaces[ $this->values['ks'] ] ;
         $this->generate() ;
     }
 
     private function generate ()
-    {
+    {   //  echo __CLASS__ . " : " . __function__ . \PHP_EOL ;
+
         $str = '';
-//         $max = mb_strlen( $this->keyspace , '8bit' ) - 1 ;
-        $max = strlen( $this->keyspace ) - 1 ;
+        $max = mb_strlen( $this->values['keyspace'] , '8bit' ) - 1 ;
+//         $max = strlen( self::$keyspace ) - 1 ;
         if ( $max < 1 ) { throw new \Exception('$keyspace must be at least two characters long') ; }
 
-        for ( $i = 0 ; $i < $this->length ; ++$i ) 
+        for ( $i = 0 ; $i < $this->values['length'] ; ++$i ) 
         {
-            $str .= $this->keyspace[ random_int( 0 , $max ) ] ;
+            $str .= $this->values['keyspace'][ random_int( 0 , $max ) ] ;
         }
     $this->randomstr = $str ; }
 
-    public function current() { return $this->randomstr ; }
+    public function current()
+    {   //  echo __CLASS__ . " : " . __function__ . \PHP_EOL ;
+
+    return $this->randomstr ; }
 
     public function next()
-    {
+    {   //  echo __CLASS__ . " : " . __function__ . \PHP_EOL ;
+
         $this->generate() ;
     return $this->randomstr ; }
+
+    use MagicMethods ;
 
     function __destruct() {}
 }

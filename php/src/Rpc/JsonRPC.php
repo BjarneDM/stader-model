@@ -216,7 +216,7 @@ class JsonRPC
          *      indtil php selv rydder op i gamle sessions
          */
         session_write_close() ;
-        session_id( ( new RandomStr( [ 'length' => 32 , 'ks' => 5 ] ) )->current() ) ;
+        session_id( ( new RandomStr( length: 32 , ks: 5 ) )->current() ) ;
         session_start() ;
         $_SESSION['username'] = $user->getData()['username'] ;
         $this->jsonData['result']['authstring'] = session_id() ;
