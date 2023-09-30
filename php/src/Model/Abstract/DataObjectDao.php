@@ -1,7 +1,8 @@
 <?php namespace Stader\Model\Abstract ;
 
-use \Stader\Model\DatabaseAccessObjects\{TableDaoPdo} ;
-use \Stader\Model\Traits\{ObjectDaoConstruct,ObjectDaoFunctions,MagicMethods} ;
+use \Stader\Model\Abstract\{TableDaoPdo} ;
+use \Stader\Model\Abstract\Traits\{ObjectDaoConstruct,ObjectDaoFunctions} ;
+use \Stader\Model\Traits\{MagicMethods} ;
 
 abstract class DataObjectDao
 {

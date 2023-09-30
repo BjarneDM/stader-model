@@ -1,4 +1,4 @@
-<?php namespace Stader\Model\Traits ;
+<?php namespace Stader\Model\Abstract\Traits ;
 
 trait ObjectsDaoIterator
 {

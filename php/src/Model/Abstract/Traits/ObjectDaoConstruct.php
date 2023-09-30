@@ -1,4 +1,4 @@
-<?php namespace Stader\Model\Traits ;
+<?php namespace Stader\Model\Abstract\Traits ;
 
 use \Stader\Model\DatabaseAccessObjects\{TableDaoPdo,TableCryptDaoPdo} ;
 use \Stader\Model\Settings ;

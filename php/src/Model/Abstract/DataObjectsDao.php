@@ -1,6 +1,6 @@
 <?php namespace Stader\Model\Abstract ;
 
-use \Stader\Model\Traits\{ObjectDaoConstruct,ObjectsDaoIterator} ;
+use \Stader\Model\Abstract\Traits\{ObjectDaoConstruct,ObjectsDaoIterator} ;
 use \Stader\Model\Settings ;
 
 abstract class DataObjectsDao
