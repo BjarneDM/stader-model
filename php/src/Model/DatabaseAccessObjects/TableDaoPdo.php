@@ -164,15 +164,25 @@ and table_name = "{$this->table}"
         $sql  = 'select * from ' . $this->getTable( $object::$thisClass ) . ' ' ;
         $stmt = null ;
 
+        $setOrderBy = function () use ( $object ) : string
+        {
+            $orderBy = '' ;
+            if ( null !== $object->getOrderBy() )
+            $orderBy = ' order by ' . $object->getOrderBy() ;
+        return $orderBy ; } ;
+
         switch ( count( $object->getData() ) )
         {
             case 0 :
+                $sql .= $setOrderBy() ;
                 $stmt = $this->dbh->prepare( $sql ) ;
                 break ;
             default :
                 if ( isset( $object->getData()['id'] ) )
                 {
                     $sql .= 'where id = :id ' ;
+                    $sql .= $setOrderBy() ;
+
                     $stmt = $this->dbh->prepare( $sql ) ;
                     $stmt->bindParam( ':id' , $object->getData()['id'] , \pdo::PARAM_INT ) ;
                 } else {
@@ -182,6 +192,7 @@ and table_name = "{$this->table}"
                         $where[] = "{$param} = :{$param}" ;
                     }   unset( $param , $value ) ;
                     $sql .= 'where ' . implode( ' and ' , $where ) ;
+                    $sql .= $setOrderBy() ;
                 
                     $stmt = $this->dbh->prepare( $sql ) ;
 
@@ -207,13 +218,11 @@ and table_name = "{$this->table}"
         switch ( count( $object->getData() ) )
         {
             case 0 :
-                $stmt = $this->dbh->prepare( $sql ) ;
                 break ;
             default :
                 if ( isset( $object->getData()['id'] ) )
                 {
                     $sql .= 'where id = ?' ;
-                    $stmt = $this->dbh->prepare( $sql ) ;
                 } else {
                     $where = [] ;
                     foreach ( $object->getData() as $param => $value )
@@ -222,18 +231,22 @@ and table_name = "{$this->table}"
                     }   unset( $param , $value ) ;
                     $sql .= 'where ' . implode( ' and ' , $where ) ;
                 
-                    $stmt = $this->dbh->prepare( $sql ) ;
-
                 }
                 break ;
         }
 
+        if ( null !== $object->getOrderBy() )
+        $sql .= 'order by ' . $object->getOrderBy() ;
+
+        $stmt = $this->dbh->prepare( $sql ) ;
         $stmt->execute( $object->getValues() ) ;
 
     return $stmt ; }
 
     private function readData( $object ) : \PDOStatement
-    {
+    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        // echo count( $object->getData() ). \PHP_EOL ;
+
         switch ( count( $object->getData() ) )
         {
             case 0  :

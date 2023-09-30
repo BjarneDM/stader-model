@@ -6,14 +6,15 @@ use \Stader\Model\Settings ;
 abstract class DataObjectsDao
          implements \Iterator
 {
-    protected $values    = [] ;
+    protected $values = [] ;
+    private ?string $orderBy = null ;
     private   $position  =  0 ;
     private static Settings $iniSettings ;
     private $row ;
 
     use ObjectDaoConstruct ;
 
-    protected function setupData ( $args )
+    protected function setupData ( $args ) : void
     {
         self::$iniSettings = Settings::getInstance() ;
 
@@ -44,6 +45,27 @@ abstract class DataObjectsDao
                 throw new \Exception( gettype( $args[0] ) . " : forkert input type [null,string,array]" ) ;
                 break ;
         }
+    }
+
+    public function setOrderBy ( array $columns ) : void
+    {
+        $this->check( $this , $columns ) ;
+
+        $orders = [ 'ASC', 'DESC', '', null ] ;
+        $orderBy = [] ;
+        foreach ( $columns as $column => $order )
+        {
+            $order = strtoupper( $order ) ;
+            if( ! in_array( $order , $orders ) )
+                throw new \Exception( $order . " : forkert order type [".implode(',',$orders)."]" ) ;
+            $orderBy[] = "{$column} {$order}" ;
+        }
+        $this->orderBy = implode( ', ', $orderBy ) ; 
+    }
+
+    public function getOrderBy () : ?string
+    {
+        return $this->orderBy ;
     }
 
     use ObjectsDaoIterator ;

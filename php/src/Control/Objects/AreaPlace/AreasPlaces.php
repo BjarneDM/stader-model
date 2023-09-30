@@ -22,19 +22,32 @@ use \Stader\Control\Traits\DataObjectsConstruct ;
 class AreasPlaces extends DataObjectsDao
 {
     public static $baseClass  = '\\Stader\\Control\\Objects\\AreaPlace\\AreaPlace' ;
+    public static $thisClass  = '\\Stader\\Control\\Objects\\AreaPlace\\AreasPlaces' ;
+    public static $allowedKeys ;
 
     private Area   $area   ;
     private Areas  $areas  ;
     private Place  $place  ;
     private Places $places ;
 
+
     use DataObjectsConstruct ;
 
     protected function setupData ( $thisClass , $args )
     {
+        self::$allowedKeys = Area::$allowedKeys ;
         parent::setupData( $thisClass , $args ) ;
-        $this->areas = new Areas() ;
-        self::$allowedKeys = [ 'area' => 'varchar' ] ;
+        $this->areas = new Areas( $this->getKeys(), $this->getValues() ) ;
+    }
+
+    public function setOrderBy ( array $columns ) : void
+    {
+        $this->areas->setOrderBy( $columns ) ;
+    }
+
+    public function getOrderBy () : ?string
+    {
+        return $this->orderBy ;
     }
 
 // https://www.php.net/manual/en/class.iterator.php

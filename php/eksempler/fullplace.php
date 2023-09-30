@@ -45,7 +45,7 @@ use \Stader\Control\Objects\AreaPlace\{AreaPlace,AreasPlaces} ;
 echo '<pre>' . \PHP_EOL ;
 
 /*
-foreach ( ( new Areas() ) as $area )
+foreach ( ( new Areas( 'description' , 'Kirkepladsen' ) ) as $area )
 {
     foreach ( ( new Places( 'area_id' , $area->getData()['id'] ) ) as $place )
     {
@@ -58,7 +58,35 @@ foreach ( ( new Areas() ) as $area )
 }
 */
 
-foreach ( ( new AreasPlaces() ) as $areaplace )
+/*
+foreach ( ( new AreasPlaces( 'description' , 'Kirkepladsen' ) ) as $areaplace )
+    {
+        // print_r( $areaplace->getData() ) ;
+        echo $areaplace . PHP_EOL ;
+    } unset( $areaplace ) ;
+*/
+
+/*
+$areas = new Areas('description' , 'Kirkepladsen') ;
+$areas->setOrderBy( ['description' => 'asc' ] ) ;
+foreach ( $areas as $area )
+{
+    $places = new Places( 'area_id' , $area->getData()['id'] ) ;
+    $places->setOrderBy( ['description' => 'desc' ] ) ;
+    foreach ( $places as $place )
+    {
+        print_r( ( 
+            new AreaPlace( 
+                $area->getData()['name'] . 
+                $place->getData()['place_nr'] 
+        ) )->getData() ) ;
+    }
+}
+*/
+
+$areaplaces = new AreasPlaces() ;
+// $areaplaces->setOrderBy( ['description' => 'asc' ] ) ;
+foreach ( $areaplaces as $areaplace )
     {
         // print_r( $areaplace->getData() ) ;
         echo $areaplace . PHP_EOL ;

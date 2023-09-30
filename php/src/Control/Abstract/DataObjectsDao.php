@@ -3,7 +3,8 @@
 abstract class DataObjectsDao
          implements \Iterator
 {
-    protected   $position = 0    ;
+    protected $position = 0 ;
+    protected $values = [] ;
     
     function __construct ()
     {   // echo 'abstract class ObjectsDao extends Setup __construct' . \PHP_EOL ;
@@ -27,13 +28,13 @@ abstract class DataObjectsDao
                 break ;
             case 'string' :
                 $this->values[$args[0]] = $args[1] ;
-                $this->check( $thisClass::$allowedKeys , $args ) ;
+                $this->check( $thisClass , $this->values ) ;
                 break ;
             case 'array' :
                 if ( count( $args[0] ) !== count( $args[1] ) )
                     throw new \Exception( 'count() for $args[0] & $args[1] er forskellige' ) ;
                 $this->values  = array_combine( $args[0] , $args[1] ) ;
-                $this->check( $thisClass::$allowedKeys , $args ) ;
+                $this->check( $thisClass , $this->values ) ;
                 break ;
             default :
                 throw new \Exception( gettype( $args[0] ) . " : forkert input type [null,string,array]" ) ;
@@ -44,10 +45,10 @@ abstract class DataObjectsDao
     /*
      *  default minimalt integritets check
      */
-    protected function check( $thisClass , Array &$toCheck )
-    {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
-        // print_r( $toCheck ) ;
-
+    protected function check( $thisClass , Array &$toCheck ): void
+    {   echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
+        print_r([ $thisClass, $toCheck] ) ;
+//return ;
         foreach ( array_keys( $toCheck ) as $key )
         {
             if ( ! array_key_exists( $key , $thisClass::$allowedKeys ) )
@@ -55,17 +56,38 @@ abstract class DataObjectsDao
         }
     }
 
-    public function getData()   { return [] ; }
-    public function getValues() { return [] ; }
-    public function getKeys()   { return [] ; }
+    public function setOrderBy ( array $columns ) : void
+    {
+        $this->check( $this , $columns ) ;
+
+        $orders = [ 'ASC', 'DESC', '', null ] ;
+        $orderBy = [] ;
+        foreach ( $columns as $column => $order )
+        {
+            $order = strtoupper( $order ) ;
+            if( ! in_array( $order , $orders ) )
+                throw new \Exception( $order . " : forkert order type [".implode(',',$orders)."]" ) ;
+            $orderBy[] = "{$column} {$order}" ;
+        }
+        $this->orderBy = implode( ', ', $orderBy ) ; 
+    }
+
+    public function getOrderBy () : ?string
+    {
+        return $this->orderBy ;
+    }
+
+    public function getData()   { return $this->values ; }
+    public function getValues() { return array_values( $this->values ) ; }
+    public function getKeys()   { return array_keys( $this->values ) ; }
 
 // https://www.php.net/manual/en/class.iterator.php
 
-    protected function getOne( $thisClass , int $index ) 
+    protected function getOne( $baseClass , int $index ) 
     {   // echo basename( __file__ ) . " : " . __function__ . \PHP_EOL ;
         // echo $this->class. \PHP_EOL ;
         // echo "int \$index : {$index}" . \PHP_EOL ;
-        return new $thisClass( $index ) ; 
+        return new $baseClass( $index ) ; 
     }
 
     abstract public function rewind() : void ;

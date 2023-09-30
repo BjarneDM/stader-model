@@ -154,6 +154,8 @@ abstract class DataObjectDao
     use ObjectDaoFunctions ;
     use MagicMethods ;
 
-}
+    public function getOrderBy () : null { return null ; }
+ 
+ }
 
 ?>

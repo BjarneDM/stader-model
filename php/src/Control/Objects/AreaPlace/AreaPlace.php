@@ -20,7 +20,7 @@ use \Stader\Control\Abstract\DataObjectDao ;
 
 class AreaPlace extends DataObjectDao
 {
-    public static $thisClass   = '\\Stader\\Control\\Object\\AreaPlace\\AreaPlace' ;
+    public static $thisClass   = '\\Stader\\Control\\Objects\\AreaPlace\\AreaPlace' ;
     public static $allowedKeys = [ 'areaplace' => 'varchar' ] ;
 
     protected Area       $area  ;
