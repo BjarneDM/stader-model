@@ -16,7 +16,7 @@ trait ObjectDaoConstruct
     // indeholder DB funktionerne for den enkelte $method
     private   static $functions = [] ;
     protected        $theDBtype = '' ;
-    private static Settings $iniSettings ;
+    protected static Settings $iniSettings ;
 
     function __construct ( string $dbType , string $thisClass , array $allowedKeys  )
     {   // echo "trait ObjectDaoConstruct"  . \PHP_EOL ;

@@ -1,6 +1,6 @@
 <?php   namespace Stader\Eksempler ;
 
-set_include_path( dirname( __DIR__ ) ) ;
+set_include_path( dirname( __FILE__ , 2 ) ) ;
 require_once( 'settings/phpValues.php' ) ;
 
 require_once( 'classloader.php' ) ;

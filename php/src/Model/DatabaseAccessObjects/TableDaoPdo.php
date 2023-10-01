@@ -9,14 +9,14 @@ class TableDaoPdo
 {
 
     private DatabaseSetup $databasesetup ;
-    private Settings $iniSettings ;
+    private static Settings $iniSettings ;
     private $dbh ;
 
     public function __construct ( $dbType )
     {   // echo 'class TableDaoPdo implements ICrudDao __construct' . \PHP_EOL ;
         // print_r( ['dbType' => $dbType , 'class' => $thisClass , 'allowedKeys' => $allowedKeys] ) ;
 
-        $this->iniSettings = Settings::getInstance() ;
+        self::$iniSettings = Settings::getInstance() ;
         $this->databasesetup = DatabaseSetup::getInstance() ;
         $this->dbh = $this->databasesetup->getDBH( $dbType ) ;
     }

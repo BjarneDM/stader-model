@@ -31,7 +31,7 @@ class TableCryptDaoPdo
         ] ;
 
     private DatabaseSetup $databasesetup ;
-    private Settings $iniSettings ;
+    private static Settings $iniSettings ;
     private $dbh ;
 
     public function __construct ( $dbType )
@@ -39,7 +39,7 @@ class TableCryptDaoPdo
         // var_dump( $database ) ;
         // var_dump( $thisClass ) ;
 
-        $this->iniSettings = Settings::getInstance() ;
+        self::$iniSettings = Settings::getInstance() ;
         $this->databasesetup = DatabaseSetup::getInstance() ;
         $this->dbh = $this->databasesetup->getDBH( $dbType ) ;
     }
