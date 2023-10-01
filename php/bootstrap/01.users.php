@@ -81,14 +81,11 @@ $users =
     [ 'name' => 'SKP-IT' , 'surname' => 'Slagelse' , 'phone' => 'A' , 'username' => 'skp' , 'passwd' => $passwords[$i++ % count( $passwords )] , 'email' => '' ] ,
     [ 'name' => 'Lars' , 'surname' => 'Nielsen' , 'phone' => 'S' , 'username' => 'lani' , 'passwd' => $passwords[$i++ % count( $passwords )] , 'email' => '' ] ,
 
-    [ 'name' => 'Kris' , 'surname' => 'Kristensen' , 'phone' => 'C' , 'username' => 'krkr' , 'passwd' => $passwords[$i++ % count( $passwords )] , 'email' => '2' ] 
+    [ 'name' => 'Kris' , 'surname' => 'Kristensen' , 'phone' => 'C' , 'username' => 'krkr' , 'passwd' => $passwords[$i++ % count( $passwords )] , 'email' => '2' ] ,
+    [ 'name' => 'Bjarne' , 'surname' => 'Mathiesen' , 'phone' => 'D' , 'username' => 'bjar9215' , 'passwd' => 'password' , 'email' => '' ] ,
 
 ] ;
 
-foreach ( $users as $key => $user )
-{
-    $users[ $key ]['email'] = $user['username'] . '@example.com' ;
-}   unset( $key , $user ) ; 
 
 /*
  *  main
@@ -106,6 +103,7 @@ exit ;
 
 foreach ( $users as $key => $user )
 {
+    $user['email'] = $user['username'] . '@example.com' ;
     $user['phone'] = $phone->next() . ' ' . $phone->next() ;
     $thisUser = new User( $user ) ;
     print_r( $thisUser->getData() ) ;

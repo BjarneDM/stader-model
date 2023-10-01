@@ -4,7 +4,7 @@ set_include_path( dirname( __FILE__ , 2 ) ) ;
 require_once( 'settings/phpValues.php' ) ;
 
 require_once( 'classloader.php' ) ;
-use \Stader\Control\User\{User} ;
+use \Stader\Control\Objects\User\{User} ;
 
 $login     = ( $argv[1] ) ?: '' ;
 $password  = ( $argv[2] ) ?: '' ;

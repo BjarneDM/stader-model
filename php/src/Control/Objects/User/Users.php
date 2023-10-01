@@ -7,6 +7,7 @@ use \Stader\Control\Traits\DataObjectsConstruct ;
 class Users extends DataObjectsDao
 {
     public static $baseClass  = '\\Stader\\Control\\Objects\\User\\User' ;
+    public static $thisClass  = '\\Stader\\Control\\Objects\\User\\User' ;
 
     private UserLogin  $userLogin  ;
     private UsersLogin $usersLogin ;
