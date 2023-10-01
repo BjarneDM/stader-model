@@ -298,7 +298,7 @@ and table_name = "{$this->table}"
 
         $sql  = "select column_name " ;
         $sql .= "from information_schema.columns " ;
-        $sql .= "where table_schema = '" . $this->iniSettings->getSetting($object::$dbType, 'dbname') . "' " ;
+        $sql .= "where table_schema = '" . self::$iniSettings->getSetting($object::$dbType, 'dbname') . "' " ;
         $sql .= "and table_name = '". $this->getTable( $object::$thisClass ) ."' " ;
 
         $stmt = $this->dbh->prepare( $sql ) ;

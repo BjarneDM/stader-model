@@ -9,7 +9,7 @@ abstract class DataObjectsDao
     protected $values = [] ;
     private ?string $orderBy = null ;
     private   $position  =  0 ;
-    private static Settings $iniSettings ;
+    protected static Settings $iniSettings ;
     private $row ;
 
     use ObjectDaoConstruct ;
