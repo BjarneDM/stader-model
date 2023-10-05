@@ -1,6 +1,6 @@
 <?php namespace Stader\Model\Traits ;
 
-use \Stader\Model\OurDateTime ;
+use \Stader\Model\DateTimeString ;
 
 trait LogFunctions
 {
@@ -16,8 +16,8 @@ trait LogFunctions
         $this->values["{$this->referenceID}"] = (int) $this->values["{$this->referenceID}"] ;
         $this->values['log_timestamp']  = 
             @is_null( $this->values['log_timestamp'] ) 
-            ? new OurDateTime()
-            : OurDateTime::createFromFormat( 'Y-m-d H:i:s' , $this->values['creationtime'] ) ;
+            ? new DateTimeString()
+            : DateTimeString::createFromFormat( 'Y-m-d H:i:s' , $this->values['creationtime'] ) ;
     }
 
     protected function check( $thisClass , Array &$toCheck ) : void

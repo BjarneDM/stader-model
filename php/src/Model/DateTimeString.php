@@ -6,7 +6,7 @@
  *  så derfor denne class
  */
 
-class OurDateTime extends \DateTime
+class DateTimeString extends \DateTime
 {
 
     private string $displayFormat  = 'mysql' ;

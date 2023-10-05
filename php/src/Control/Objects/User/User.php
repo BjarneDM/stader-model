@@ -1,7 +1,7 @@
 <?php namespace Stader\Control\Objects\User ;
 
 use \Stader\Model\Tables\User\{UserLogin,UsersLogin,UserInfo,LoginLog} ;
-use \Stader\Model\OurDateTime ;
+use \Stader\Model\DateTimeString ;
 use \Stader\Control\Abstract\DataObjectDao ;
 
 /*
@@ -16,16 +16,16 @@ Array
     [email] => skp@example.com
     [passwd] => $2y$04$xDxkVtrjfaTO4QHBnEuqKe6rlK2LVFx0wpkQzDocNsIDfR3zvu1q2
     [ip_addr] => 123.456.789.012
-    [lastlogintime] => Stader\Model\OurDateTime Object
+    [lastlogintime] => Stader\Model\DateTimeString Object
         (
-            [displayFormat:Stader\Model\OurDateTime:private] => mysql
+            [displayFormat:Stader\Model\DateTimeString:private] => mysql
             [date] => 2022-02-15 16:28:18.000000
             [timezone_type] => 3
             [timezone] => Europe/Copenhagen
         )
-    [lastloginfail] => Stader\Model\OurDateTime Object
+    [lastloginfail] => Stader\Model\DateTimeString Object
         (
-            [displayFormat:Stader\Model\OurDateTime:private] => mysql
+            [displayFormat:Stader\Model\DateTimeString:private] => mysql
             [date] => 2022-02-15 16:20:13.000000
             [timezone_type] => 3
             [timezone] => Europe/Copenhagen
@@ -150,7 +150,7 @@ create table if not exists loginlog
                 $values['action']  = $loginCheck   ;
                 $values['passwd']  = $args['password'] ;
                 $values['ip_addr'] = isset( $_SERVER['REMOTE_ADDR'] ) ?: null ;
-                $values['lastloginfail'] = new OurDateTime() ;
+                $values['lastloginfail'] = new DateTimeString() ;
                 unset( $values['password'] ) ;
 
                 break ;

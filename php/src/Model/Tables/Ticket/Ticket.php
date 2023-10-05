@@ -1,7 +1,7 @@
 <?php namespace Stader\Model\Tables\Ticket ;
 
 use \Stader\Model\Abstract\DataObjectDao ;
-use \Stader\Model\OurDateTime ;
+use \Stader\Model\DateTimeString ;
 use \Stader\Model\Traits\{DataObjectConstruct,LogNotify} ;
 
 /*
@@ -66,12 +66,12 @@ class Ticket extends DataObjectDao
         $this->values['assigned_user_id']  = (int) $this->values['assigned_user_id']  ;
         $this->values['creationtime']
         =   @is_null( $this->values['creationtime']   ) 
-            ? new OurDateTime()
-            : OurDateTime::createFromFormat( 'Y-m-d H:i:s' , $this->values['creationtime']   ) ;
+            ? new DateTimeString()
+            : DateTimeString::createFromFormat( 'Y-m-d H:i:s' , $this->values['creationtime']   ) ;
         $this->values['lastupdatetime']
         =   @is_null( $this->values['lastupdatetime'] ) 
             ? null 
-            : OurDateTime::createFromFormat( 'Y-m-d H:i:s' , $this->values['lastupdatetime'] ) ;
+            : DateTimeString::createFromFormat( 'Y-m-d H:i:s' , $this->values['lastupdatetime'] ) ;
     }
 
     use LogNotify ;

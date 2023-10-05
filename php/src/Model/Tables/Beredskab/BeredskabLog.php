@@ -1,7 +1,7 @@
 <?php namespace Stader\Model\Tables\Beredskab ;
 
 use \Stader\Model\Abstract\DataObjectDao ;
-use \Stader\Model\OurDateTime ;
+use \Stader\Model\DateTimeString ;
 use \Stader\Model\Traits\{DataObjectConstruct,LogFunctions} ;
 
 /*

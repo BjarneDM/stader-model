@@ -1,7 +1,7 @@
 <?php namespace Stader\Model\Tables\User ;
 
 use \Stader\Model\Abstract\DataObjectDao ;
-use \Stader\Model\OurDateTime ;
+use \Stader\Model\DateTimeString ;
 use \Stader\Model\Traits\DataObjectConstruct ;
 
 /*
@@ -49,11 +49,11 @@ class UserLogin extends DataObjectDao
         $this->values['lastlogintime']  
         =   @is_null( $this->values['lastlogintime']   ) 
             ? null
-            : OurDateTime::createFromFormat( 'Y-m-d H:i:s' , $this->values['lastlogintime']   ) ;
+            : DateTimeString::createFromFormat( 'Y-m-d H:i:s' , $this->values['lastlogintime']   ) ;
         $this->values['lastloginfail']  
         =   @is_null( $this->values['lastloginfail'] ) 
             ? null 
-            : OurDateTime::createFromFormat( 'Y-m-d H:i:s' , $this->values['lastloginfail'] ) ;
+            : DateTimeString::createFromFormat( 'Y-m-d H:i:s' , $this->values['lastloginfail'] ) ;
         $this->values['loginfailures']  
         =   @empty( $this->values['loginfailures'] )
             ? 0
@@ -65,13 +65,13 @@ class UserLogin extends DataObjectDao
 
         $this->valuesOld = ( new \ArrayObject( $this->values ) )->getArrayCopy() ;
 
-        $this->values['lastlogintime']    = new OurDateTime() ;
+        $this->values['lastlogintime']    = new DateTimeString() ;
         $this->values['loginfailures']    = 0 ;
 
         $this->update( $this ) ;
     }
 
-    public function getLoginTime() : OurDateTime
+    public function getLoginTime() : DateTimeString
     {
         return $this->getData()['lastlogintime'] ;
     }
@@ -81,7 +81,7 @@ class UserLogin extends DataObjectDao
 
         $this->valuesOld = ( new \ArrayObject( $this->values ) )->getArrayCopy() ;
 
-        $this->values['lastloginfail']    = new OurDateTime() ;
+        $this->values['lastloginfail']    = new DateTimeString() ;
         $this->values['loginfailures']++ ;
 
         $this->update( $this ) ;

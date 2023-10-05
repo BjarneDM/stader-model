@@ -14,7 +14,7 @@ where a.id = p.area_id
 use \Stader\Model\Tables\Area\{Area,Areas} ;
 use \Stader\Model\Tables\Place\{Place,Places} ;
 use \Stader\Model\Tables\PlaceOwner\{PlaceOwner,PlaceOwners} ;
-use \Stader\Model\OurDateTime ;
+use \Stader\Model\DateTimeString ;
 use \Stader\Control\Abstract\DataObjectsDao ;
 use \Stader\Control\Objects\AreaPlace\AreaPlace ;
 use \Stader\Control\Traits\DataObjectsConstruct ;

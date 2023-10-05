@@ -1,7 +1,7 @@
 <?php namespace Stader\Model\Tables\Beredskab ;
 
 use \Stader\Model\Abstract\DataObjectDao ;
-use \Stader\Model\OurDateTime ;
+use \Stader\Model\DateTimeString ;
 use \Stader\Model\Tables\Beredskab\BeredskabLog ;
 use \Stader\Model\Traits\{DataObjectConstruct,LogNotify} ;
 
@@ -71,8 +71,8 @@ class Beredskab extends DataObjectDao
         $this->values['active']        = (bool) $this->values['active']        ;
         $this->values['creationtime']
         =   @is_null( $this->values['creationtime'] ) 
-            ? new OurDateTime()
-            : OurDateTime::createFromFormat( 'Y-m-d H:i:s' , $this->values['creationtime'] ) ;
+            ? new DateTimeString()
+            : DateTimeString::createFromFormat( 'Y-m-d H:i:s' , $this->values['creationtime'] ) ;
     }
 
     public function switchOff()

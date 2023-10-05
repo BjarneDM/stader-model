@@ -1,7 +1,7 @@
 <?php namespace Stader\Model\Tables\Place ;
 
 use \Stader\Model\Abstract\DataObjectDao ;
-use \Stader\Model\OurDateTime ;
+use \Stader\Model\DateTimeString ;
 use \Stader\Model\Traits\{DataObjectConstruct,LogNotify} ;
 
 /*
@@ -63,7 +63,7 @@ class Place extends DataObjectDao
         $this->values['lastchecked']
         =   @is_null( $this->values['lastchecked'] ) 
             ? null 
-            : OurDateTime::createFromFormat( 'Y-m-d H:i:s' , $this->values['lastchecked'] ) ;
+            : DateTimeString::createFromFormat( 'Y-m-d H:i:s' , $this->values['lastchecked'] ) ;
 
     }
 
