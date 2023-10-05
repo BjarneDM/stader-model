@@ -66,7 +66,7 @@ trait ObjectDaoFunctions
     public function getValues() { return array_values( $this->values ) ; }
     public function getKeys()   { return array_keys( $this->values ) ; }
 
-    public function getDiff()   { return array_diff( $this->values , $this->valuesOld ) ; }
+    public function getDiff()   { return array_diff_assoc( $this->values , $this->valuesOld ) ; }
 
     public function delete() : int
     {
